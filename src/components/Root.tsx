@@ -4,11 +4,12 @@ import Footer from "./Footer";
 import { useMe } from "../hooks/useMe";
 
 function Root() {
-  const { isUserLoading, user } = useMe();
+  // const { isUserLoading, user } = useMe();
   return (
     <>
-      <Header isUserLoading={isUserLoading} user={user}></Header>
-      <Outlet context={{ isUserLoading, user }} />
+      {/* <Header isUserLoading={isUserLoading} user={user}></Header>
+      <Outlet context={{ isUserLoading, user }} /> */}
+      <Header />
       <Footer></Footer>
     </>
   );

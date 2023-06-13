@@ -41,18 +41,6 @@ export const apiPostLogin = async ({ email, password }: any) => {
   Cookies.set("refresh", refresh);
 };
 
-export const apiInvalidateUser = async () => {
-  const response = await axiosInstance.delete("", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
-    },
-  });
-  Cookies.remove("access");
-  Cookies.remove("refresh");
-  return response.status;
-};
-
 export const apiPostSignup = async (data: any) => {
   try {
     const response = await axiosInstance.post(
@@ -70,4 +58,16 @@ export const apiPostSignup = async (data: any) => {
   } catch (e) {
     throw e;
   }
+};
+
+export const apiDeleteUser = async () => {
+  const response = await axiosInstance.delete("", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  Cookies.remove("access");
+  Cookies.remove("refresh");
+  return response.status;
 };

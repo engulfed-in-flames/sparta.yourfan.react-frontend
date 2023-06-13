@@ -19,9 +19,8 @@ import { CgMenu } from "react-icons/cg";
 import Cookies from "js-cookie";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
-import { IUseMeProps } from "../type";
 
-export default function Header({ isUserLoading, user }: IUseMeProps) {
+export default function Header() {
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
@@ -79,32 +78,25 @@ export default function Header({ isUserLoading, user }: IUseMeProps) {
             borderRadius={"3xl"}
             boxShadow={"md"}
           >
-            <Avatar src={user?.avatar} size={"sm"} bgColor={"black"} />
+            <Avatar src={""} size={"sm"} bgColor={"black"} />
           </MenuButton>
           <MenuList>
-            {!isUserLoading && !user ? (
-              <>
-                <MenuItem onClick={onLoginOpen}>
-                  <Text fontSize={18}>로그인</Text>
-                </MenuItem>
-                <MenuItem onClick={onSignupOpen}>
-                  <Text fontSize={18}>회원가입</Text>
-                </MenuItem>
-              </>
-            ) : (
-              <>
-                <Link to="/me">
-                  <MenuItem>
-                    <Text fontSize={16}></Text>마이페이지
-                  </MenuItem>
-                </Link>
-                <MenuItem onClick={onClickLogout}>
-                  <Text fontSize={16} color={"gray.400"}>
-                    로그아웃
-                  </Text>
-                </MenuItem>
-              </>
-            )}
+            <MenuItem onClick={onLoginOpen}>
+              <Text fontSize={18}>로그인</Text>
+            </MenuItem>
+            <MenuItem onClick={onSignupOpen}>
+              <Text fontSize={18}>회원가입</Text>
+            </MenuItem>
+            <Link to="/me">
+              <MenuItem>
+                <Text fontSize={16}></Text>마이페이지
+              </MenuItem>
+            </Link>
+            <MenuItem onClick={onClickLogout}>
+              <Text fontSize={16} color={"gray.400"}>
+                로그아웃
+              </Text>
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

@@ -1,70 +1,146 @@
-import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
-import { AiFillGithub } from "react-icons/ai";
-import { RiKakaoTalkFill } from "react-icons/ri";
-import { FcGoogle } from "react-icons/fc";
+import {
+  Button,
+  FormControl,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { MdAlternateEmail, MdLock } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
+import SocialLogin from "./SocialLogin";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ISingupFormValues } from "../type";
+import { apiPostSignup } from "../api";
+import { useMutation } from "@tanstack/react-query";
 
 interface ISignupModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// interface IForm {
-//   email: string;
-//   password: string;
-// }
+export default function SignupModal({ isOpen, onClose }: ISignupModalProps) {
+  const { register, handleSubmit, reset } = useForm<ISingupFormValues>();
 
-export default function SocialLogin({ isOpen, onClose }: ISignupModalProps) {
-  const kakaoParams = {
-    client_id: process.env.REACT_APP_KAKAO_API_KEY!,
-    redirect_uri: "http://127.0.0.1:3000/social/kakao",
-    response_type: "code",
-  };
-  const kakaoSearchParams = new URLSearchParams(kakaoParams).toString();
-  const kakaoOauthUrl = `https://kauth.kakao.com/oauth/authorize?${kakaoSearchParams}`;
+  const toast = useToast();
 
-  const githubParams = {
-    client_id: process.env.REACT_APP_GH_CLIENT_ID!,
-    redirect_uri: "http://127.0.0.1:3000/social/github",
-    scope: "read:user,user:email",
+  const mutation = useMutation(apiPostSignup, {
+    onSuccess: () => {
+      toast({
+        title: "회원가입 성공",
+        description: "환영합니다",
+        status: "success",
+        position: "bottom-right",
+      });
+      reset();
+      onClose();
+    },
+    onError: () => {
+      toast({
+        title: "회원가입 실패",
+        status: "warning",
+        position: "bottom-right",
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<ISingupFormValues> = (data) => {
+    mutation.mutate(data);
   };
-  const githubSearchParams = new URLSearchParams(githubParams).toString();
-  const githubOauthUrl = `https://github.com/login/oauth/authorize?${githubSearchParams}`;
 
   return (
-    <Box>
-      <HStack>
-        <Divider />
-        <Text color={"gray.400"} textTransform={"uppercase"}>
-          or
-        </Text>
-        <Divider />
-      </HStack>
-      <VStack spacing={2} py={8}>
-        <Button
-          href={githubOauthUrl}
-          as="a"
-          leftIcon={<AiFillGithub />}
-          w={"100%"}
-          bg={"blackAlpha.900"}
-          color={"white"}
-          py={6}
-        >
-          <Text w={48}>Continue With Github</Text>
-        </Button>
-        <Button
-          href={kakaoOauthUrl}
-          as="a"
-          leftIcon={<RiKakaoTalkFill />}
-          w={"100%"}
-          colorScheme={"yellow"}
-          py={6}
-        >
-          <Text w={48}>Continue With Kakaotalk</Text>
-        </Button>
-        <Button as="a" leftIcon={<FcGoogle />} w={"100%"} py={6}>
-          <Text w={48}>Continue With Google</Text>
-        </Button>
-      </VStack>
-    </Box>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent userSelect={"none"}>
+        <ModalHeader textAlign={"center"} py={8}>
+          <Text fontSize={32}>회원가입</Text>
+        </ModalHeader>
+        <ModalCloseButton top={10} right={6} />
+        <ModalBody>
+          <FormControl onSubmit={handleSubmit(onSubmit)} isRequired as="form">
+            <InputGroup mb={2}>
+              <InputLeftElement
+                pointerEvents={"none"}
+                children={<MdAlternateEmail color={"gray"} size={18} />}
+                pt={2}
+              />
+              <Input
+                {...register("email", { required: true })}
+                type={"email"}
+                id={"email"}
+                placeholder="이메일"
+                required
+                variant={"flushed"}
+                size={"lg"}
+                errorBorderColor="crimson"
+              />
+            </InputGroup>
+            <InputGroup mb={2}>
+              <InputLeftElement
+                pointerEvents={"none"}
+                children={<MdLock color={"gray"} size={18} />}
+                pt={2}
+              />
+              <Input
+                {...register("password1", { required: true })}
+                type={"password"}
+                id={"password1"}
+                placeholder="비밀번호"
+                required
+                variant={"flushed"}
+                size={"lg"}
+                errorBorderColor="crimson"
+              />
+            </InputGroup>
+            <InputGroup mb={2}>
+              <InputLeftElement
+                pointerEvents={"none"}
+                children={<MdLock color={"gray"} size={18} />}
+                pt={2}
+              />
+              <Input
+                {...register("password2", { required: true })}
+                type={"password"}
+                id={"password2"}
+                placeholder="비밀번호 확인"
+                required
+                variant={"flushed"}
+                size={"lg"}
+                errorBorderColor="crimson"
+              />
+            </InputGroup>
+            <InputGroup mb={2}>
+              <InputLeftElement
+                pointerEvents={"none"}
+                children={<FaUser color={"gray"} size={18} />}
+                pt={2}
+              />
+              <Input
+                {...register("nickname", { required: true })}
+                type={"text"}
+                id={"nickname"}
+                placeholder="닉네임"
+                required
+                variant={"flushed"}
+                size={"lg"}
+                errorBorderColor="crimson"
+              />
+            </InputGroup>
+            <Button type={"submit"} w={"full"} py={6} my={8}>
+              <Text fontSize={18}>등록</Text>
+            </Button>
+          </FormControl>
+
+          <SocialLogin />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 }
