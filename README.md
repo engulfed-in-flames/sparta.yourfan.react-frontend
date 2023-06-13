@@ -1,4 +1,4 @@
-# Template - REACT with Typescript and Chakra UI
+# Template - REACT with Typescript and Chakra UI For Django Backend
 
 React, React Router, Typescript and Chakra UI💕
 
