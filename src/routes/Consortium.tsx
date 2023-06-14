@@ -3,19 +3,16 @@ import {
   Button,
   ButtonGroup,
   Divider,
-  Flex,
   Grid,
   GridItem,
   HStack,
   Heading,
   IconButton,
-  ListItem,
   Text,
-  UnorderedList,
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   HiChevronDoubleLeft,
   HiChevronLeft,
@@ -26,15 +23,17 @@ import ForumTabs from "../components/Forum/ForumTabs";
 
 export default function Consortium() {
   const [btnIndex, setBtnIndex] = useState(1);
+  const { channel } = useParams();
   const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const curBtn = event.currentTarget;
     const curBtnId = Number(curBtn.id);
     setBtnIndex(curBtnId);
   };
+
   return (
     <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>
-      <ForumTabs />
+      {channel ? <ForumTabs channel={channel} /> : null}
       <Heading py={8}>컨소시움</Heading>
       <Box w={"full"}>
         <Grid
@@ -74,46 +73,57 @@ export default function Consortium() {
             </GridItem>
           ))}
         </Grid>
-        <HStack justifyContent={"center"} pt={8}>
-          <ButtonGroup>
-            <IconButton
-              icon={<HiChevronDoubleLeft />}
-              aria-label=""
-              variant={"ghost"}
-            />
-            <IconButton
-              icon={<HiChevronLeft />}
-              aria-label="이전 페이지 버튼"
-              variant={"ghost"}
-            />
-          </ButtonGroup>
-          <ButtonGroup>
-            {Array.from({ length: 5 }, (v, i) => i + 1).map((v, i) => (
-              <Button
-                isActive={v === btnIndex ? true : false}
-                onClick={handlePageBtn}
-                key={i}
-                id={String(v)}
-                bgColor={"white"}
-                shadow={"lg"}
-              >
-                {v}
-              </Button>
-            ))}
-          </ButtonGroup>
-          <ButtonGroup>
-            <IconButton
-              icon={<HiChevronRight />}
-              aria-label="다음 페이지 버튼"
-              variant={"ghost"}
-            />
-            <IconButton
-              icon={<HiChevronDoubleRight />}
-              aria-label=""
-              variant={"ghost"}
-            />
-          </ButtonGroup>
-        </HStack>
+        <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8}>
+          <HStack>
+            <Button variant={"outline"}>전체글</Button>
+            <Button variant={"outline"}>추천글</Button>
+          </HStack>
+          <HStack justifyContent={"center"}>
+            <ButtonGroup>
+              <IconButton
+                icon={<HiChevronDoubleLeft />}
+                aria-label=""
+                variant={"ghost"}
+              />
+              <IconButton
+                icon={<HiChevronLeft />}
+                aria-label="이전 페이지 버튼"
+                variant={"ghost"}
+              />
+            </ButtonGroup>
+            <ButtonGroup>
+              {Array.from({ length: 5 }, (v, i) => i + 1).map((v, i) => (
+                <Button
+                  isActive={v === btnIndex ? true : false}
+                  onClick={handlePageBtn}
+                  key={i}
+                  id={String(v)}
+                  bgColor={"white"}
+                  shadow={"lg"}
+                >
+                  {v}
+                </Button>
+              ))}
+            </ButtonGroup>
+            <ButtonGroup>
+              <IconButton
+                icon={<HiChevronRight />}
+                aria-label="다음 페이지 버튼"
+                variant={"ghost"}
+              />
+              <IconButton
+                icon={<HiChevronDoubleRight />}
+                aria-label=""
+                variant={"ghost"}
+              />
+            </ButtonGroup>
+          </HStack>
+          <HStack justifyContent={"flex-end"}>
+            <Link to={`/${channel}/write`}>
+              <Button>글쓰기</Button>
+            </Link>
+          </HStack>
+        </Grid>
       </Box>
     </VStack>
   );

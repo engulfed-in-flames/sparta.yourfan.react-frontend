@@ -1,15 +1,16 @@
 import { Box, Grid, Heading, VStack } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import ForumTabs from "../components/Forum/ForumTabs";
-import { useMatch } from "react-router-dom";
+import { useMatch, useParams } from "react-router-dom";
 
 export default function Insight() {
+  const { channel } = useParams();
   useEffect(() => {
     (async () => {})();
   }, []);
   return (
     <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>
-      <ForumTabs />
+      {channel ? <ForumTabs channel={channel} /> : null}
       <Heading py={8}>인사이트</Heading>
       <Box w={"full"}>
         <Grid

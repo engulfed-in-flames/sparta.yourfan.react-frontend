@@ -6,9 +6,11 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   Grid,
+  GridItem,
   Heading,
   Icon,
   ListItem,
@@ -21,7 +23,7 @@ import { BsYoutube } from "react-icons/bs";
 import CreateForumModal from "../components/Modal/CreateForumModal";
 import Carousel from "../components/Carousel";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
@@ -113,66 +115,86 @@ export default function Home() {
           ))}
         </Accordion>
       </VStack>
-
+      <Divider />
       <VStack w={"full"} pb={8}>
         <Grid
           overflow={"hidden"}
           w={"full"}
-          templateColumns={"1fr 1fr"}
-          gap={4}
+          templateColumns={"1fr 0.1fr 1fr"}
+          bgColor={"white"}
           borderRadius={"lg"}
+          shadow={"lg"}
         >
-          <VStack
-            bgColor={"white"}
-            borderRadius={"lg"}
-            shadow={"lg"}
-            px={8}
-            py={8}
-          >
+          <VStack px={8} py={8}>
             <Heading>컨소시움 A</Heading>
-            <UnorderedList w={"full"} listStyleType={"none"}>
+            <Grid w={"full"} gridAutoFlow={"row"} gridAutoRows={"1fr"} p={8}>
               {Array.from({ length: 10 }, (_, i) => i + 1).map((v, i) => (
-                <ListItem key={i}>
-                  <Flex
-                    justifyContent={"space-between"}
-                    fontSize={"2xl"}
-                    py={2}
-                  >
-                    <Text>{v}</Text>
-                    <Text>The First Post</Text>
-                    <Text>Author</Text>
-                    <Text>2023-06-08</Text>
-                  </Flex>
+                <GridItem key={i}>
+                  <Link to="#">
+                    <Grid
+                      gridAutoFlow={"column"}
+                      templateColumns={"0.5fr 3fr 1fr 1fr"}
+                      gap={4}
+                      fontSize={"xl"}
+                      py={2}
+                    >
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        {i}
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        This is Post Title
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        Author
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        2023-06-14
+                      </Text>
+                    </Grid>
+                  </Link>
                   <Divider />
-                </ListItem>
+                </GridItem>
               ))}
-            </UnorderedList>
+            </Grid>
           </VStack>
-          <VStack
-            bgColor={"white"}
-            borderRadius={"lg"}
-            shadow={"lg"}
-            px={8}
-            py={8}
-          >
+          <Center py={8}>
+            <Divider
+              orientation={"vertical"}
+              borderWidth={1.25}
+              borderRadius={"lg"}
+            />
+          </Center>
+          <VStack px={8} py={8}>
             <Heading>컨소시움 B</Heading>
-            <UnorderedList w={"full"} listStyleType={"none"}>
+            <Grid w={"full"} gridAutoFlow={"row"} gridAutoRows={"1fr"} p={8}>
               {Array.from({ length: 10 }, (_, i) => i + 1).map((v, i) => (
-                <ListItem key={i}>
-                  <Flex
-                    justifyContent={"space-between"}
-                    fontSize={"2xl"}
-                    py={2}
-                  >
-                    <Text>{v}</Text>
-                    <Text>The First Post</Text>
-                    <Text>Author</Text>
-                    <Text>2023-06-08</Text>
-                  </Flex>
+                <GridItem key={i}>
+                  <Link to="#">
+                    <Grid
+                      gridAutoFlow={"column"}
+                      templateColumns={"0.5fr 3fr 1fr 1fr"}
+                      gap={4}
+                      fontSize={"xl"}
+                      py={2}
+                    >
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        {i}
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        This is Post Title
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        Author
+                      </Text>
+                      <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                        2023-06-14
+                      </Text>
+                    </Grid>
+                  </Link>
                   <Divider />
-                </ListItem>
+                </GridItem>
               ))}
-            </UnorderedList>
+            </Grid>
           </VStack>
         </Grid>
       </VStack>

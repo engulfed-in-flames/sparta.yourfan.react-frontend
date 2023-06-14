@@ -8,6 +8,7 @@ import Insight from "./routes/Insight";
 import Colloquium from "./routes/Colloquium";
 import Consortium from "./routes/Consortium";
 import RedirectToConsortium from "./components/Redirect/RedirectToConsortium";
+import Write from "./routes/Write";
 
 const myRouter = createBrowserRouter(
   [
@@ -44,6 +45,10 @@ const myRouter = createBrowserRouter(
             {
               path: "colloquium",
               element: <Colloquium />,
+            },
+            {
+              path: "write",
+              element: <Write />,
             },
             {
               path: "*",

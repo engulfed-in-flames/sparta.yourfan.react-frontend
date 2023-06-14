@@ -1,11 +1,13 @@
 import { Box, Grid, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import ForumTabs from "../components/Forum/ForumTabs";
+import { useParams } from "react-router-dom";
 
 export default function Colloquium() {
+  const { channel } = useParams();
   return (
     <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>
-      <ForumTabs />
+      {channel ? <ForumTabs channel={channel} /> : null}
       <Heading py={8}>콜로키움</Heading>
       <Box w={"full"}>
         <VStack

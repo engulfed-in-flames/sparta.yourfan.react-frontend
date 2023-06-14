@@ -9,8 +9,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 
-export default function ForumTabs() {
-  const { channel } = useParams();
+interface IForumTabs {
+  channel: string;
+}
+
+export default function ForumTabs({ channel }: IForumTabs) {
   const { pathname } = useLocation();
   const [tabIndex, setTabIndex] = useState(1);
 
