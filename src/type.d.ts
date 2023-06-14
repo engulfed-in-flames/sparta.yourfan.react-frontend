@@ -10,13 +10,16 @@ export interface ILoginValues {
   email: string;
   password: string;
 }
-js;
 
 interface ISingupFormValues {
   email: string;
   password1: string;
   password2: string;
   nickname: string;
+}
+
+interface ICreateForumFormValues {
+  channelHandle: string;
 }
 
 // hooks

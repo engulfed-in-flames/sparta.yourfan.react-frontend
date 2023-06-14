@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
-import SocialLogin from "./SocialLogin";
+import SocialLogin from "../SocialLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ISingupFormValues } from "../type";
-import { apiPostSignup } from "../api";
+import { ISingupFormValues } from "../../type";
+import { apiPostSignup } from "../../api";
 import { useMutation } from "@tanstack/react-query";
 
 interface ISignupModalProps {

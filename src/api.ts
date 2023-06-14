@@ -1,14 +1,34 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { ILoginValues } from "./type";
 
 const axiosInstance = axios.create({
-  baseURL: "",
+  baseURL: "http://127.0.0.1:8000/api/v1/",
   withCredentials: true,
 });
 
+export const apiPostChannelHandle = async (data: any) => {
+  try {
+    const response = await axiosInstance.post(
+      "",
+      {
+        ...data,
+      },
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken") || "",
+        },
+      }
+    );
+    return response.status;
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const apiGetMe = async () => {
   try {
-    const response = await axiosInstance.get("", {
+    const response = await axiosInstance.get("users/me/", {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
         Authorization: `Bearer ${Cookies.get("access")}`,
@@ -23,9 +43,9 @@ export const apiGetMe = async () => {
   }
 };
 
-export const apiPostLogin = async ({ email, password }: any) => {
+export const apiPostLogin = async ({ email, password }: ILoginValues) => {
   const response = await axiosInstance.post(
-    "",
+    "users/token/",
     {
       email,
       password,
@@ -36,6 +56,7 @@ export const apiPostLogin = async ({ email, password }: any) => {
       },
     }
   );
+  console.log(response);
   const { access, refresh } = response.data;
   Cookies.set("access", access);
   Cookies.set("refresh", refresh);
