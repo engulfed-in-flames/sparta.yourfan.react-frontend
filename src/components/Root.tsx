@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useMe } from "../hooks/useMe";
+import { useMe } from "../hooks/userHooks";
 
 function Root() {
   const { isUserLoading, user } = useMe();

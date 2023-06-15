@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import Root from "./components/Root";
 import Home from "./routes/Home";
 import NotFound from "./routes/NotFound";
@@ -7,8 +7,8 @@ import Me from "./routes/Me";
 import Insight from "./routes/Insight";
 import Colloquium from "./routes/Colloquium";
 import Consortium from "./routes/Consortium";
-import RedirectToConsortium from "./components/Redirect/RedirectToConsortium";
 import Write from "./routes/Write";
+import Post from "./routes/Post";
 
 const myRouter = createBrowserRouter(
   [
@@ -32,15 +32,22 @@ const myRouter = createBrowserRouter(
         {
           path: ":channel",
           children: [
-            { path: "", element: <RedirectToConsortium /> },
             {
               path: "insight",
               element: <Insight />,
             },
             {
               path: "consortium",
-              index: true,
-              element: <Consortium />,
+              children: [
+                {
+                  path: "",
+                  element: <Consortium />,
+                },
+                {
+                  path: ":postPk",
+                  element: <Post />,
+                },
+              ],
             },
             {
               path: "colloquium",
@@ -49,10 +56,6 @@ const myRouter = createBrowserRouter(
             {
               path: "write",
               element: <Write />,
-            },
-            {
-              path: "*",
-              element: <RedirectToConsortium />,
             },
           ],
         },

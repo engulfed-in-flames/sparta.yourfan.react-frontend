@@ -20,16 +20,20 @@ import {
   HiChevronDoubleRight,
 } from "react-icons/hi";
 import ForumTabs from "../components/Forum/ForumTabs";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Consortium() {
-  const [btnIndex, setBtnIndex] = useState(1);
   const { channel } = useParams();
+  const [btnIndex, setBtnIndex] = useState(1);
   const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const curBtn = event.currentTarget;
     const curBtnId = Number(curBtn.id);
     setBtnIndex(curBtnId);
   };
+  const { isLoading: isPostListLoading, data: postList } = useQuery([
+    "postList",
+  ]);
 
   return (
     <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>

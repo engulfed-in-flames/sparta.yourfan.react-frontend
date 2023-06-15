@@ -35,9 +35,10 @@ export default function SignupModal({ isOpen, onClose }: ISignupModalProps) {
     onSuccess: () => {
       toast({
         title: "회원가입 성공",
-        description: "환영합니다",
+        description:
+          "가입한 이메일의 메일함으로 이동하여 확인 버튼을 누르면 회원가입이 완료됩니다.",
         status: "success",
-        position: "bottom-right",
+        position: "top",
       });
       reset();
       onClose();
@@ -46,12 +47,12 @@ export default function SignupModal({ isOpen, onClose }: ISignupModalProps) {
       toast({
         title: "회원가입 실패",
         status: "warning",
-        position: "bottom-right",
+        position: "top",
       });
     },
   });
 
-  const onSubmit: SubmitHandler<ISingupFormValues> = (data) => {
+  const clickSubmit: SubmitHandler<ISingupFormValues> = (data) => {
     mutation.mutate(data);
   };
 
@@ -64,7 +65,11 @@ export default function SignupModal({ isOpen, onClose }: ISignupModalProps) {
         </ModalHeader>
         <ModalCloseButton top={10} right={6} />
         <ModalBody>
-          <FormControl onSubmit={handleSubmit(onSubmit)} isRequired as="form">
+          <FormControl
+            onSubmit={handleSubmit(clickSubmit)}
+            isRequired
+            as="form"
+          >
             <InputGroup mb={2}>
               <InputLeftElement
                 pointerEvents={"none"}
