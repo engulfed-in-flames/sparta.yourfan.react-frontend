@@ -1,13 +1,6 @@
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Text,
-} from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import React from "react";
+import { Tabs, TabList, Tab } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
 
 interface IForumTabs {
   channel: string;
@@ -15,9 +8,9 @@ interface IForumTabs {
 
 export default function ForumTabs({ channel }: IForumTabs) {
   const { pathname } = useLocation();
-  const [tabIndex, setTabIndex] = useState(1);
+  const [tabIndex, setTabIndex] = React.useState(1);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const splited = pathname.split("/").filter(Boolean);
     const curLocation = splited.pop();
     if (curLocation === "insight") setTabIndex(0);

@@ -1,3 +1,5 @@
+import React from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -11,8 +13,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import {
   HiChevronDoubleLeft,
   HiChevronLeft,
@@ -24,7 +24,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Consortium() {
   const { channel } = useParams();
-  const [btnIndex, setBtnIndex] = useState(1);
+  const [btnIndex, setBtnIndex] = React.useState(1);
   const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const curBtn = event.currentTarget;

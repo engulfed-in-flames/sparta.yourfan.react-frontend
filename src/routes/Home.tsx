@@ -1,3 +1,5 @@
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Accordion,
   AccordionButton,
@@ -17,13 +19,11 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { BsYoutube } from "react-icons/bs";
 import CreateForumModal from "../components/Modal/CreateForumModal";
 import Carousel from "../components/Carousel";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { apiGetBoardList } from "../api";
-import { useQuery } from "@tanstack/react-query";
 import { IBoard } from "../type";
 
 const channelRank = [

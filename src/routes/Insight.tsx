@@ -1,11 +1,11 @@
 import { Box, Grid, Heading, VStack } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 import ForumTabs from "../components/Forum/ForumTabs";
-import { useMatch, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function Insight() {
   const { channel } = useParams();
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {})();
   }, []);
   return (

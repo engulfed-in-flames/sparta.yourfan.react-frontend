@@ -6,11 +6,10 @@ import {
   FormLabel,
   Heading,
   Input,
-  InputGroup,
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { redirect, useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
@@ -21,8 +20,8 @@ import { apiPostPost } from "../api";
 
 export default function Write() {
   const { channel } = useParams();
-  const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
+  const [content, setContent] = React.useState("");
+  const [title, setTitle] = React.useState("");
   const navigate = useNavigate();
   const toast = useToast();
   const mutation = useMutation(apiPostPost, {
@@ -56,7 +55,7 @@ export default function Write() {
   /**
    * @type {React.MutableRefObject<SunEditor>} get type definitions for editor
    */
-  const editor = useRef<SunEditorCore>();
+  const editor = React.useRef<SunEditorCore>();
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
   };

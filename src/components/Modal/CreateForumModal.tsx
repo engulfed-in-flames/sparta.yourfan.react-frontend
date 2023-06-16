@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -14,7 +15,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdAlternateEmail } from "react-icons/md";

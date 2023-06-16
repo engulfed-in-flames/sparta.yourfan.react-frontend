@@ -1,7 +1,6 @@
-import { Box, Grid, Heading, VStack } from "@chakra-ui/react";
-import React from "react";
-import ForumTabs from "../components/Forum/ForumTabs";
 import { useParams } from "react-router-dom";
+import { Box, Heading, VStack } from "@chakra-ui/react";
+import ForumTabs from "../components/Forum/ForumTabs";
 
 export default function Colloquium() {
   const { channel } = useParams();

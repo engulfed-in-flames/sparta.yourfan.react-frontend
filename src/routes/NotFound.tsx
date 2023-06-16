@@ -1,5 +1,5 @@
-import { Heading, Text, Button, VStack } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { Heading, Text, Button, VStack } from "@chakra-ui/react";
 
 export default function NotFound() {
   const navigate = useNavigate();
