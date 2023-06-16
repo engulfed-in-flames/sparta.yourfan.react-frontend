@@ -1,3 +1,23 @@
+// community
+
+interface IBoard {
+  pk: number;
+  name: string;
+  rank: string;
+  context: string;
+  is_active: boolean;
+}
+interface ICreateForumFormValues {
+  channelHandle: string;
+}
+interface IPostValues {
+  // board === channel
+  board: string;
+  title: string;
+  content: string;
+}
+
+// users
 export interface IMe {
   pk: number;
   avatar: string;
@@ -5,8 +25,7 @@ export interface IMe {
   nickname: string;
 }
 
-// users
-export interface ILoginValues {
+export interface ILoginFormValues {
   email: string;
   password: string;
 }
@@ -16,10 +35,6 @@ interface ISingupFormValues {
   password1: string;
   password2: string;
   nickname: string;
-}
-
-interface ICreateForumFormValues {
-  channelHandle: string;
 }
 
 // hooks

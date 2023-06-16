@@ -32,8 +32,6 @@ interface IHeaderProps {
 }
 
 export default function Header({ isUserLoading, me }: IHeaderProps) {
-  console.log(isUserLoading);
-  console.log(me);
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,

@@ -40,7 +40,7 @@ export default function CreateForumModal({
         title: "포럼 생성하기 성공",
         description: "포럼이 생성되고 있습니다.",
         status: "loading",
-        position: "bottom-right",
+        position: "top",
       });
       reset();
       onClose();
@@ -50,7 +50,7 @@ export default function CreateForumModal({
         title: "포럼 생성하기 실패.",
         description: "채널 핸들을 다시 한 번 확인해주세요.",
         status: "warning",
-        position: "bottom-right",
+        position: "top",
       });
     },
   });

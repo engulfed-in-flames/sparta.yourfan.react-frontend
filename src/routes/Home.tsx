@@ -13,9 +13,7 @@ import {
   GridItem,
   Heading,
   Icon,
-  ListItem,
   Text,
-  UnorderedList,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -24,18 +22,15 @@ import CreateForumModal from "../components/Modal/CreateForumModal";
 import Carousel from "../components/Carousel";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiGetBoardList } from "../api";
+import { useQuery } from "@tanstack/react-query";
+import { IBoard } from "../type";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
   { rank: "gold", rankKR: "골드", color: "#f9d848" },
   { rank: "silver", rankKR: "실버", color: "#c0c0c0" },
   { rank: "bronze", rankKR: "브론즈", color: "#c28342" },
-];
-const badgeItemListByRank = [
-  { rank: "diamond", badgeList: ["freecodecamp", "BroCodez"] },
-  { rank: "gold", badgeList: ["freecodecamp", "BroCodez"] },
-  { rank: "silver", badgeList: ["freecodecamp", "BroCodez"] },
-  { rank: "bronze", badgeList: ["freecodecamp", "BroCodez"] },
 ];
 
 export default function Home() {
@@ -45,7 +40,12 @@ export default function Home() {
     onClose: onCreateForumClose,
   } = useDisclosure();
   const navigate = useNavigate();
-  const handleClickBadge = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const { isLoading: isBoardsLoading, data: boardList } = useQuery<IBoard[]>(
+    ["boards"],
+    apiGetBoardList
+  );
+
+  const handleClickBoard = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { id: badgeId } = event.currentTarget;
     navigate(`@${badgeId}/consortium/`);
@@ -100,16 +100,20 @@ export default function Home() {
                 </AccordionButton>
               </Heading>
               <AccordionPanel pb={4}>
-                {badgeItemListByRank
-                  .filter((list) => list.rank === v.rank)[0]
-                  .badgeList.map((badge, i) => (
-                    <Button
-                      key={i}
-                      id={badge}
-                      onClick={handleClickBadge}
-                      mr={2}
-                    >{`@${badge}`}</Button>
-                  ))}
+                {!isBoardsLoading && boardList ? (
+                  <>
+                    {boardList
+                      .filter((board) => board.rank === v.rank)
+                      .map((board, i) => (
+                        <Button
+                          key={i}
+                          id={board.name}
+                          onClick={handleClickBoard}
+                          mr={2}
+                        >{`@${board.name}`}</Button>
+                      ))}
+                  </>
+                ) : null}
               </AccordionPanel>
             </AccordionItem>
           ))}
