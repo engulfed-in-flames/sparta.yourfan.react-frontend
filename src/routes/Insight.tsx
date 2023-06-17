@@ -9,19 +9,10 @@ export default function Insight() {
     (async () => {})();
   }, []);
   return (
-    <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>
+    <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"}>
       {channel ? <ForumTabs channel={channel} /> : null}
-      <Heading py={8}>인사이트</Heading>
       <Box w={"full"}>
-        <Grid
-          minH={"760px"}
-          gridAutoFlow={"row"}
-          gridAutoRows={"1fr"}
-          bgColor={"white"}
-          borderRadius={"lg"}
-          shadow={"lg"}
-          p={8}
-        ></Grid>
+        <Grid p={8}></Grid>
       </Box>
     </VStack>
   );

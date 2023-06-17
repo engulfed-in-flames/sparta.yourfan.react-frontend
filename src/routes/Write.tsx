@@ -10,7 +10,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
 import "suneditor/dist/css/suneditor.min.css";
@@ -31,7 +31,7 @@ export default function Write() {
         status: "success",
         position: "bottom-right",
       });
-      redirect(`/${channel}/consortium`);
+      navigate(`/${channel}/consortium`);
     },
     onError: () => {
       toast({

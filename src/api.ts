@@ -1,11 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import {
-  ICreateForumFormValues,
-  ILoginFormValues,
-  IPostValues,
-  ISingupFormValues,
-} from "./type";
+import { ILoginFormValues, IPostValues, ISingupFormValues } from "./type";
 
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
@@ -20,32 +15,30 @@ export const apiGetBoardList = async () => {
       },
     });
     return response.data;
-  } catch (e) {
-    throw e;
+  } catch (err) {
+    throw err;
   }
 };
 
 export const apiGetPostList = async (channel: string) => {
   try {
-    const response = await axiosInstance.get(`community/post/${channel}`, {
+    const response = await axiosInstance.get(`community/post/${channel}/`, {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
       },
     });
     return response.data;
-  } catch (e) {
-    throw e;
+  } catch (err) {
+    throw err;
   }
 };
 
-export const apiPostChannelHandle = async ({
-  channelHandle,
-}: ICreateForumFormValues) => {
+export const apiGetSimilarChannels = async (channel: string) => {
   try {
     const response = await axiosInstance.post(
-      "community/board/",
+      "youtube/find/",
       {
-        name: channelHandle,
+        title: channel,
       },
       {
         headers: {
@@ -54,19 +47,33 @@ export const apiPostChannelHandle = async ({
         },
       }
     );
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const apiPostChannel = async (channel_id: string) => {
+  console.log(channel_id);
+  try {
+    const response = await axiosInstance.post(`youtube/${channel_id}/`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    });
     return response.status;
-  } catch (e) {
-    throw e;
+  } catch (err) {
+    throw err;
   }
 };
 
 export const apiPostPost = async ({ board, title, content }: IPostValues) => {
-  console.log(board, title, content);
   try {
     const response = await axiosInstance.post(
       "community/post/",
       {
-        board: 1,
+        board,
         title,
         content,
       },
@@ -78,8 +85,8 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
       }
     );
     return response.status;
-  } catch (e) {
-    throw e;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -95,7 +102,7 @@ export const apiGetMe = async () => {
       throw new Error("로그인 실패");
     }
     return response.data;
-  } catch (e) {
+  } catch (err) {
     return null;
   }
 };

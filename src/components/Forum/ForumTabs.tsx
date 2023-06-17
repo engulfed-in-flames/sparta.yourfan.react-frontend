@@ -19,20 +19,20 @@ export default function ForumTabs({ channel }: IForumTabs) {
   }, []);
 
   return (
-    <Tabs index={tabIndex}>
+    <Tabs index={tabIndex} mb={8} userSelect={"none"}>
       <TabList>
         <Link to={`/${channel}/insight`}>
-          <Tab color={"primary"} borderTopRadius={"lg"}>
+          <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
             인사이트
           </Tab>
         </Link>
         <Link to={`/${channel}/consortium`}>
-          <Tab color={"primary"} borderTopRadius={"lg"}>
+          <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
             컨소시움
           </Tab>
         </Link>
         <Link to={`/${channel}/colloquium`}>
-          <Tab color={"primary"} borderTopRadius={"lg"}>
+          <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
             콜로키움
           </Tab>
         </Link>
