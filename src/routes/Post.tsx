@@ -5,7 +5,7 @@ import { useIsDigit } from "../hooks/pageHooks";
 
 export default function Post() {
   const { postPk } = useParams();
-  useIsDigit(postPk!);
+  // useIsDigit(postPk!);
 
   const [htmlText, setHtmlText] = React.useState("");
 

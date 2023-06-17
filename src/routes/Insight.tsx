@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, VStack } from "@chakra-ui/react";
+import { Box, Grid, VStack } from "@chakra-ui/react";
 import React from "react";
 import ForumTabs from "../components/Forum/ForumTabs";
 import { useParams } from "react-router-dom";

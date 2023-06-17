@@ -21,12 +21,12 @@ import SocialLogin from "../SocialLogin";
 import { ISingupFormValues } from "../../type";
 import { apiPostSignup } from "../../api";
 
-interface ISignupModalProps {
+interface IProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function SignupModal({ isOpen, onClose }: ISignupModalProps) {
+export default function SignupModal({ isOpen, onClose }: IProps) {
   const { register, handleSubmit, reset } = useForm<ISingupFormValues>();
 
   const toast = useToast();

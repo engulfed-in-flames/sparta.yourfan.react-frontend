@@ -16,7 +16,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
     if (curLocation === "insight") setTabIndex(0);
     else if (curLocation === "consortium") setTabIndex(1);
     else setTabIndex(2);
-  }, []);
+  }, [pathname]);
 
   return (
     <Tabs index={tabIndex} mb={8} userSelect={"none"}>

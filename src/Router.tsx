@@ -31,12 +31,12 @@ const myRouter = createBrowserRouter(
           element: <Me />,
         },
         {
+          path: "/post",
+          element: <Post />,
+        },
+        {
           path: ":channel",
           children: [
-            {
-              path: "",
-              element: <RedirectToConsortium />,
-            },
             {
               path: "insight",
               element: <Insight />,

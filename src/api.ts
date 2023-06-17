@@ -20,6 +20,14 @@ export const apiGetBoardList = async () => {
   }
 };
 
+export const apiGetPost = async (postPk: string) => {
+  try {
+    const response = await axiosInstance.get(`community/post/`);
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const apiGetPostList = async (channel: string) => {
   try {
     const response = await axiosInstance.get(`community/post/${channel}/`, {

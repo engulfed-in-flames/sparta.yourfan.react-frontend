@@ -1,75 +1,59 @@
-import { ReactNode } from "react";
 import {
-  Box,
-  chakra,
-  Container,
-  Stack,
+  HStack,
+  Heading,
+  Icon,
+  SimpleGrid,
   Text,
-  useColorModeValue,
-  VisuallyHidden,
+  VStack,
 } from "@chakra-ui/react";
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-
-const SocialButton = ({
-  children,
-  label,
-  href,
-}: {
-  children: ReactNode;
-  label: string;
-  href: string;
-}) => {
-  return (
-    <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-      rounded={"full"}
-      w={8}
-      h={8}
-      cursor={"pointer"}
-      as={"a"}
-      href={href}
-      display={"inline-flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      transition={"background 0.3s ease"}
-      _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.button>
-  );
-};
+import { FaGithub } from "react-icons/fa";
+import { BsArrowRight } from "react-icons/bs";
 
 export default function Footer() {
   return (
-    <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
+    <SimpleGrid
+      w={"full"}
+      columns={3}
+      bgColor={"primary"}
+      py={10}
+      userSelect={"none"}
     >
-      <Container
-        as={Stack}
-        maxW={"6xl"}
-        py={4}
-        direction={{ base: "column", md: "row" }}
-        spacing={4}
-        justify={{ base: "center", md: "space-between" }}
-        align={{ base: "center", md: "center" }}
-      >
-        <Text>© 2022 Chakra Templates. All rights reserved</Text>
-        <Stack direction={"row"} spacing={6}>
-          <SocialButton label={"Twitter"} href={"#"}>
-            <FaTwitter />
-          </SocialButton>
-          <SocialButton label={"YouTube"} href={"#"}>
-            <FaYoutube />
-          </SocialButton>
-          <SocialButton label={"Instagram"} href={"#"}>
-            <FaInstagram />
-          </SocialButton>
-        </Stack>
-      </Container>
-    </Box>
+      <VStack>
+        <Heading color={"white"} size={"xl"} fontWeight={"medium"} mt={4}>
+          YouRfan
+        </Heading>
+      </VStack>
+      <VStack px={12} pt={4}>
+        <HStack w={"full"} mt={4} alignItems={"center"}>
+          <Icon as={FaGithub} color={"white"} fontSize={"xl"} />
+          <Heading color={"white"} size={"md"} fontWeight={"normal"}>
+            Github
+          </Heading>
+        </HStack>
+        <VStack w={"full"} alignItems={"flex-start"}>
+          <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+            <Text>김경수</Text> <Icon as={BsArrowRight} />
+          </HStack>
+          <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+            <Text>윤준열</Text> <Icon as={BsArrowRight} />
+          </HStack>
+          <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+            <Text>김성광</Text> <Icon as={BsArrowRight} />
+          </HStack>
+          <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+            <Text>최재영</Text> <Icon as={BsArrowRight} />
+          </HStack>
+        </VStack>
+      </VStack>
+      <VStack alignItems={"flex-start"} pt={16} pl={12}>
+        <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+          <Text>프론트</Text> <Icon as={BsArrowRight} />
+        </HStack>
+        <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
+          <Text>백&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>{" "}
+          <Icon as={BsArrowRight} />
+        </HStack>
+      </VStack>
+    </SimpleGrid>
   );
 }
