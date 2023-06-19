@@ -1,17 +1,12 @@
-FROM node:lts-alpine3.18 as build
+FROM node:lts-alpine3.18
 
 WORKDIR /app
 
 COPY package.json . 
-RUN npm install
+RUN npm install --silent
 
 COPY . .
 
 ARG REACT_APP_NAME
 ENV REACT_APP_NAME=${REACT_APP_NAME}
 RUN npm run build
-
-############
-
-FROM nginx:stable-alpine3.17-slim
-COPY --from=build /app/build /usr/share/nginx/html
