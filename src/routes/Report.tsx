@@ -7,20 +7,16 @@ import {
   FormLabel,
   Heading,
   Icon,
-  IconButton,
   Input,
-  InputGroup,
-  InputRightAddon,
-  Text,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import React, { ReactEventHandler, useState } from "react";
+import React from "react";
 import { BsCloudUpload } from "react-icons/bs";
 
 export default function Report() {
-  const [selectedFile, setSelectedFile] = useState<File | undefined>();
-  const [selectedName, setSelectedName] = useState("");
+  const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
+  const [selectedName, setSelectedName] = React.useState("");
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     if (files && files.length >= 1) {

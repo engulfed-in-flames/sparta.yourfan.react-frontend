@@ -1,9 +1,8 @@
+import { Link } from "react-router-dom";
 import {
   Avatar,
-  Box,
   Button,
   Flex,
-  HStack,
   Heading,
   Icon,
   Input,
@@ -17,7 +16,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { CgMenu } from "react-icons/cg";
 import { VscWarning } from "react-icons/vsc";
@@ -125,14 +123,15 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
           <MenuButton
             as={Button}
             leftIcon={<CgMenu />}
+            rightIcon={<Avatar src={""} size={"sm"} bgColor={"primary"} />}
+            size={"md"}
+            minW={24}
             h={12}
             bg={"white"}
             borderRadius={"3xl"}
             boxShadow={"md"}
             ml={4}
-          >
-            <Avatar src={""} size={"sm"} bgColor={"black"} />
-          </MenuButton>
+          ></MenuButton>
           <MenuList>
             {!isUserLoading && me ? (
               <>

@@ -1,6 +1,13 @@
-interface IGoConsortiumValues {
-  channel: string | undefined;
-  postPk: number | undefined;
-}
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const useGoConsortium = ({ channel, postPk }: IGoConsortiumValues) => {};
+export const useIsDigit = (postPk: string) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const regex = /^\d+$/;
+    if (!regex.test(postPk)) {
+      return navigate("/");
+    }
+  }, [navigate, postPk]);
+};

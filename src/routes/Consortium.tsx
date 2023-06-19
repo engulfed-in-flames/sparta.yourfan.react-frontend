@@ -1,127 +1,41 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  Grid,
-  GridItem,
-  HStack,
-  Heading,
-  IconButton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  HiChevronDoubleLeft,
-  HiChevronLeft,
-  HiChevronRight,
-  HiChevronDoubleRight,
-} from "react-icons/hi";
+import { Box, Button, Grid, HStack, VStack } from "@chakra-ui/react";
 import ForumTabs from "../components/Forum/ForumTabs";
 import { useQuery } from "@tanstack/react-query";
+import { apiGetPostList } from "../api";
+import { IPost } from "../type";
+import PostList from "../components/Forum/PostList";
+import PostListSkeleton from "../components/Skeleton/PostListSkeleton";
+import PageNav from "../components/Forum/PageNav";
 
 export default function Consortium() {
   const { channel } = useParams();
-  const [btnIndex, setBtnIndex] = useState(1);
-  const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const curBtn = event.currentTarget;
-    const curBtnId = Number(curBtn.id);
-    setBtnIndex(curBtnId);
-  };
-  const { isLoading: isPostListLoading, data: postList } = useQuery([
-    "postList",
-  ]);
+  const [page, setPage] = React.useState(1);
+  const board = channel?.split("@").pop()!;
+
+  const { isLoading: isPostListLoading, data: postList } = useQuery<IPost[]>(
+    ["postList", board],
+    () => apiGetPostList(board)
+  );
+
+  React.useEffect(() => {}, [page]);
 
   return (
-    <VStack w={"80%"} minH={"660px"} my={24} mx={"auto"}>
+    <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"}>
       {channel ? <ForumTabs channel={channel} /> : null}
-      <Heading py={8}>컨소시움</Heading>
       <Box w={"full"}>
-        <Grid
-          minH={"760px"}
-          gridAutoFlow={"row"}
-          gridAutoRows={"1fr"}
-          bgColor={"white"}
-          borderRadius={"lg"}
-          shadow={"lg"}
-          p={8}
-        >
-          {Array.from({ length: 15 }, (v, i) => i + 1).map((v, i) => (
-            <GridItem key={i}>
-              <Link to="#">
-                <Grid
-                  gridAutoFlow={"column"}
-                  templateColumns={"0.5fr 3fr 1fr 1fr"}
-                  gap={4}
-                  fontSize={"xl"}
-                  py={2}
-                >
-                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
-                    {i}
-                  </Text>
-                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
-                    This is Post Title
-                  </Text>
-                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
-                    Author
-                  </Text>
-                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
-                    2023-06-14
-                  </Text>
-                </Grid>
-              </Link>
-              <Divider />
-            </GridItem>
-          ))}
-        </Grid>
-        <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8}>
+        {!isPostListLoading && postList ? (
+          <PostList postList={postList} />
+        ) : (
+          <PostListSkeleton />
+        )}
+        <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
           <HStack>
             <Button variant={"outline"}>전체글</Button>
             <Button variant={"outline"}>추천글</Button>
           </HStack>
-          <HStack justifyContent={"center"}>
-            <ButtonGroup>
-              <IconButton
-                icon={<HiChevronDoubleLeft />}
-                aria-label=""
-                variant={"ghost"}
-              />
-              <IconButton
-                icon={<HiChevronLeft />}
-                aria-label="이전 페이지 버튼"
-                variant={"ghost"}
-              />
-            </ButtonGroup>
-            <ButtonGroup>
-              {Array.from({ length: 5 }, (v, i) => i + 1).map((v, i) => (
-                <Button
-                  isActive={v === btnIndex ? true : false}
-                  onClick={handlePageBtn}
-                  key={i}
-                  id={String(v)}
-                  bgColor={"white"}
-                  shadow={"lg"}
-                >
-                  {v}
-                </Button>
-              ))}
-            </ButtonGroup>
-            <ButtonGroup>
-              <IconButton
-                icon={<HiChevronRight />}
-                aria-label="다음 페이지 버튼"
-                variant={"ghost"}
-              />
-              <IconButton
-                icon={<HiChevronDoubleRight />}
-                aria-label=""
-                variant={"ghost"}
-              />
-            </ButtonGroup>
-          </HStack>
+          <PageNav page={page} setPage={setPage} />
           <HStack justifyContent={"flex-end"}>
             <Link to={`/${channel}/write`}>
               <Button>글쓰기</Button>

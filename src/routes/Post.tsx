@@ -1,12 +1,15 @@
 import { VStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { useIsDigit } from "../hooks/pageHooks";
 
 export default function Post() {
-  // 개별 포스트를 호출하는건 뒤에 /<포스트 pk> 넣고 get 요청 하시면 됩니다
+  const { postPk } = useParams();
+  // useIsDigit(postPk!);
 
-  //   const [htmlText, setHtmlText] = useState("");
+  const [htmlText, setHtmlText] = React.useState("");
 
-  //   useEffect(() => {
+  //   React.useEffect(() => {
   //     fetchData();
   //   }, []);
 

@@ -1,28 +1,55 @@
-// community
-
-interface IBoard {
-  pk: number;
-  name: string;
-  rank: string;
-  context: string;
-  is_active: boolean;
-}
-interface ICreateForumFormValues {
-  channelHandle: string;
-}
-interface IPostValues {
-  // board === channel
-  board: string;
-  title: string;
-  content: string;
+export interface IMessage {
+  message: {
+    sender: string;
+    content: string;
+    is_manager: boolean;
+  };
 }
 
-// users
 export interface IMe {
   pk: number;
   avatar: string;
   email: string;
   nickname: string;
+}
+
+export interface IUser {
+  pk: number;
+  email: string;
+  nickname: string;
+  is_active: string;
+}
+
+export interface IChannel {
+  channel_name: string;
+  channel_id: string;
+  subscriber: string;
+  thumbnail: string;
+}
+
+export interface IBoard {
+  pk: number;
+  name: string;
+  rank: string;
+  context: string;
+  is_active: boolean;
+  subscriber_count: number;
+  banned_users: IUser[];
+}
+
+export interface IPost {
+  pk: number;
+  user: string;
+  title: string;
+  content: string;
+  created_at: string;
+}
+
+export interface IPostValues {
+  // board === channel
+  board: string;
+  title: string;
+  content: string;
 }
 
 export interface ILoginFormValues {
