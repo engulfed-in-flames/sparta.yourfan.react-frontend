@@ -37,6 +37,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const reset = () => {
     onClose();
     setStep(1);
+    setProgress(50);
     setChannels([]);
     setChannel("");
     setChannelHandle("");
@@ -46,6 +47,15 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     setProgress(50);
   };
   const onClickNext = async () => {
+    if (channelHandle.length < 2) {
+      toast({
+        title: "최소 한 글자를 입력해야 합니다.",
+        status: "warning",
+        position: "top",
+        duration: 3000,
+      });
+      return;
+    }
     if (step === 1) {
       setIsLoading(true);
       try {
@@ -55,7 +65,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
         toast({
           title: "Failed",
           description: "채널 검색에 실패했습니다.",
-          status: "warning",
+          status: "error",
           position: "top",
           duration: 3000,
         });
@@ -74,7 +84,6 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
         status: "success",
         position: "top",
       });
-      reset();
     },
     onError: () => {
       toast({
@@ -85,44 +94,15 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
         position: "top",
         duration: 3000,
       });
-      reset();
     },
   });
 
   const onClickSubmit = async () => {
     if (step === 2) {
       mutation.mutate(channel);
-      //   try {
-      //     const status = await apiPostChannel(channel);
-      //     if (status !== 201) {
-      //       throw new Error();
-      //     }
-      //   } catch (e) {
-      //     toast({
-      //       title: "포럼 생성에 실패했습니다.",
-      //       description:
-      //         "이미 존재하는 포럼이거나 존재하지 않는 유튜브 채널입니다.",
-      //       status: "error",
-      //       position: "top",
-      //       duration: 3000,
-      //     });
-      //   } finally {
-      //     reset();
-      //   }
-      // } else {
-      //   toast({
-      //     title: "입력이 잘못됐습니다.",
-      //     status: "error",
-      //     position: "top",
-      //     duration: 3000,
-      //   });
-      //   reset();
+      reset();
     }
   };
-
-  React.useEffect(() => {
-    console.log(channel);
-  }, [channel]);
 
   return (
     <Modal

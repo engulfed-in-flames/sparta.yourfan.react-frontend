@@ -27,9 +27,13 @@ import { IMe } from "../type";
 interface IHeaderProps {
   isUserLoading: boolean;
   me: IMe | null;
+  setMe: React.Dispatch<React.SetStateAction<IMe | null>>;
 }
 
-export default function Header({ isUserLoading, me }: IHeaderProps) {
+export default function Header({ isUserLoading, me, setMe }: IHeaderProps) {
+  console.log(isUserLoading, me);
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
@@ -41,13 +45,11 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
     onClose: onSignupClose,
   } = useDisclosure();
 
-  const toast = useToast();
-  const queryClient = useQueryClient();
-
   const onClickLogout = () => {
     Cookies.remove("access");
     Cookies.remove("refresh");
     queryClient.refetchQueries(["me"]);
+    setMe(null);
     toast({
       title: "로그아웃",
       status: "success",

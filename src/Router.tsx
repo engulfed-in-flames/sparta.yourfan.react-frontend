@@ -10,6 +10,8 @@ import Consortium from "./routes/Consortium";
 import Write from "./routes/Write";
 import Post from "./routes/Post";
 import RedirectToConsortium from "./components/Redirect/RedirectToConsortium";
+import KakaoConfirm from "./routes/KakaoConfirm";
+import GithubConfirm from "./routes/GithubConfirm";
 
 const myRouter = createBrowserRouter(
   [
@@ -23,16 +25,25 @@ const myRouter = createBrowserRouter(
           element: <Home />,
         },
         {
-          path: "/report",
+          path: "report",
           element: <Report />,
         },
         {
-          path: "/me",
+          path: "me",
           element: <Me />,
         },
         {
-          path: "/post",
-          element: <Post />,
+          path: "social",
+          children: [
+            {
+              path: "kakao",
+              element: <KakaoConfirm />,
+            },
+            {
+              path: "github",
+              element: <GithubConfirm />,
+            },
+          ],
         },
         {
           path: ":channel",

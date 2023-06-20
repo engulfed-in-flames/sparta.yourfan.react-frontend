@@ -11,20 +11,26 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
-import "suneditor/dist/css/suneditor.min.css";
 import plugins from "suneditor/src/plugins";
-import { useMutation } from "@tanstack/react-query";
-import { apiPostPost } from "../api";
+import { apiPostPost, apiGetUploadURL, apiUploadImage } from "../api";
+import "suneditor/dist/css/suneditor.min.css";
+import { UploadBeforeHandler } from "suneditor-react/dist/types/upload";
+import { useUserOnly } from "../hooks/userHooks";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 export default function Write() {
+  useUserOnly();
   const { channel } = useParams();
   const [content, setContent] = React.useState("");
   const [title, setTitle] = React.useState("");
+  // const [image, setImage] = React.useState<File | null>(null);
+  // const [src, setSrc] = React.useState("");
   const navigate = useNavigate();
   const toast = useToast();
-  const mutation = useMutation(apiPostPost, {
+  const postMutation = useMutation(apiPostPost, {
     onSuccess: () => {
       toast({
         title: "글 등록에 성공했습니다.",
@@ -36,11 +42,30 @@ export default function Write() {
     onError: () => {
       toast({
         title: "글 등록에 실패했습니다.",
-        status: "warning",
+        status: "error",
         position: "bottom-right",
       });
     },
   });
+  // const uploadImageMutation = useMutation(apiUploadImage, {
+  //   onSuccess: (data: any) => {
+  //     setSrc(data.result.variants[0]);
+  //     console.log(data.result.variants[0]);
+  //   },
+  // });
+  // const uploadURLMutation = useMutation(apiGetUploadURL, {
+  //   onSuccess: (data: any) => {
+  //     if (image) {
+  //       uploadImageMutation.mutate({
+  //         file: image,
+  //         uploadURL: data.uploadURL,
+  //       });
+  //     }
+  //   },
+  //   onError: () => {
+  //     console.log("Upload Failed");
+  //   },
+  // });
 
   const onTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -49,7 +74,7 @@ export default function Write() {
   const onClickSubmitBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const board = channel?.split("@").pop()!;
-    mutation.mutate({ board, title, content });
+    postMutation.mutate({ board, title, content });
   };
 
   /**
@@ -59,6 +84,25 @@ export default function Write() {
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
   };
+
+  // useMutation으로 수정하기
+  // const handleImageUploadBefore = (
+  //   files: File[],
+  //   info: object,
+  //   uploadHandler: UploadBeforeHandler
+  // ) => {
+  //   let filename;
+  //   let filesize;
+  //   filename = files[0].name;
+  //   filesize = files[0].size;
+  //   setImage(files[0]);
+  //   uploadURLMutation.mutate();
+  //   console.log({ url: src, name: filename, size: filesize });
+  //   uploadHandler({
+  //     result: [{ url: src, name: filename, size: filesize }],
+  //   });
+  //   return undefined;
+  // };
 
   return (
     <VStack
@@ -70,7 +114,7 @@ export default function Write() {
       mx={"auto"}
     >
       <Heading w={"full"} mb={8}>{`${channel}의 컨소시움`}</Heading>
-      <FormControl mb={4}>
+      <FormControl mb={4} isRequired>
         <FormLabel fontSize={28} mb={4}>
           제목
         </FormLabel>
@@ -93,11 +137,12 @@ export default function Write() {
           autoFocus={true}
           setDefaultStyle="font-size: 16px;"
           setAllPlugins={true}
+          // onImageUploadBefore={handleImageUploadBefore}
           setOptions={{
             plugins: plugins,
             buttonList: [
               ["undo", "redo"],
-              ["font", "fontSize", "formatBlock"],
+              ["fontSize", "formatBlock"],
               ["paragraphStyle", "blockquote"],
               [
                 "bold",
@@ -107,12 +152,12 @@ export default function Write() {
                 "subscript",
                 "superscript",
               ],
-              ["fontColor", "hiliteColor", "textStyle"],
+              // ["fontColor", "hiliteColor", "textStyle"],
               ["removeFormat"],
-              "/", // Line break
+              "/",
               ["outdent", "indent"],
-              ["align", "horizontalRule", "list", "lineHeight"],
-              ["table", "link", "image"],
+              ["align", "horizontalRule", "lineHeight"],
+              ["table"], // "image"
               ["fullScreen", "showBlocks"],
               ["preview"],
             ],

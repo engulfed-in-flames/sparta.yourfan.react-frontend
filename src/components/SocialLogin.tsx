@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 export default function SocialLogin() {
   const kakaoParams = {
     client_id: process.env.REACT_APP_KAKAO_API_KEY!,
-    redirect_uri: "http://127.0.0.1:3000/social/kakao",
+    redirect_uri: process.env.REACT_APP_KAKAO_REDIRECT_URI!,
     response_type: "code",
   };
   const kakaoSearchParams = new URLSearchParams(kakaoParams).toString();
@@ -14,11 +14,12 @@ export default function SocialLogin() {
 
   const githubParams = {
     client_id: process.env.REACT_APP_GH_CLIENT_ID!,
-    redirect_uri: "http://127.0.0.1:3000/social/github",
+    redirect_uri: process.env.REACT_APP_GH_REDIRECT_URI!,
     scope: "read:user,user:email",
   };
   const githubSearchParams = new URLSearchParams(githubParams).toString();
   const githubOauthUrl = `https://github.com/login/oauth/authorize?${githubSearchParams}`;
+  console.log(process.env.REACT_APP_KAKAO_REDIRECT_URI);
 
   return (
     <Box>

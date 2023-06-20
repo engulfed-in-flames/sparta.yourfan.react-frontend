@@ -38,10 +38,11 @@ export interface IBoard {
 }
 
 export interface IPost {
-  pk: number;
-  user: string;
+  id: number;
+  user: IUser;
   title: string;
   content: string;
+  bookmarked_by_count: number;
   created_at: string;
 }
 
@@ -62,6 +63,11 @@ interface ISingupFormValues {
   password1: string;
   password2: string;
   nickname: string;
+}
+
+interface IUploadImageValues {
+  file: File;
+  uploadURL: string;
 }
 
 // hooks

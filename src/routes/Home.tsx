@@ -14,6 +14,7 @@ import {
   Text,
   VStack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { BsYoutube } from "react-icons/bs";
@@ -22,6 +23,7 @@ import { apiGetBoardList } from "../api";
 import { IBoard } from "../type";
 import YoutubeSearchBtn from "../components/YoutubeSearchBtn";
 import MultiStepFormModal from "../components/Modal/MultiStepFormModal";
+import { useOutletContextUser } from "../hooks/userHooks";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
@@ -31,12 +33,14 @@ const channelRank = [
 ];
 
 export default function Home() {
+  const { user } = useOutletContextUser();
   const {
     isOpen: isMultiStepFormOpen,
     onOpen: onMultiStepFormOpen,
     onClose: onMultiStepFormClose,
   } = useDisclosure();
   const navigate = useNavigate();
+  const toast = useToast();
   const { isLoading: isBoardsLoading, data: boardList } = useQuery<IBoard[]>(
     ["boards"],
     apiGetBoardList
@@ -46,6 +50,20 @@ export default function Home() {
     event.preventDefault();
     const { id: badgeId } = event.currentTarget;
     navigate(`@${badgeId}/consortium/`);
+  };
+
+  const handleClickSearchBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (user) {
+      onMultiStepFormOpen();
+    } else {
+      toast({
+        title: "로그인이 필요합니다.",
+        status: "info",
+        position: "top",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -62,7 +80,7 @@ export default function Home() {
       </Box>
 
       <VStack w={"full"} pb={8}>
-        <YoutubeSearchBtn onClick={onMultiStepFormOpen} />
+        <YoutubeSearchBtn onClick={handleClickSearchBtn} />
       </VStack>
 
       <VStack w={"full"} pb={8}>

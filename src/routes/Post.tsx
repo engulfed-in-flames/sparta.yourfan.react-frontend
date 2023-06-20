@@ -1,27 +1,21 @@
-import { VStack } from "@chakra-ui/react";
-import React from "react";
+import { Heading, VStack } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useIsDigit } from "../hooks/pageHooks";
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
+import { useQuery } from "@tanstack/react-query";
+import { apiGetPost } from "../api";
+import { IPost } from "../type";
 
 export default function Post() {
   const { postPk } = useParams();
-  // useIsDigit(postPk!);
+  useIsDigit(postPk!);
 
-  const [htmlText, setHtmlText] = React.useState("");
+  const { isLoading: isPostLoading, data: post } = useQuery<IPost>(
+    ["post", postPk],
+    () => apiGetPost(String(postPk))
+  );
 
-  //   React.useEffect(() => {
-  //     fetchData();
-  //   }, []);
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch("/api/html-text"); // Replace with your actual API endpoint
-  //       const data = await response.json();
-  //       setHtmlText(data.htmlText);
-  //     } catch (error) {
-  //       console.error("Error fetching HTML text:", error);
-  //     }
-  //   };
   return (
     <VStack
       w={"80%"}
@@ -31,7 +25,24 @@ export default function Post() {
       my={24}
       mx={"auto"}
     >
-      {/* <div dangerouslySetInnerHTML={{ __html: htmlText }}></div> */}
+      <Heading></Heading>
+      {!isPostLoading && post ? (
+        <>
+          <Heading>{post.title}</Heading>
+          <SunEditor
+            setContents={post.content}
+            disable={true}
+            disableToolbar={true}
+            hideToolbar={true}
+            onLoad={() => {
+              const editorDiv = document.querySelector(".sun-editor-editable");
+              if (editorDiv) {
+                editorDiv.setAttribute("contentEditable", "true");
+              }
+            }}
+          ></SunEditor>
+        </>
+      ) : null}
     </VStack>
   );
 }

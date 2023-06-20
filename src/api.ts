@@ -1,11 +1,27 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ILoginFormValues, IPostValues, ISingupFormValues } from "./type";
+import {
+  ILoginFormValues,
+  IPostValues,
+  ISingupFormValues,
+  IUploadImageValues,
+} from "./type";
 
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
   withCredentials: true,
 });
+
+export const apiGetMe = async () => {
+  const response = await axiosInstance.get("users/me/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.data;
+};
 
 export const apiGetBoardList = async () => {
   try {
@@ -13,41 +29,48 @@ export const apiGetBoardList = async () => {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
       },
+      withCredentials: true,
     });
     return response.data;
   } catch (err) {
-    throw err;
+    console.error("Error:", err);
   }
 };
 
 export const apiGetPost = async (postPk: string) => {
   try {
-    const response = await axiosInstance.get(`community/post/`);
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const apiGetPostList = async (channel: string) => {
-  try {
-    const response = await axiosInstance.get(`community/post/${channel}/`, {
+    const response = await axiosInstance.get(`community/post/${postPk}/`, {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
       },
     });
     return response.data;
   } catch (err) {
-    throw err;
+    console.error("Error:", err);
+  }
+};
+
+export const apiGetPostList = async (channel: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `community/board/${channel}/posts/`,
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken") || "",
+        },
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
   }
 };
 
 export const apiGetSimilarChannels = async (channel: string) => {
   try {
     const response = await axiosInstance.post(
-      "youtube/find/",
-      {
-        title: channel,
-      },
+      `youtube/find/${channel}/`,
+      null,
       {
         headers: {
           "X-CSRFToken": Cookies.get("csrftoken") || "",
@@ -57,14 +80,13 @@ export const apiGetSimilarChannels = async (channel: string) => {
     );
     return response.data;
   } catch (err) {
-    throw err;
+    console.error("Error:", err);
   }
 };
 
 export const apiPostChannel = async (channel_id: string) => {
-  console.log(channel_id);
   try {
-    const response = await axiosInstance.post(`youtube/${channel_id}/`, {
+    const response = await axiosInstance.post(`youtube/${channel_id}/`, null, {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
         Authorization: `Bearer ${Cookies.get("access")}`,
@@ -72,8 +94,36 @@ export const apiPostChannel = async (channel_id: string) => {
     });
     return response.status;
   } catch (err) {
-    throw err;
+    console.error("Error:", err);
   }
+};
+
+export const apiGetUploadURL = async () => {
+  try {
+    const response = await axiosInstance.post(`medias/upload-image/`, null, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
+export const apiUploadImage = async ({
+  file,
+  uploadURL,
+}: IUploadImageValues) => {
+  const form = new FormData();
+  form.append("file", file);
+  const response = await axios.post(uploadURL, form, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
 };
 
 export const apiPostPost = async ({ board, title, content }: IPostValues) => {
@@ -94,24 +144,7 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
     );
     return response.status;
   } catch (err) {
-    throw err;
-  }
-};
-
-export const apiGetMe = async () => {
-  try {
-    const response = await axiosInstance.get("users/me/", {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-        Authorization: `Bearer ${Cookies.get("access")}`,
-      },
-    });
-    if (response.status !== 200) {
-      throw new Error("로그인 실패");
-    }
-    return response.data;
-  } catch (err) {
-    return null;
+    console.error("Error:", err);
   }
 };
 
@@ -156,7 +189,7 @@ export const apiPostSignup = async ({
   return response.status;
 };
 
-export const apiDeleteUser = async () => {
+export const apiInvalidateUser = async () => {
   const response = await axiosInstance.delete("", {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
@@ -166,4 +199,52 @@ export const apiDeleteUser = async () => {
   Cookies.remove("access");
   Cookies.remove("refresh");
   return response.status;
+};
+
+export const apiGithubLogin = async (code: string) => {
+  const response = await axiosInstance.post(
+    "users/github-login/",
+    {
+      code,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  if (response.data) {
+    const { access, refresh } = response.data;
+    Cookies.remove("access");
+    Cookies.remove("refresh");
+    Cookies.set("access", access);
+    Cookies.set("refresh", refresh);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const apiKakaoLogin = async (code: string) => {
+  const response = await axiosInstance.post(
+    "users/kakao-login/",
+    {
+      code,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  if (response.data) {
+    const { access, refresh } = response.data;
+    Cookies.remove("access");
+    Cookies.remove("refresh");
+    Cookies.set("access", access);
+    Cookies.set("refresh", refresh);
+    return true;
+  } else {
+    return false;
+  }
 };
