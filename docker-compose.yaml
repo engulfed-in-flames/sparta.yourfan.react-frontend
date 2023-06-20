@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./yourfan-backend
+    ports:
+      - 8000:8000
+    env_file:
+      - ./yourfan-backend/.env.prod
+    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
+    volumes:
+      - django_static:/app/static/
+    container_name: yourfan-backend
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    # tty: true
+    stdin_open: true
+    build:
+      context: ./yourfan-frontend
+      dockerfile: Dockerfile.prod
+      args:
+        - REACT_APP_NAME=YouRFan
+    env_file:
+      - ./yourfan-frontend/.env
+    volumes:
+      - react_build:/app/build
+    container_name: yourfan-frontend
+
+  nginx:
+    image: nginx:stable-alpine
+    expose:
+      - 80
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/custom.conf:/etc/nginx/conf.d/default.conf:ro
+      - react_build:/usr/share/nginx/html
+      - django_static:/var/www/django/static/
+    depends_on:
+      - backend
+      - frontend
+    container_name: yourfan-nginx
+
+  postgres:
+    image: postgres:alpine
+    restart: always
+    command: -p 5434
+    env_file:
+      - ./yourfan-backend/.env.prod
+    expose:
+      - 5434
+    ports:
+      - 5434:5434
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    container_name: yourfan-pgdb
+
+  redis:
+    image: redis:alpine
+    restart: always
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    entrypoint: redis-server --appendonly yes --port 6380
+    container_name: yourfan-redis
+volumes:
+  react_build:
+  django_static:
+  redis_data:
+  postgres_data:
