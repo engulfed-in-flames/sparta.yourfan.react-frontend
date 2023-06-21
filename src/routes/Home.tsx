@@ -114,10 +114,10 @@ export default function Home() {
                       .map((board, i) => (
                         <Button
                           key={i}
-                          id={board.name}
+                          id={board.title}
                           onClick={handleClickBoard}
                           mr={2}
-                        >{`@${board.name}`}</Button>
+                        >{`@${board.title}`}</Button>
                       ))}
                   </>
                 ) : null}

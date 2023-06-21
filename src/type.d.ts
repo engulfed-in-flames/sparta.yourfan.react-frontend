@@ -29,7 +29,7 @@ export interface IChannel {
 
 export interface IBoard {
   pk: number;
-  name: string;
+  title: string;
   rank: string;
   context: string;
   is_active: boolean;
