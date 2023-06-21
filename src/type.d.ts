@@ -72,6 +72,11 @@ interface IUploadImageValues {
   uploadURL: string;
 }
 
+interface IUpdateMeFormValues {
+  nickname?: string;
+  avatar?: string;
+}
+
 // hooks
 export interface IUseMeProps {
   isUserLoading: Boolean;

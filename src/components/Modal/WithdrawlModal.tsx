@@ -1,10 +1,10 @@
 import {
   Button,
+  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
@@ -33,19 +33,19 @@ export default function WithdrawlModal({ isOpen, onClose }: IProps) {
           <ModalCloseButton />
           <ModalBody>
             <Text>정말로 탈퇴하시겠습니까?</Text>
+            <Flex justifyContent={"flex-end"} py={4}>
+              <Button variant={"solid"} mr={3} onClick={onClose}>
+                닫기
+              </Button>
+              <Button
+                onClick={onClick}
+                bgColor={"youtubeRed"}
+                colorScheme={"red"}
+              >
+                탈퇴
+              </Button>
+            </Flex>
           </ModalBody>
-          <ModalFooter>
-            <Button variant={"solid"} mr={3} onClick={onClose}>
-              닫기
-            </Button>
-            <Button
-              onClick={onClick}
-              bgColor={"youtubeRed"}
-              colorScheme={"red"}
-            >
-              탈퇴
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

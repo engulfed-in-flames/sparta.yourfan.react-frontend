@@ -52,7 +52,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
     },
   });
 
-  const clickSubmit: SubmitHandler<ISingupFormValues> = (data) => {
+  const onSubmit: SubmitHandler<ISingupFormValues> = (data) => {
     mutation.mutate(data);
   };
 
@@ -65,11 +65,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
         </ModalHeader>
         <ModalCloseButton top={10} right={6} />
         <ModalBody>
-          <FormControl
-            onSubmit={handleSubmit(clickSubmit)}
-            isRequired
-            as="form"
-          >
+          <FormControl onSubmit={handleSubmit(onSubmit)} isRequired as="form">
             <InputGroup mb={2}>
               <InputLeftElement
                 pointerEvents={"none"}

@@ -1,10 +1,10 @@
-import { Button, ButtonGroup, HStack, Heading, VStack } from "@chakra-ui/react";
+import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useIsDigit } from "../hooks/pageHooks";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { apiGetPost } from "../api";
 import { IPost } from "../type";
 import { useOutletContextUser } from "../hooks/userHooks";

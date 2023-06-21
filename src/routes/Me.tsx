@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import {
   AbsoluteCenter,
   Avatar,
@@ -16,13 +15,12 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useOutletContextUser, useUserOnly } from "../hooks/userHooks";
+import { useOutletContextUser } from "../hooks/userHooks";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
 // import { useQueryClient } from "@tanstack/react-query";
 
 export default function Me() {
-  useUserOnly();
   const {
     isOpen: isWithdrawlOpen,
     onOpen: onWithdrawlOpen,
@@ -34,10 +32,6 @@ export default function Me() {
     onClose: onUpdateMeClose,
   } = useDisclosure();
   const { isUserLoading, user } = useOutletContextUser();
-  // const queryClient = useQueryClient();
-  // useEffect(()=>{
-  //   queryClient.fetchQuery(["me"])
-  // }, [user])
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
       {!isUserLoading && user ? (

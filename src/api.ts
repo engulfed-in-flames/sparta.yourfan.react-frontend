@@ -4,6 +4,7 @@ import {
   ILoginFormValues,
   IPostValues,
   ISingupFormValues,
+  IUpdateMeFormValues,
   IUploadImageValues,
 } from "./type";
 
@@ -233,20 +234,25 @@ export const apiKakaoLogin = async (code: string) => {
   }
 };
 
-export const apiUpdateMe = async () => {
-  const response = await axiosInstance.put("users/", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
-    },
-  });
-  Cookies.remove("access");
-  Cookies.remove("refresh");
+export const apiUpdateMe = async ({
+  nickname,
+  avatar,
+}: IUpdateMeFormValues) => {
+  const response = await axiosInstance.put(
+    "users/me/",
+    { nickname, avatar },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
   return response.status;
 };
 
 export const apiInvalidateUser = async () => {
-  const response = await axiosInstance.delete("users/", {
+  const response = await axiosInstance.delete("users/me/", {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
       Authorization: `Bearer ${Cookies.get("access")}`,
