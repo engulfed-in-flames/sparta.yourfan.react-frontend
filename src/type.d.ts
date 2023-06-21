@@ -1,9 +1,6 @@
 export interface IMessage {
-  message: {
-    sender: string;
-    content: string;
-    is_manager: boolean;
-  };
+  message: string;
+  user_nickname: string;
 }
 
 export interface IMe {

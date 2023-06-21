@@ -24,6 +24,17 @@ export const apiGetMe = async () => {
   return response.data;
 };
 
+export const apiGetCount = async () => {
+  const response = await axiosInstance.get("chat/rooms/1/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.data;
+};
+
 export const apiGetBoardList = async () => {
   try {
     const response = await axiosInstance.get("community/board/", {

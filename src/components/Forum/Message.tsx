@@ -1,25 +1,19 @@
-import React from "react";
 import { IMessage } from "../../type";
 import { HStack, Text } from "@chakra-ui/react";
 
-export default function Message({
-  message: { sender, content, is_manager },
-}: IMessage) {
+interface IProps {
+  message: {
+    user_nickname: string;
+    message: string;
+  };
+}
+
+export default function Message({ message }: IProps) {
   return (
     <HStack>
-      <Text
-        color={is_manager ? "youtubeRed" : "primary"}
-        fontSize={"xl"}
-        fontWeight={is_manager ? "bold" : "normal"}
-      >
-        {sender}:
-      </Text>
-      <Text
-        color={"primary"}
-        fontSize={"xl"}
-        fontWeight={is_manager ? "bold" : "normal"}
-      >
-        {content}
+      <Text fontSize={"xl"}>{message.user_nickname}:</Text>
+      <Text color={"primary"} fontSize={"xl"}>
+        {message.message}
       </Text>
     </HStack>
   );
