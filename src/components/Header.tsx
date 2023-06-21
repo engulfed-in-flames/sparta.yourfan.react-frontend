@@ -31,7 +31,6 @@ interface IHeaderProps {
 }
 
 export default function Header({ isUserLoading, me, setMe }: IHeaderProps) {
-  console.log(isUserLoading, me);
   const toast = useToast();
   const queryClient = useQueryClient();
   const {

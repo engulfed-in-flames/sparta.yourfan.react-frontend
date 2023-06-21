@@ -11,6 +11,8 @@ export interface IMe {
   avatar: string;
   email: string;
   nickname: string;
+  posts: number[];
+  is_manager: boolean;
 }
 
 export interface IUser {

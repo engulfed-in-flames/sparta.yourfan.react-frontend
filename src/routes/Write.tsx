@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
 import plugins from "suneditor/src/plugins";
@@ -28,6 +28,7 @@ export default function Write() {
   const [title, setTitle] = React.useState("");
   // const [image, setImage] = React.useState<File | null>(null);
   // const [src, setSrc] = React.useState("");
+  const queryClient = new QueryClient();
   const navigate = useNavigate();
   const toast = useToast();
   const postMutation = useMutation(apiPostPost, {
@@ -37,6 +38,7 @@ export default function Write() {
         status: "success",
         position: "bottom-right",
       });
+      queryClient.refetchQueries(["me"]);
       navigate(`/${channel}/consortium`);
     },
     onError: () => {

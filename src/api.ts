@@ -127,25 +127,21 @@ export const apiUploadImage = async ({
 };
 
 export const apiPostPost = async ({ board, title, content }: IPostValues) => {
-  try {
-    const response = await axiosInstance.post(
-      "community/post/",
-      {
-        board,
-        title,
-        content,
+  const response = await axiosInstance.post(
+    `community/post/`,
+    {
+      board,
+      title,
+      content,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
       },
-      {
-        headers: {
-          "X-CSRFToken": Cookies.get("csrftoken") || "",
-          Authorization: `Bearer ${Cookies.get("access")}`,
-        },
-      }
-    );
-    return response.status;
-  } catch (err) {
-    console.error("Error:", err);
-  }
+    }
+  );
+  return response.status;
 };
 
 export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {
@@ -186,18 +182,6 @@ export const apiPostSignup = async ({
       },
     }
   );
-  return response.status;
-};
-
-export const apiInvalidateUser = async () => {
-  const response = await axiosInstance.delete("", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
-    },
-  });
-  Cookies.remove("access");
-  Cookies.remove("refresh");
   return response.status;
 };
 
@@ -247,4 +231,28 @@ export const apiKakaoLogin = async (code: string) => {
   } else {
     return false;
   }
+};
+
+export const apiUpdateMe = async () => {
+  const response = await axiosInstance.put("users/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  Cookies.remove("access");
+  Cookies.remove("refresh");
+  return response.status;
+};
+
+export const apiInvalidateUser = async () => {
+  const response = await axiosInstance.delete("users/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  Cookies.remove("access");
+  Cookies.remove("refresh");
+  return response.status;
 };

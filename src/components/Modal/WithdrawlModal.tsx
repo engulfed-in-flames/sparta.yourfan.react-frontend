@@ -23,6 +23,7 @@ export default function WithdrawlModal({ isOpen, onClose }: IProps) {
     event.preventDefault();
     navigate("/");
   };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -37,7 +38,11 @@ export default function WithdrawlModal({ isOpen, onClose }: IProps) {
             <Button variant={"solid"} mr={3} onClick={onClose}>
               닫기
             </Button>
-            <Button onClick={onClick} colorScheme={"red"}>
+            <Button
+              onClick={onClick}
+              bgColor={"youtubeRed"}
+              colorScheme={"red"}
+            >
               탈퇴
             </Button>
           </ModalFooter>

@@ -1,14 +1,17 @@
-import { Heading, VStack } from "@chakra-ui/react";
+import { Button, ButtonGroup, HStack, Heading, VStack } from "@chakra-ui/react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useIsDigit } from "../hooks/pageHooks";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiGetPost } from "../api";
 import { IPost } from "../type";
+import { useOutletContextUser } from "../hooks/userHooks";
 
 export default function Post() {
   const { postPk } = useParams();
+  const { user } = useOutletContextUser();
   useIsDigit(postPk!);
 
   const { isLoading: isPostLoading, data: post } = useQuery<IPost>(
@@ -16,19 +19,30 @@ export default function Post() {
     () => apiGetPost(String(postPk))
   );
 
+  const onClickDeleteBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("Delete Button Clicked");
+  };
+
+  const onClickUpdateBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log("Update Button Clicked");
+  };
+
   return (
     <VStack
       w={"80%"}
       minH={"660px"}
       justifyContent={"flex-start"}
-      gap={4}
-      my={24}
+      gap={12}
+      my={36}
       mx={"auto"}
     >
-      <Heading></Heading>
       {!isPostLoading && post ? (
         <>
-          <Heading>{post.title}</Heading>
+          <Heading w={"full"} textAlign={"left"}>
+            {post.title}
+          </Heading>
           <SunEditor
             setContents={post.content}
             disable={true}
@@ -41,6 +55,27 @@ export default function Post() {
               }
             }}
           ></SunEditor>
+        </>
+      ) : null}
+      {user && user.posts.includes(Number(postPk)) ? (
+        <>
+          <HStack w={"full"} justifyContent={"flex-end"}>
+            <Button
+              onClick={onClickDeleteBtn}
+              bgColor={"primary"}
+              colorScheme="blackAlpha"
+            >
+              삭제
+            </Button>
+            <Button
+              onClick={onClickUpdateBtn}
+              borderColor={"primary"}
+              colorScheme="blackAlpha"
+              variant={"outline"}
+            >
+              수정
+            </Button>
+          </HStack>
         </>
       ) : null}
     </VStack>
