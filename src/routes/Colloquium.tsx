@@ -3,32 +3,66 @@ import { useParams } from "react-router-dom";
 import {
   Flex,
   FormControl,
-  HStack,
   IconButton,
   Input,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { MdSend } from "react-icons/md";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import Cookies from "js-cookie";
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
+import { IMessage } from "../type";
+import { useMe } from "../hooks/userHooks";
 
-interface IProps {
-  userCount?: number;
-}
-
-const message = {
-  sender: "Sender",
-  content: "Content",
-  is_manager: false,
-};
-
-export default function Colloquium({ userCount = 0 }: IProps) {
+export default function Colloquium() {
   const { channel } = useParams();
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const channelTitle = channel?.split("@").pop();
+  const [messages, setMessages] = React.useState<IMessage[]>([]);
+  const { user } = useMe();
+  const accessToken = Cookies.get("access");
+
+  // WebSocket
+  const client = new W3CWebSocket(
+    `${process.env.REACT_APP_WS_BASE_URL}${channelTitle}/?token=${accessToken}`
+  );
+
+  React.useEffect(() => {
+    client.onopen = () => {
+      console.log("WebSocket Client Connected");
+    };
+    client.onmessage = (message) => {
+      const dataFromServer = JSON.parse(message.data.toString());
+      if (dataFromServer) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            message: dataFromServer.message,
+            user_nickname: dataFromServer.user,
+          },
+        ]);
+      }
+    };
+    return () => {
+      client.close();
+    };
+  }, []);
+
+  const onSubmitMessage = (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log("clicked");
+    const input = event.currentTarget.querySelector("input[name='message']");
+    if (input instanceof HTMLInputElement) {
+      client.send(
+        JSON.stringify({
+          type: "chat_message",
+          message: input.value,
+          user_nickname: user?.nickname,
+        })
+      );
+    }
   };
+  //
 
   return (
     <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"} p={8}>
@@ -48,7 +82,7 @@ export default function Colloquium({ userCount = 0 }: IProps) {
             fontSize={"xl"}
             fontWeight={"semibold"}
           >
-            현재 참여 인원 ({userCount})
+            현재 참여 인원 ()
           </Text>
           <VStack
             flex={1}
@@ -58,27 +92,35 @@ export default function Colloquium({ userCount = 0 }: IProps) {
             pt={16}
             pb={4}
           >
-            <Message message={message} />
+            {messages.map((message, index) => (
+              <Message key={index} message={message} />
+            ))}
           </VStack>
         </Flex>
-        <FormControl w={"full"} isRequired as="form">
-          <HStack>
-            <Input
-              focusBorderColor={"primary"}
-              errorBorderColor={"youtubeRed"}
-              placeholder={"메세지를 입력하세요"}
-              variant={"flushed"}
-            />
-            <IconButton
-              onClick={onClick}
-              icon={<MdSend />}
-              aria-label={"Send Message Button"}
-              w={28}
-              _hover={{ bgColor: "tertiary", color: "white" }}
-              _focus={{ bgColor: "secondary", color: "white" }}
-              variant={"outline"}
-            />
-          </HStack>
+        <FormControl
+          as="form"
+          onSubmit={onSubmitMessage}
+          isRequired
+          w={"full"}
+          display={"flex"}
+          alignItems={"center"}
+        >
+          <Input
+            name={"message"}
+            focusBorderColor={"primary"}
+            errorBorderColor={"youtubeRed"}
+            placeholder={"메세지를 입력하세요"}
+            variant={"flushed"}
+          />
+          <IconButton
+            type={"submit"}
+            icon={<MdSend />}
+            aria-label={"Send Message Button"}
+            w={28}
+            _hover={{ bgColor: "tertiary", color: "white" }}
+            _focus={{ bgColor: "secondary", color: "white" }}
+            variant={"outline"}
+          />
         </FormControl>
       </VStack>
     </VStack>
