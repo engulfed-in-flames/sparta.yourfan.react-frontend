@@ -46,6 +46,16 @@ export interface IPost {
   created_at: string;
 }
 
+// Values
+interface IReportValues {
+  pk?: number;
+  image_title?: string;
+  image_url?: string;
+  cloudflare_image_id?: string;
+  title: string;
+  content: string;
+}
+
 export interface IPostValues {
   // board === channel
   board: string;

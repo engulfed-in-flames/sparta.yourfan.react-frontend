@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import {
   ILoginFormValues,
   IPostValues,
+  IReportValues,
   ISingupFormValues,
   IUpdateMeFormValues,
   IUploadImageValues,
@@ -156,6 +157,90 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   return response.status;
 };
 
+// Report API
+
+export const apiGetReportList = async () => {
+  const response = await axiosInstance.get("medias/report/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  });
+  return response.data;
+};
+
+export const apiPostReport = async ({
+  title,
+  content,
+  image_title,
+  image_url,
+  cloudflare_image_id,
+}: IReportValues) => {
+  const response = await axiosInstance.post(
+    "medias/report/",
+    {
+      title,
+      content,
+      image_title,
+      image_url,
+      cloudflare_image_id,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiGetReport = async (pk: number) => {
+  const response = await axiosInstance.get(`medias/report/${pk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  });
+  return response.data;
+};
+
+export const apiPutReport = async ({
+  pk,
+  title,
+  content,
+  image_title,
+  image_url,
+  cloudflare_image_id,
+}: IReportValues) => {
+  const response = await axiosInstance.put(
+    `medias/report/${pk}/`,
+    {
+      title,
+      content,
+      image_title,
+      image_url,
+      cloudflare_image_id,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiDeleteReport = async (pk: number) => {
+  const response = await axiosInstance.delete(`medias/report/${pk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
+};
+
+// User API
 export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {
   const response = await axiosInstance.post(
     "users/token/",
