@@ -245,6 +245,30 @@ export const apiKakaoLogin = async (code: string) => {
   }
 };
 
+export const apiGoogleLogin = async (access_token: string) => {
+  const response = await axiosInstance.post(
+    "users/google-login/",
+    {
+      access_token,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  if (response.data) {
+    const { access, refresh } = response.data;
+    Cookies.remove("access");
+    Cookies.remove("refresh");
+    Cookies.set("access", access);
+    Cookies.set("refresh", refresh);
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const apiUpdateMe = async ({
   nickname,
   avatar,

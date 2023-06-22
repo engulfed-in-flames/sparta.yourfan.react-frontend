@@ -1,9 +1,28 @@
-import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  HStack,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import { AiFillGithub } from "react-icons/ai";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { apiGoogleLogin } from "../api";
 
-export default function SocialLogin() {
+interface IProps {
+  onClose: () => void;
+}
+
+export default function SocialLogin({ onClose }: IProps) {
+  const toast = useToast();
+  const queryClient = new QueryClient();
+
+  // Kakao
   const kakaoParams = {
     client_id: process.env.REACT_APP_KAKAO_API_KEY!,
     redirect_uri: process.env.REACT_APP_KAKAO_REDIRECT_URI!,
@@ -11,7 +30,7 @@ export default function SocialLogin() {
   };
   const kakaoSearchParams = new URLSearchParams(kakaoParams).toString();
   const kakaoOauthUrl = `https://kauth.kakao.com/oauth/authorize?${kakaoSearchParams}`;
-
+  //Github
   const githubParams = {
     client_id: process.env.REACT_APP_GH_CLIENT_ID!,
     redirect_uri: process.env.REACT_APP_GH_REDIRECT_URI!,
@@ -19,7 +38,30 @@ export default function SocialLogin() {
   };
   const githubSearchParams = new URLSearchParams(githubParams).toString();
   const githubOauthUrl = `https://github.com/login/oauth/authorize?${githubSearchParams}`;
-  console.log(process.env.REACT_APP_KAKAO_REDIRECT_URI);
+  //Google
+  const mutation = useMutation(apiGoogleLogin, {
+    onSuccess: () => {
+      queryClient.refetchQueries(["me"]);
+      onClose();
+      toast({
+        title: "환영합니다",
+        status: "success",
+        position: "bottom-right",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "로그인에 실패했습니다.",
+        status: "error",
+        position: "bottom-right",
+      });
+    },
+  });
+  const onClickGoogleBtn = useGoogleLogin({
+    onSuccess: (res) => {
+      mutation.mutate(res.access_token);
+    },
+  });
 
   return (
     <Box>
@@ -52,7 +94,13 @@ export default function SocialLogin() {
         >
           <Text w={48}>Continue With Kakaotalk</Text>
         </Button>
-        <Button as="a" leftIcon={<FcGoogle />} w={"100%"} py={6}>
+        <Button
+          onClick={() => onClickGoogleBtn()}
+          as="a"
+          leftIcon={<FcGoogle />}
+          w={"100%"}
+          py={6}
+        >
           <Text w={48}>Continue With Google</Text>
         </Button>
       </VStack>

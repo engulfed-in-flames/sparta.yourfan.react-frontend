@@ -15,6 +15,8 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 import { apiPostLogin } from "../../api";
 import SocialLogin from "../SocialLogin";
 
@@ -103,7 +105,11 @@ export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
           <Button type={"submit"} w={"full"} py={6} my={8}>
             <Text fontSize={18}>계속</Text>
           </Button>
-          <SocialLogin />
+          <GoogleOAuthProvider
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
+          >
+            <SocialLogin onClose={onClose} />
+          </GoogleOAuthProvider>
         </ModalBody>
       </ModalContent>
     </Modal>
