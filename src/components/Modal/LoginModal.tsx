@@ -16,22 +16,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-
 import { apiPostLogin } from "../../api";
 import SocialLogin from "../SocialLogin";
+import { ILoginFormValues } from "../../type";
+import { AxiosError } from "axios";
 
 interface ILoginModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-interface IForm {
-  email: string;
-  password: string;
-}
-
 export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
-  const { register, handleSubmit, reset } = useForm<IForm>();
+  const { register, handleSubmit, reset } = useForm<ILoginFormValues>();
 
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -49,17 +45,27 @@ export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
       reset();
       queryClient.refetchQueries(["me"]);
     },
-    onError: () => {
-      toast({
-        title: "로그인 실패",
-        status: "error",
-        position: "bottom-right",
-        duration: 3000,
-      });
+    onError: (err: AxiosError) => {
+      const { status } = err?.response!;
+      if (status === 403) {
+        toast({
+          title: "탈퇴된 회원입니다",
+          status: "warning",
+          position: "bottom-right",
+          duration: 3000,
+        });
+      } else {
+        toast({
+          title: "로그인에 실패했습니다",
+          status: "error",
+          position: "bottom-right",
+          duration: 3000,
+        });
+      }
     },
   });
 
-  const onSubmit: SubmitHandler<IForm> = ({ email, password }) => {
+  const onSubmit: SubmitHandler<ILoginFormValues> = ({ email, password }) => {
     mutation.mutate({ email, password });
   };
 

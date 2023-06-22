@@ -55,7 +55,7 @@ export default function Colloquium() {
     return () => {
       client.close();
     };
-  }, [client]);
+  }, [client, user?.nickname]);
 
   const onSubmitMessage = (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault();

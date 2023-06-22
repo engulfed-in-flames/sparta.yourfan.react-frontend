@@ -8,9 +8,11 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { QueryClient, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { apiInvalidateMe } from "../../api";
 
 interface IProps {
   isOpen: boolean;
@@ -19,9 +21,31 @@ interface IProps {
 
 export default function WithdrawlModal({ isOpen, onClose }: IProps) {
   const navigate = useNavigate();
+  const queryClient = new QueryClient();
+  const toast = useToast();
+  const mutation = useMutation(apiInvalidateMe, {
+    onSuccess: () => {
+      toast({
+        title: "회원 탈퇴가 완료됐습니다.",
+        status: "success",
+        position: "bottom-right",
+        duration: 3000,
+      });
+      queryClient.refetchQueries(["me"]);
+      navigate("/");
+    },
+    onError: () => {
+      toast({
+        title: "회원 탈퇴에 실패했습니다.",
+        status: "error",
+        position: "bottom-right",
+        duration: 3000,
+      });
+    },
+  });
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    navigate("/");
+    mutation.mutate();
   };
 
   return (

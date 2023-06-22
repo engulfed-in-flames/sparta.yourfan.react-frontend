@@ -80,6 +80,11 @@ interface IUploadImageValues {
   uploadURL: string;
 }
 
+interface IUpdateMeFormFiedls {
+  nickname?: string;
+  avatar?: FileList;
+}
+
 interface IUpdateMeFormValues {
   nickname?: string;
   avatar?: string;

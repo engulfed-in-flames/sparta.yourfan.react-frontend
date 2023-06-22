@@ -13,10 +13,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { QueryClient, useMutation } from "@tanstack/react-query";
-import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { apiUpdateMe } from "../../api";
-import { IUpdateMeFormValues } from "../../type";
+import { apiGetUploadURL, apiUpdateMe, apiUploadImage } from "../../api";
+import { IUpdateMeFormFiedls } from "../../type";
 
 interface IProps {
   isOpen: boolean;
@@ -25,7 +24,7 @@ interface IProps {
 }
 
 export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
-  const { register, handleSubmit, reset } = useForm<IUpdateMeFormValues>();
+  const { register, handleSubmit, reset } = useForm<IUpdateMeFormFiedls>();
   const toast = useToast();
   const queryClient = new QueryClient();
 
@@ -48,8 +47,23 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
       });
     },
   });
-  const onSubmit: SubmitHandler<IUpdateMeFormValues> = (data) => {
-    mutation.mutate(data);
+
+  const onSubmit: SubmitHandler<IUpdateMeFormFiedls> = async ({
+    nickname,
+    avatar,
+  }) => {
+    const obj = {
+      nickname: nickname ? nickname.trim() : "",
+      avatar: undefined,
+    };
+    if (avatar instanceof FileList && avatar.length > 0) {
+      const { uploadURL } = await apiGetUploadURL();
+      const {
+        result: { variants },
+      } = await apiUploadImage({ file: avatar[0], uploadURL });
+      obj.avatar = variants[0];
+    }
+    mutation.mutate(obj);
   };
   return (
     <>
@@ -60,7 +74,7 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl isDisabled={true} mb={4}>
+              <FormControl mb={4}>
                 <FormLabel>프로필 사진 변경</FormLabel>
                 <Input
                   {...register("avatar")}

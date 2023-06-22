@@ -13,6 +13,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { apiGoogleLogin } from "../api";
+import { AxiosError } from "axios";
 
 interface IProps {
   onClose: () => void;
@@ -49,12 +50,23 @@ export default function SocialLogin({ onClose }: IProps) {
         position: "bottom-right",
       });
     },
-    onError: () => {
-      toast({
-        title: "로그인에 실패했습니다.",
-        status: "error",
-        position: "bottom-right",
-      });
+    onError: (err: AxiosError) => {
+      const { status } = err?.response!;
+      if (status === 403) {
+        toast({
+          title: "탈퇴된 회원입니다",
+          status: "warning",
+          position: "bottom-right",
+          duration: 3000,
+        });
+      } else {
+        toast({
+          title: "로그인에 실패했습니다",
+          status: "error",
+          position: "bottom-right",
+          duration: 3000,
+        });
+      }
     },
   });
   const onClickGoogleBtn = useGoogleLogin({
