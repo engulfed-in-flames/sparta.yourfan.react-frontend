@@ -48,8 +48,10 @@ export default function Home() {
 
   const handleClickBoard = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { id: badgeId } = event.currentTarget;
-    navigate(`@${badgeId}/consortium/`);
+    const { id } = event.currentTarget;
+    if (id) {
+      navigate(`${id}/consortium/`);
+    }
   };
 
   const handleClickSearchBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -114,10 +116,12 @@ export default function Home() {
                       .map((board, i) => (
                         <Button
                           key={i}
-                          id={board.title}
+                          id={board.custom_url}
                           onClick={handleClickBoard}
                           mr={2}
-                        >{`@${board.title}`}</Button>
+                        >
+                          {board.title}
+                        </Button>
                       ))}
                   </>
                 ) : null}

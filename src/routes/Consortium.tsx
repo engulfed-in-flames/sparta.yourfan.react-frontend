@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { Box, Button, Grid, HStack, VStack } from "@chakra-ui/react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, Button, Grid, HStack, Heading, VStack } from "@chakra-ui/react";
 import ForumTabs from "../components/Forum/ForumTabs";
 import { useQuery } from "@tanstack/react-query";
 import { apiGetPostList } from "../api";
@@ -11,25 +11,35 @@ import PageNav from "../components/Forum/PageNav";
 
 export default function Consortium() {
   const { channel } = useParams();
-  const [page, setPage] = React.useState(1);
-  const board = channel?.split("@").pop()!;
-
   const { isLoading: isPostListLoading, data: postList } = useQuery<IPost[]>(
-    ["postList", board],
-    () => apiGetPostList(board)
+    ["postList", channel],
+    () => apiGetPostList(channel!)
   );
+  const [page, setPage] = React.useState(1);
+  const navigate = useNavigate();
 
-  React.useEffect(() => {}, [page]);
+  React.useEffect(() => {
+    if (!channel && postList) {
+      navigate("/");
+    }
+  }, [channel, postList, navigate]);
 
   return (
     <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"}>
       {channel ? <ForumTabs channel={channel} /> : null}
       <Box w={"full"}>
-        {!isPostListLoading && postList ? (
+        {isPostListLoading ? (
+          <PostListSkeleton />
+        ) : postList && postList.length > 0 ? (
           <PostList postList={postList} />
         ) : (
-          <PostListSkeleton />
+          <Box minH={"450px"} p={8}>
+            <Heading textAlign={"center"}>
+              첫 번째 게시글의 주인공이 되어 보세요!
+            </Heading>
+          </Box>
         )}
+
         <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
           <HStack>
             <Button variant={"outline"}>전체글</Button>

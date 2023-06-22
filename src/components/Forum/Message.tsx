@@ -1,4 +1,3 @@
-import { IMessage } from "../../type";
 import { HStack, Text } from "@chakra-ui/react";
 
 interface IProps {
