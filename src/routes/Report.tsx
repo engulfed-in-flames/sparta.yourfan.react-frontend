@@ -8,25 +8,77 @@ import {
   Heading,
   Icon,
   Input,
+  Text,
   Textarea,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { BsCloudUpload } from "react-icons/bs";
+import { apiGetUploadURL, apiPostReport, apiUploadImage } from "../api";
+import { useMutation } from "@tanstack/react-query";
+import { IReportValues } from "../type";
 
 export default function Report() {
-  const [selectedFile, setSelectedFile] = React.useState<File | undefined>();
-  const [selectedName, setSelectedName] = React.useState("");
+  const [uploadedFile, setUploadedFile] = React.useState<File | undefined>();
+  const [uploadedFileName, setUploadedFileName] = React.useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IReportValues>();
+  const toast = useToast();
+  const mutation = useMutation(apiPostReport, {
+    onSuccess: () => {
+      toast({
+        title: "신고가 접수됐습니다.",
+        status: "success",
+        position: "bottom-right",
+        duration: 3000,
+      });
+      setUploadedFileName("");
+      reset();
+    },
+    onError: () => {
+      toast({
+        title: "신고가 접수되지 않았습니다.",
+        status: "error",
+        position: "bottom-right",
+        duration: 3000,
+      });
+    },
+  });
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    if (files && files.length >= 1) {
-      const file = files[0];
-      setSelectedFile(file);
-      setSelectedName(file.name);
+    if (files) {
+      setUploadedFile(files[0]);
+      setUploadedFileName(files[0].name);
     }
   };
+  const onSubmit: SubmitHandler<IReportValues> = async (data) => {
+    const obj = {
+      image_title: "",
+      image_url: "",
+      cloudflare_image_id: "",
+      title: data.title,
+      content: data.content,
+    };
+    if (uploadedFile) {
+      const { uploadURL } = await apiGetUploadURL();
+      const {
+        result: { id, variants },
+      } = await apiUploadImage({ file: uploadedFile, uploadURL });
+      obj.image_title = uploadedFileName;
+      obj.image_url = variants[0];
+      obj.cloudflare_image_id = id;
+    }
+    mutation.mutate(obj);
+  };
   return (
-    <VStack my={24}>
+    <VStack userSelect={"none"} my={24}>
       <Container py={12}>
         <VStack alignItems={"flex-start"} gap={4} pb={16}>
           <Heading as="h1" fontSize={"6xl"}>
@@ -36,7 +88,7 @@ export default function Report() {
             오류 발견하시면 신고 부탁드립니다.😀
           </Heading>
         </VStack>
-        <Box as="form" method="post" action="#" encType="multipart/form-data">
+        <Box as="form" onSubmit={handleSubmit(onSubmit)}>
           <FormControl
             position={"relative"}
             height={32}
@@ -69,30 +121,65 @@ export default function Report() {
                   as={BsCloudUpload}
                   fontSize={"2xl"}
                 />
-                {selectedName || "파일을 첨부하세요"}
+                {uploadedFileName || "파일을 첨부하세요"}
               </Flex>
             </FormLabel>
             <Input
+              name={"image"}
+              onChange={handleFileChange}
               type={"file"}
               multiple={true}
               display={"none"}
-              onChange={handleFileChange}
             />
           </FormControl>
-
           <FormControl mb={4}>
             <FormLabel fontSize={"2xl"} mb={2}>
               제목
             </FormLabel>
-            <Input type="text" placeholder="제목을 입력하세요"></Input>
+            <Input
+              {...register("title", {
+                required: {
+                  value: true,
+                  message: "제목을 반드시 입력해야 합니다.",
+                },
+              })}
+              name={"title"}
+              type="text"
+              placeholder="제목을 입력하세요"
+              focusBorderColor={"primary"}
+            ></Input>
+            <Text color={"youtubeRed"} py={1}>
+              {errors.title && `* ${errors.title.message}`}
+            </Text>
           </FormControl>
           <FormControl mb={4}>
             <FormLabel fontSize={"2xl"} mb={2}>
               내용
             </FormLabel>
-            <Textarea placeholder="내용을 입력하세요" rows={10} />
+            <Textarea
+              {...register("content", {
+                required: {
+                  value: true,
+                  message: "내용을 반드시 입력해야 합니다.",
+                },
+              })}
+              name={"content"}
+              placeholder="내용을 입력하세요"
+              rows={10}
+              focusBorderColor={"primary"}
+            />
+            <Text color={"youtubeRed"} py={1}>
+              {errors.content && `* ${errors.content.message}`}
+            </Text>
           </FormControl>
-          <Button w={"full"} bgColor="primary" color="white">
+          <Button
+            type={"submit"}
+            w={"full"}
+            bgColor={"primary"}
+            _hover={{ bgColor: "secondary" }}
+            _focus={{ bgColor: "tertiary" }}
+            color="white"
+          >
             신고하기
           </Button>
         </Box>

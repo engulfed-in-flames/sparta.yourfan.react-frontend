@@ -27,7 +27,6 @@ export default function PostList({ channel, postList }: IProps) {
         </Heading>
       ) : null}
       <Grid
-        id="nay"
         userSelect={"none"}
         minH={"760px"}
         gridAutoFlow={"row"}

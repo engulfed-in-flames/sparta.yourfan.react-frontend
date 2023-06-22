@@ -18,20 +18,28 @@ import { useMe } from "../hooks/userHooks";
 
 export default function Colloquium() {
   const { channel } = useParams();
-  const channelTitle = channel?.split("@").pop();
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const { user } = useMe();
   const accessToken = Cookies.get("access");
 
   // WebSocket
-  const client = new W3CWebSocket(
-    `${process.env.REACT_APP_WS_BASE_URL}${channelTitle}/?token=${accessToken}`
+  // useMemo : 디펜던시의 상태가 변화하지 않는 한, 리렌더링되더라도 변수를 기억하고 있음.
+  const client = React.useMemo(
+    () =>
+      new W3CWebSocket(
+        `${process.env.REACT_APP_WS_BASE_URL}${channel}/?token=${accessToken}`
+      ),
+    [channel, accessToken]
   );
 
   React.useEffect(() => {
-    client.onopen = () => {
-      console.log("WebSocket Client Connected");
-    };
+    client.onopen = () =>
+      client.send(
+        JSON.stringify({
+          message: `${user?.nickname}님이 입장했습니다.`,
+          user_nickname: user?.nickname,
+        })
+      );
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
       if (dataFromServer) {
@@ -47,7 +55,7 @@ export default function Colloquium() {
     return () => {
       client.close();
     };
-  }, []);
+  }, [client, user?.nickname]);
 
   const onSubmitMessage = (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault();

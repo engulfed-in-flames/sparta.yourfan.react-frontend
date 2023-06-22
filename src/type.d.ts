@@ -29,6 +29,7 @@ export interface IChannel {
 export interface IBoard {
   pk: number;
   title: string;
+  custom_url: string;
   rank: string;
   context: string;
   is_active: boolean;
@@ -43,6 +44,16 @@ export interface IPost {
   content: string;
   bookmarked_by_count: number;
   created_at: string;
+}
+
+// Values
+interface IReportValues {
+  pk?: number;
+  image_title?: string;
+  image_url?: string;
+  cloudflare_image_id?: string;
+  title: string;
+  content: string;
 }
 
 export interface IPostValues {
@@ -69,6 +80,11 @@ interface IUploadImageValues {
   uploadURL: string;
 }
 
+interface IUpdateMeFormFiedls {
+  nickname?: string;
+  avatar?: FileList;
+}
+
 interface IUpdateMeFormValues {
   nickname?: string;
   avatar?: string;
@@ -78,4 +94,5 @@ interface IUpdateMeFormValues {
 export interface IUseMeProps {
   isUserLoading: Boolean;
   user: IMe | null;
+  setMe?: React.Dispatch<React.SetStateAction<IMe | null>>;
 }

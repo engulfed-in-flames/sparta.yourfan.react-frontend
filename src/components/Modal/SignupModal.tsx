@@ -17,6 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import SocialLogin from "../SocialLogin";
 import { ISingupFormValues } from "../../type";
 import { apiPostSignup } from "../../api";
@@ -138,8 +139,11 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
               <Text fontSize={18}>등록</Text>
             </Button>
           </FormControl>
-
-          <SocialLogin />
+          <GoogleOAuthProvider
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
+          >
+            <SocialLogin onClose={onClose} />
+          </GoogleOAuthProvider>
         </ModalBody>
       </ModalContent>
     </Modal>

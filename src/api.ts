@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import {
   ILoginFormValues,
   IPostValues,
+  IReportValues,
   ISingupFormValues,
   IUpdateMeFormValues,
   IUploadImageValues,
@@ -13,17 +14,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-export const apiGetMe = async () => {
-  const response = await axiosInstance.get("users/me/", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
-    },
-  });
-
-  return response.data;
-};
-
+// WebSocket
 export const apiGetCount = async () => {
   const response = await axiosInstance.get("chat/rooms/1/", {
     headers: {
@@ -35,18 +26,39 @@ export const apiGetCount = async () => {
   return response.data;
 };
 
-export const apiGetBoardList = async () => {
+// Post API
+export const apiGetPostList = async (channel: string) => {
   try {
-    const response = await axiosInstance.get("community/board/", {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-      },
-      withCredentials: true,
-    });
+    const response = await axiosInstance.get(
+      `community/board/${channel}/posts/`,
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken") || "",
+        },
+      }
+    );
     return response.data;
   } catch (err) {
     console.error("Error:", err);
   }
+};
+
+export const apiPostPost = async ({ board, title, content }: IPostValues) => {
+  const response = await axiosInstance.post(
+    `community/post/`,
+    {
+      board,
+      title,
+      content,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
 };
 
 export const apiGetPost = async (postPk: string) => {
@@ -62,16 +74,15 @@ export const apiGetPost = async (postPk: string) => {
   }
 };
 
-export const apiGetPostList = async (channel: string) => {
+// Board API
+export const apiGetBoardList = async () => {
   try {
-    const response = await axiosInstance.get(
-      `community/board/${channel}/posts/`,
-      {
-        headers: {
-          "X-CSRFToken": Cookies.get("csrftoken") || "",
-        },
-      }
-    );
+    const response = await axiosInstance.get("community/board/", {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+      withCredentials: true,
+    });
     return response.data;
   } catch (err) {
     console.error("Error:", err);
@@ -110,6 +121,7 @@ export const apiPostChannel = async (channel_id: string) => {
   }
 };
 
+// Image Upload API
 export const apiGetUploadURL = async () => {
   try {
     const response = await axiosInstance.post(`medias/upload-image/`, null, {
@@ -138,13 +150,31 @@ export const apiUploadImage = async ({
   return response.data;
 };
 
-export const apiPostPost = async ({ board, title, content }: IPostValues) => {
+// Report API
+export const apiGetReportList = async () => {
+  const response = await axiosInstance.get("medias/report/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  });
+  return response.data;
+};
+
+export const apiPostReport = async ({
+  title,
+  content,
+  image_title,
+  image_url,
+  cloudflare_image_id,
+}: IReportValues) => {
   const response = await axiosInstance.post(
-    `community/post/`,
+    "medias/report/",
     {
-      board,
       title,
       content,
+      image_title,
+      image_url,
+      cloudflare_image_id,
     },
     {
       headers: {
@@ -153,6 +183,93 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
       },
     }
   );
+  return response.status;
+};
+
+export const apiGetReport = async (pk: number) => {
+  const response = await axiosInstance.get(`medias/report/${pk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  });
+  return response.data;
+};
+
+export const apiPutReport = async ({
+  pk,
+  title,
+  content,
+  image_title,
+  image_url,
+  cloudflare_image_id,
+}: IReportValues) => {
+  const response = await axiosInstance.put(
+    `medias/report/${pk}/`,
+    {
+      title,
+      content,
+      image_title,
+      image_url,
+      cloudflare_image_id,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiDeleteReport = async (pk: number) => {
+  const response = await axiosInstance.delete(`medias/report/${pk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
+};
+
+// User API
+export const apiGetMe = async () => {
+  const response = await axiosInstance.get("users/me/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const apiUpdateMe = async ({
+  nickname,
+  avatar,
+}: IUpdateMeFormValues) => {
+  const response = await axiosInstance.put(
+    "users/me/",
+    { nickname, avatar },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiInvalidateMe = async () => {
+  const response = await axiosInstance.delete("users/me/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  Cookies.remove("access");
+  Cookies.remove("refresh");
   return response.status;
 };
 
@@ -169,9 +286,14 @@ export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {
       },
     }
   );
-  const { access, refresh } = response.data;
-  Cookies.set("access", access);
-  Cookies.set("refresh", refresh);
+  if (response.status === 200) {
+    const { access, refresh } = response.data;
+    Cookies.remove("access");
+    Cookies.remove("refresh");
+    Cookies.set("access", access);
+    Cookies.set("refresh", refresh);
+  }
+  return response.status;
 };
 
 export const apiPostSignup = async ({
@@ -209,16 +331,14 @@ export const apiGithubLogin = async (code: string) => {
       },
     }
   );
-  if (response.data) {
+  if (response.status === 200) {
     const { access, refresh } = response.data;
     Cookies.remove("access");
     Cookies.remove("refresh");
     Cookies.set("access", access);
     Cookies.set("refresh", refresh);
-    return true;
-  } else {
-    return false;
   }
+  return response.status;
 };
 
 export const apiKakaoLogin = async (code: string) => {
@@ -233,43 +353,34 @@ export const apiKakaoLogin = async (code: string) => {
       },
     }
   );
-  if (response.data) {
+  if (response.status === 200) {
     const { access, refresh } = response.data;
     Cookies.remove("access");
     Cookies.remove("refresh");
     Cookies.set("access", access);
     Cookies.set("refresh", refresh);
-    return true;
-  } else {
-    return false;
   }
-};
-
-export const apiUpdateMe = async ({
-  nickname,
-  avatar,
-}: IUpdateMeFormValues) => {
-  const response = await axiosInstance.put(
-    "users/me/",
-    { nickname, avatar },
-    {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-        Authorization: `Bearer ${Cookies.get("access")}`,
-      },
-    }
-  );
   return response.status;
 };
 
-export const apiInvalidateUser = async () => {
-  const response = await axiosInstance.delete("users/me/", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
+export const apiGoogleLogin = async (access_token: string) => {
+  const response = await axiosInstance.post(
+    "users/google-login/",
+    {
+      access_token,
     },
-  });
-  Cookies.remove("access");
-  Cookies.remove("refresh");
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  if (response.status === 200) {
+    const { access, refresh } = response.data;
+    Cookies.remove("access");
+    Cookies.remove("refresh");
+    Cookies.set("access", access);
+    Cookies.set("refresh", refresh);
+  }
   return response.status;
 };
