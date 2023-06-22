@@ -14,7 +14,7 @@ function Root() {
   return (
     <>
       <Header isUserLoading={isUserLoading} me={me} setMe={setMe}></Header>
-      <Outlet context={{ isUserLoading, user }} />
+      <Outlet context={{ isUserLoading, me, setMe }} />
       <Footer></Footer>
     </>
   );

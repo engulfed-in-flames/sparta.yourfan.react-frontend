@@ -16,10 +16,6 @@ interface IProps {
   setChannel: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const addComma = (digit: string) => {
-  return Number(digit).toLocaleString();
-};
-
 export default function CreateForumForm({ channels, setChannel }: IProps) {
   return (
     <>
@@ -51,7 +47,11 @@ export default function CreateForumForm({ channels, setChannel }: IProps) {
                         >
                           {channel.channel_name}
                         </Text>
-                        <Text> 구독자 수 : {addComma(channel.subscriber)}</Text>
+                        <Text>
+                          {" "}
+                          구독자 수 :{" "}
+                          {Number(channel.subscriber).toLocaleString()}
+                        </Text>
                       </VStack>
                     </HStack>
                   </Radio>
