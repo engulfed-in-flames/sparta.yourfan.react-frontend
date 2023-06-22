@@ -25,6 +25,7 @@ export const apiGetMe = async () => {
   return response.data;
 };
 
+// WebSocket
 export const apiGetCount = async () => {
   const response = await axiosInstance.get("chat/rooms/1/", {
     headers: {
@@ -50,19 +51,7 @@ export const apiGetBoardList = async () => {
   }
 };
 
-export const apiGetPost = async (postPk: string) => {
-  try {
-    const response = await axiosInstance.get(`community/post/${postPk}/`, {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-      },
-    });
-    return response.data;
-  } catch (err) {
-    console.error("Error:", err);
-  }
-};
-
+// Post API
 export const apiGetPostList = async (channel: string) => {
   try {
     const response = await axiosInstance.get(
@@ -73,6 +62,37 @@ export const apiGetPostList = async (channel: string) => {
         },
       }
     );
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
+export const apiPostPost = async ({ board, title, content }: IPostValues) => {
+  const response = await axiosInstance.post(
+    `community/post/`,
+    {
+      board,
+      title,
+      content,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiGetPost = async (postPk: string) => {
+  try {
+    const response = await axiosInstance.get(`community/post/${postPk}/`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    });
     return response.data;
   } catch (err) {
     console.error("Error:", err);
@@ -137,24 +157,6 @@ export const apiUploadImage = async ({
     },
   });
   return response.data;
-};
-
-export const apiPostPost = async ({ board, title, content }: IPostValues) => {
-  const response = await axiosInstance.post(
-    `community/post/`,
-    {
-      board,
-      title,
-      content,
-    },
-    {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-        Authorization: `Bearer ${Cookies.get("access")}`,
-      },
-    }
-  );
-  return response.status;
 };
 
 // Report API

@@ -75,8 +75,7 @@ export default function Write() {
   };
   const onClickSubmitBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const board = channel?.split("@").pop()!;
-    postMutation.mutate({ board, title, content });
+    postMutation.mutate({ board: channel!, title, content });
   };
 
   /**
