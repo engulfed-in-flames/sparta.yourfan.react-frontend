@@ -28,10 +28,8 @@ interface ILoginModalProps {
 
 export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
   const { register, handleSubmit, reset } = useForm<ILoginFormValues>();
-
   const queryClient = useQueryClient();
   const toast = useToast();
-
   const mutation = useMutation(apiPostLogin, {
     onSuccess: () => {
       toast({

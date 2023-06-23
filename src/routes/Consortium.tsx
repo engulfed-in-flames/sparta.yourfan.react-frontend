@@ -1,6 +1,6 @@
+import { Box, Button, Grid, HStack, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Grid, HStack, Heading, VStack } from "@chakra-ui/react";
 import ForumTabs from "../components/Forum/ForumTabs";
 import { useQuery } from "@tanstack/react-query";
 import { apiGetPostList } from "../api";

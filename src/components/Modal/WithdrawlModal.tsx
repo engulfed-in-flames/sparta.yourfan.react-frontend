@@ -10,7 +10,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { apiInvalidateMe } from "../../api";
 
@@ -21,7 +21,7 @@ interface IProps {
 
 export default function WithdrawlModal({ isOpen, onClose }: IProps) {
   const navigate = useNavigate();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const toast = useToast();
   const mutation = useMutation(apiInvalidateMe, {
     onSuccess: () => {

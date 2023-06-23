@@ -12,7 +12,7 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiGetUploadURL, apiUpdateMe, apiUploadImage } from "../../api";
 import { IUpdateMeFormFiedls } from "../../type";
@@ -26,7 +26,7 @@ interface IProps {
 export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
   const { register, handleSubmit, reset } = useForm<IUpdateMeFormFiedls>();
   const toast = useToast();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const mutation = useMutation(apiUpdateMe, {
     onSuccess: () => {

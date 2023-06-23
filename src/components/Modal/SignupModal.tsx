@@ -29,9 +29,7 @@ interface IProps {
 
 export default function SignupModal({ isOpen, onClose }: IProps) {
   const { register, handleSubmit, reset } = useForm<ISingupFormValues>();
-
   const toast = useToast();
-
   const mutation = useMutation(apiPostSignup, {
     onSuccess: () => {
       toast({

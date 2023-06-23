@@ -15,10 +15,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useOutletContextUser } from "../hooks/userHooks";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
-// import { useQueryClient } from "@tanstack/react-query";
+import { useMe } from "../hooks/userHooks";
 
 export default function Me() {
   const {
@@ -31,7 +30,7 @@ export default function Me() {
     onOpen: onUpdateMeOpen,
     onClose: onUpdateMeClose,
   } = useDisclosure();
-  const { isUserLoading, user } = useOutletContextUser();
+  const { isUserLoading, user } = useMe();
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
       {!isUserLoading && user ? (

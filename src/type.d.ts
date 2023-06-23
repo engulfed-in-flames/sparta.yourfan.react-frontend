@@ -94,5 +94,4 @@ interface IUpdateMeFormValues {
 export interface IUseMeProps {
   isUserLoading: Boolean;
   user: IMe | null;
-  setMe?: React.Dispatch<React.SetStateAction<IMe | null>>;
 }

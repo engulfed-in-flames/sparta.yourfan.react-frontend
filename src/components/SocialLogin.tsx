@@ -11,7 +11,7 @@ import { AiFillGithub } from "react-icons/ai";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiGoogleLogin } from "../api";
 import { AxiosError } from "axios";
 
@@ -21,7 +21,7 @@ interface IProps {
 
 export default function SocialLogin({ onClose }: IProps) {
   const toast = useToast();
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   // Kakao
   const kakaoParams = {

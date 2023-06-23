@@ -14,18 +14,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// WebSocket
-export const apiGetCount = async () => {
-  const response = await axiosInstance.get("chat/rooms/1/", {
-    headers: {
-      "X-CSRFToken": Cookies.get("csrftoken") || "",
-      Authorization: `Bearer ${Cookies.get("access")}`,
-    },
-  });
-
-  return response.data;
-};
-
 // Post API
 export const apiGetPostList = async (channel: string) => {
   try {
@@ -40,6 +28,7 @@ export const apiGetPostList = async (channel: string) => {
     return response.data;
   } catch (err) {
     console.error("Error:", err);
+    return [];
   }
 };
 
@@ -86,6 +75,7 @@ export const apiGetBoardList = async () => {
     return response.data;
   } catch (err) {
     console.error("Error:", err);
+    return [];
   }
 };
 
@@ -234,6 +224,7 @@ export const apiDeleteReport = async (pk: number) => {
 
 // User API
 export const apiGetMe = async () => {
+  console.log(process.env.REACT_APP_API_BASE_URL);
   const response = await axiosInstance.get("users/me/", {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",

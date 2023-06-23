@@ -1,17 +1,17 @@
 import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useIsDigit } from "../hooks/pageHooks";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { useQuery } from "@tanstack/react-query";
 import { apiGetPost } from "../api";
 import { IPost } from "../type";
-import { useOutletContextUser } from "../hooks/userHooks";
+import { useMe } from "../hooks/userHooks";
 
 export default function Post() {
   const { postPk } = useParams();
-  const { user } = useOutletContextUser();
+  const { user } = useMe();
   useIsDigit(postPk!);
 
   const { isLoading: isPostLoading, data: post } = useQuery<IPost>(

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { IMe, IUseMeProps } from "../type";
+import { IMe } from "../type";
 import { apiGetMe } from "../api";
 
 export const useMe = () => {
@@ -12,10 +12,6 @@ export const useMe = () => {
     isUserLoading: isLoading,
     user: data || null,
   };
-};
-
-export const useOutletContextUser = () => {
-  return useOutletContext<IUseMeProps>();
 };
 
 export const useUserOnly = () => {

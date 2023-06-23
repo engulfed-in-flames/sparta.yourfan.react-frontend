@@ -1,5 +1,3 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Accordion,
   AccordionButton,
@@ -16,6 +14,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { BsYoutube } from "react-icons/bs";
 import Carousel from "../components/Carousel";
@@ -23,7 +23,7 @@ import { apiGetBoardList } from "../api";
 import { IBoard } from "../type";
 import YoutubeSearchBtn from "../components/YoutubeSearchBtn";
 import MultiStepFormModal from "../components/Modal/MultiStepFormModal";
-import { useOutletContextUser } from "../hooks/userHooks";
+import { useMe } from "../hooks/userHooks";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
@@ -33,7 +33,7 @@ const channelRank = [
 ];
 
 export default function Home() {
-  const { user } = useOutletContextUser();
+  const { user } = useMe();
   const {
     isOpen: isMultiStepFormOpen,
     onOpen: onMultiStepFormOpen,

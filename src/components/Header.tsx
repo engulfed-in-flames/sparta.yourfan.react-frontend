@@ -27,10 +27,9 @@ import { IMe } from "../type";
 interface IHeaderProps {
   isUserLoading: boolean;
   me: IMe | null;
-  setMe: React.Dispatch<React.SetStateAction<IMe | null>>;
 }
 
-export default function Header({ isUserLoading, me, setMe }: IHeaderProps) {
+export default function Header({ isUserLoading, me }: IHeaderProps) {
   const toast = useToast();
   const queryClient = useQueryClient();
   const {
@@ -48,7 +47,6 @@ export default function Header({ isUserLoading, me, setMe }: IHeaderProps) {
     Cookies.remove("access");
     Cookies.remove("refresh");
     queryClient.refetchQueries(["me"]);
-    setMe(null);
     toast({
       title: "로그아웃",
       status: "success",

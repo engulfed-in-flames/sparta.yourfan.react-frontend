@@ -1,5 +1,3 @@
-import React from "react";
-import { useParams } from "react-router-dom";
 import {
   Flex,
   FormControl,
@@ -8,6 +6,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { MdSend } from "react-icons/md";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Cookies from "js-cookie";
