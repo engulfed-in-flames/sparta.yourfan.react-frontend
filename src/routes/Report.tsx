@@ -147,7 +147,7 @@ export default function Report() {
               type="text"
               placeholder="제목을 입력하세요"
               focusBorderColor={"primary"}
-            ></Input>
+            />
             <Text color={"youtubeRed"} py={1}>
               {errors.title && `* ${errors.title.message}`}
             </Text>
