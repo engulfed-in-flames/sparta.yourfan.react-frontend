@@ -49,7 +49,8 @@ export interface IPost {
 
 export interface IReport {
   pk: number;
-  user?: IUser;
+  user?: number;
+  image_title?: string;
   image_url?: string;
   cloudflare_image_id?: string;
   title: string;

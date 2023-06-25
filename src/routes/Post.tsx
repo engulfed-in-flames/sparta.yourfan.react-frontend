@@ -1,7 +1,7 @@
 import { Button, HStack, Heading, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useIsDigit } from "../hooks/pageHooks";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
@@ -18,6 +18,9 @@ export default function Post() {
     ["post", postPk],
     () => apiGetPost(String(postPk))
   );
+
+  // const updateMutation = useMutation(apiPutReport,{onSuccess:()=>{}, onError:()=> {}})
+  //   const deleteMutation = useMutation(apiDeleteReport,{onSuccess:()=>{}, onError:()=> {}})
 
   const onClickDeleteBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
