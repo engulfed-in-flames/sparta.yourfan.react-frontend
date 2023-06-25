@@ -176,8 +176,8 @@ export const apiPostReport = async ({
   return response.status;
 };
 
-export const apiGetReport = async (pk: number) => {
-  const response = await axiosInstance.get(`medias/report/${pk}/`, {
+export const apiGetReport = async (postPk: string) => {
+  const response = await axiosInstance.get(`medias/report/${postPk}/`, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
     },
@@ -212,7 +212,7 @@ export const apiPutReport = async ({
   return response.status;
 };
 
-export const apiDeleteReport = async (pk: number) => {
+export const apiDeleteReport = async (pk: string) => {
   const response = await axiosInstance.delete(`medias/report/${pk}/`, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",

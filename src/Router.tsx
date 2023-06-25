@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./components/Root";
 import Home from "./routes/Home";
 import NotFound from "./routes/NotFound";
-import Report from "./routes/Report";
 import Me from "./routes/Me";
 import Insight from "./routes/Insight";
 import Colloquium from "./routes/Colloquium";
@@ -12,6 +11,9 @@ import Post from "./routes/Post";
 import RedirectToConsortium from "./components/Redirect/RedirectToConsortium";
 import KakaoConfirm from "./routes/KakaoConfirm";
 import GithubConfirm from "./routes/GithubConfirm";
+import Report from "./routes/Report";
+import ReportWrite from "./routes/ReportWrite";
+import ReportPost from "./routes/ReportPost";
 
 const myRouter = createBrowserRouter(
   [
@@ -26,7 +28,11 @@ const myRouter = createBrowserRouter(
         },
         {
           path: "report",
-          element: <Report />,
+          children: [
+            { path: "", element: <Report /> },
+            { path: "write", element: <ReportWrite /> },
+            { path: ":reportPk", element: <ReportPost /> },
+          ],
         },
         {
           path: "me",

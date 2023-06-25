@@ -49,7 +49,7 @@ export default function PostList({ channel, postList }: IProps) {
                     {post.id}
                   </Text>
                   <Text whiteSpace={"nowrap"}>{post.title}</Text>
-                  <Text whiteSpace={"nowrap"}>{post.user.nickname}</Text>
+                  <Text whiteSpace={"nowrap"}>{post.user?.nickname}</Text>
                   <Text whiteSpace={"nowrap"}>
                     {dateTime
                       .toLocaleString("en-US", options)
