@@ -9,6 +9,7 @@ export interface IMe {
   email: string;
   nickname: string;
   posts: number[];
+  reports: number[];
   is_manager: boolean;
 }
 
@@ -39,10 +40,21 @@ export interface IBoard {
 
 export interface IPost {
   id: number;
-  user: IUser;
+  user?: IUser;
   title: string;
   content: string;
   bookmarked_by_count: number;
+  created_at: string;
+}
+
+export interface IReport {
+  pk: number;
+  user?: number;
+  image_title?: string;
+  image_url?: string;
+  cloudflare_image_id?: string;
+  title: string;
+  content: string;
   created_at: string;
 }
 

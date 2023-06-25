@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Post API
+// Forum API
 export const apiGetPostList = async (channel: string) => {
   try {
     const response = await axiosInstance.get(
@@ -63,7 +63,6 @@ export const apiGetPost = async (postPk: string) => {
   }
 };
 
-// Board API
 export const apiGetBoardList = async () => {
   try {
     const response = await axiosInstance.get("community/board/", {
@@ -76,6 +75,20 @@ export const apiGetBoardList = async () => {
   } catch (err) {
     console.error("Error:", err);
     return [];
+  }
+};
+
+export const apiGetChannelDetail = async (channel: string) => {
+  try {
+    const response = await axiosInstance.get(`youtube/detail/${channel}`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
   }
 };
 
@@ -176,7 +189,7 @@ export const apiPostReport = async ({
   return response.status;
 };
 
-export const apiGetReport = async (pk: number) => {
+export const apiGetReport = async (pk: string) => {
   const response = await axiosInstance.get(`medias/report/${pk}/`, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
@@ -212,7 +225,7 @@ export const apiPutReport = async ({
   return response.status;
 };
 
-export const apiDeleteReport = async (pk: number) => {
+export const apiDeleteReport = async (pk: string) => {
   const response = await axiosInstance.delete(`medias/report/${pk}/`, {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
