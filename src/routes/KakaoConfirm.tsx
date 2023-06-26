@@ -4,8 +4,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiKakaoLogin } from "../api";
 import { AxiosError } from "axios";
+import { useNotUserOnly } from "../hooks/userHooks";
 
 export default function KakaoConfirm() {
+  useNotUserOnly();
   const toast = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function KakaoConfirm() {
       const { status } = err?.response!;
       if (status === 403) {
         toast({
-          title: "탈퇴된 회원입니다",
+          title: "탈퇴한 회원입니다",
           status: "warning",
           position: "bottom-right",
           duration: 3000,
@@ -53,7 +55,7 @@ export default function KakaoConfirm() {
   }, []);
 
   return (
-    <VStack mt={120}>
+    <VStack minH={"768px"} py={36}>
       <Heading mb={8}>카카오 계정으로 로그인 하는 중...</Heading>
       <Spinner size="lg" />
     </VStack>

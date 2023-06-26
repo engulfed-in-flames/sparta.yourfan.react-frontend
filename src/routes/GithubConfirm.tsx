@@ -4,8 +4,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiGithubLogin } from "../api";
 import { AxiosError } from "axios";
+import { useNotUserOnly } from "../hooks/userHooks";
 
 export default function GithubConfirm() {
+  useNotUserOnly();
   const toast = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function GithubConfirm() {
       const { status } = err?.response!;
       if (status === 403) {
         toast({
-          title: "탈퇴된 회원입니다",
+          title: "탈퇴한 회원입니다",
           status: "warning",
           position: "bottom-right",
           duration: 3000,
@@ -53,8 +55,8 @@ export default function GithubConfirm() {
   }, []);
 
   return (
-    <VStack mt={120}>
-      <Heading mb={8}>깃허브 계정으로 로그인 하는 중...</Heading>
+    <VStack minH={"768px"} py={36}>
+      <Heading>깃허브 계정으로 로그인 하는 중...</Heading>
       <Spinner size="lg" />
     </VStack>
   );

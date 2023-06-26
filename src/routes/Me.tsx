@@ -17,9 +17,10 @@ import {
 import { Link } from "react-router-dom";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
-import { useMe } from "../hooks/userHooks";
+import { useMe, useUserOnly } from "../hooks/userHooks";
 
 export default function Me() {
+  useUserOnly();
   const {
     isOpen: isWithdrawlOpen,
     onOpen: onWithdrawlOpen,
