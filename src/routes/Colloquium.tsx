@@ -14,9 +14,10 @@ import Cookies from "js-cookie";
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
 import { IMessage } from "../type";
-import { useMe } from "../hooks/userHooks";
+import { useMe, useUserOnly } from "../hooks/userHooks";
 
 export default function Colloquium() {
+  useUserOnly();
   const { channel } = useParams();
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const { user } = useMe();

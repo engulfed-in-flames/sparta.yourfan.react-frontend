@@ -14,10 +14,18 @@ export const useMe = () => {
   };
 };
 
+export const useNotUserOnly = () => {
+  const { isUserLoading, user } = useMe();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isUserLoading && user) navigate("/");
+  }, [isUserLoading, user, navigate]);
+};
+
 export const useUserOnly = () => {
   const { isUserLoading, user } = useMe();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isUserLoading || !user) navigate("/");
+    if (!isUserLoading && !user) navigate("/");
   }, [isUserLoading, user, navigate]);
 };

@@ -4,8 +4,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiKakaoLogin } from "../api";
 import { AxiosError } from "axios";
+import { useNotUserOnly } from "../hooks/userHooks";
 
 export default function KakaoConfirm() {
+  useNotUserOnly();
   const toast = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function KakaoConfirm() {
   }, []);
 
   return (
-    <VStack mt={120}>
+    <VStack minH={"768px"} py={36}>
       <Heading mb={8}>카카오 계정으로 로그인 하는 중...</Heading>
       <Spinner size="lg" />
     </VStack>
