@@ -19,6 +19,7 @@ import { useMe, useUserOnly } from "../hooks/userHooks";
 export default function Colloquium() {
   useUserOnly();
   const { channel } = useParams();
+  const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const { user } = useMe();
   const accessToken = Cookies.get("access");
@@ -44,13 +45,17 @@ export default function Colloquium() {
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
       if (dataFromServer) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            message: dataFromServer.message,
-            user_nickname: dataFromServer.user,
-          },
-        ]);
+        if (dataFromServer.type === "user_count") {
+          setUserCount(dataFromServer.count);
+        } else {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              message: dataFromServer.message,
+              user_nickname: dataFromServer.user,
+            },
+          ]);
+        }
       }
     };
     return () => {
@@ -69,6 +74,7 @@ export default function Colloquium() {
           user_nickname: user?.nickname,
         })
       );
+      input.value = "";
     }
   };
   //
@@ -91,7 +97,7 @@ export default function Colloquium() {
             fontSize={"xl"}
             fontWeight={"semibold"}
           >
-            현재 참여 인원 ()
+            현재 참여 인원 ({userCount})
           </Text>
           <VStack
             flex={1}
