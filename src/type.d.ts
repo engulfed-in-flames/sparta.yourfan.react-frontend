@@ -11,6 +11,7 @@ export interface IMe {
   posts: number[];
   reports: number[];
   is_manager: boolean;
+  user_type: string;
 }
 
 export interface IUser {
@@ -84,7 +85,7 @@ interface ISingupFormValues {
   email: string;
   password1: string;
   password2: string;
-  nickname: string;
+  nickname?: string;
 }
 
 interface IUploadImageValues {

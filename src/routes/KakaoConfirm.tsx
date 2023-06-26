@@ -27,7 +27,7 @@ export default function KakaoConfirm() {
       const { status } = err?.response!;
       if (status === 403) {
         toast({
-          title: "탈퇴된 회원입니다",
+          title: "탈퇴한 회원입니다",
           status: "warning",
           position: "bottom-right",
           duration: 3000,
