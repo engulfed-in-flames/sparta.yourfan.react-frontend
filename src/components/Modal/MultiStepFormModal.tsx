@@ -42,6 +42,25 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     setChannel("");
     setChannelHandle("");
   };
+  const searchMutation = useMutation(apiGetSimilarChannels, {
+    onSuccess: (data: IChannel[]) => {
+      const filteredChannels = data.filter(
+        (channel) => channel.subscriber >= 10000
+      );
+      setIsLoading(false);
+      setChannels(filteredChannels);
+    },
+    onError: () => {
+      toast({
+        title: "Failed",
+        description: "채널 검색에 실패했습니다.",
+        status: "error",
+        position: "top",
+        duration: 3000,
+      });
+      setIsLoading(false);
+    },
+  });
   const onClickPrev = () => {
     setStep(1);
     setProgress(50);
@@ -58,20 +77,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     }
     if (step === 1) {
       setIsLoading(true);
-      try {
-        const channels = await apiGetSimilarChannels(channelHandle);
-        setChannels(channels);
-      } catch (err) {
-        toast({
-          title: "Failed",
-          description: "채널 검색에 실패했습니다.",
-          status: "error",
-          position: "top",
-          duration: 3000,
-        });
-      } finally {
-        setIsLoading(false);
-      }
+      searchMutation.mutate(channelHandle);
     }
     setStep(2);
     setProgress(100);
@@ -81,8 +87,11 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     onSuccess: () => {
       toast({
         title: "포럼 생성에 성공했습니다.",
+        description:
+          "실제 포럼이 생성되기까지 최대 5분의 시간이 소요됩니다. 잠시만 기다려주세요.",
         status: "success",
         position: "top",
+        duration: 5000,
       });
     },
     onError: () => {

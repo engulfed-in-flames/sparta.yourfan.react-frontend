@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {
   ILoginFormValues,
+  IPostListValues,
   IPostValues,
   IReportValues,
   ISingupFormValues,
@@ -28,7 +29,7 @@ export const apiGetInsight = async (channel: string) => {
   }
 };
 
-export const apiGetPostList = async (channel: string) => {
+export const apiGetPostList = async ({ channel, page }: IPostListValues) => {
   try {
     const response = await axiosInstance.get(
       `community/board/${channel}/posts/`,
@@ -42,6 +43,19 @@ export const apiGetPostList = async (channel: string) => {
   } catch (err) {
     console.error("Error:", err);
     return [];
+  }
+};
+
+export const apiGetPost = async (postPk: string) => {
+  try {
+    const response = await axiosInstance.get(`community/post/${postPk}/`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
   }
 };
 
@@ -63,17 +77,27 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   return response.status;
 };
 
-export const apiGetPost = async (postPk: string) => {
-  try {
-    const response = await axiosInstance.get(`community/post/${postPk}/`, {
+export const apiPutPost = async (postPk: string) => {
+  const response = await axiosInstance.put(
+    `community/post/${postPk}/`,
+    {},
+    {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
       },
-    });
-    return response.data;
-  } catch (err) {
-    console.error("Error:", err);
-  }
+    }
+  );
+  return response.status;
+};
+export const apiDeletePost = async (postPk: string) => {
+  const response = await axiosInstance.delete(`community/post/${postPk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
 };
 
 export const apiGetBoardList = async () => {
