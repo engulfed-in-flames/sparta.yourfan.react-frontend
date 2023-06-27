@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {
   ILoginFormValues,
+  IPostListValues,
   IPostValues,
   IReportValues,
   ISingupFormValues,
@@ -28,7 +29,7 @@ export const apiGetInsight = async (channel: string) => {
   }
 };
 
-export const apiGetPostList = async (channel: string) => {
+export const apiGetPostList = async ({ channel, page }: IPostListValues) => {
   try {
     const response = await axiosInstance.get(
       `community/board/${channel}/posts/`,

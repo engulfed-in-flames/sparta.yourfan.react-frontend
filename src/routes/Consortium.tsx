@@ -8,7 +8,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import ForumTabs from "../components/Forum/ForumTabs";
 import { apiGetPostList } from "../api";
@@ -20,21 +25,23 @@ import PageNav from "../components/Forum/PageNav";
 interface IPostList {
   page: number;
   count: number;
-  next: string;
-  preivous: string;
+  next?: string;
+  previous?: string;
   results: IPost[];
 }
 
 export default function Consortium() {
   const { channel } = useParams();
-  const { isLoading: isPostListLoading, data: postList } = useQuery<IPostList>(
-    ["postList", channel],
-    () => apiGetPostList(channel!)
-  );
-  console.log(postList);
-  const [page, setPage] = React.useState(1);
-  const toast = useToast();
+  const [searchParams] = useSearchParams();
+  const pageParam = Number(searchParams.get("page"));
+  const [page, setPage] = React.useState(pageParam);
   const navigate = useNavigate();
+
+  const { isLoading: isPostListLoading, data: postList } = useQuery<IPostList>(
+    ["postList", channel, page],
+    () => apiGetPostList({ channel: channel!, page: page! })
+  );
+  const toast = useToast();
 
   const onClickNotImplementedBtn = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -49,10 +56,12 @@ export default function Consortium() {
   };
 
   React.useEffect(() => {
-    if (!channel && postList) {
-      navigate("/");
+    if (!isNaN(pageParam)) {
+      setPage(pageParam);
+    } else {
+      navigate(`${channel}/consortium?page=1`);
     }
-  }, [channel, postList, navigate]);
+  }, []);
 
   return (
     <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"}>
@@ -69,23 +78,33 @@ export default function Consortium() {
             </Heading>
           </Box>
         )}
-
-        <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
-          <HStack>
-            <Button onClick={onClickNotImplementedBtn} variant={"outline"}>
-              전체글
-            </Button>
-            <Button onClick={onClickNotImplementedBtn} variant={"outline"}>
-              추천글
-            </Button>
-          </HStack>
-          <PageNav page={page} setPage={setPage} />
-          <HStack justifyContent={"flex-end"}>
-            <Link to={`/${channel}/write`}>
-              <Button>글쓰기</Button>
-            </Link>
-          </HStack>
-        </Grid>
+        {postList && (
+          <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
+            <HStack>
+              <Button onClick={onClickNotImplementedBtn} variant={"outline"}>
+                컨소시움 관리자 신청
+              </Button>
+            </HStack>
+            <PageNav
+              channel={channel!}
+              count={postList.count}
+              page={page}
+              setPage={setPage}
+            />
+            <HStack justifyContent={"flex-end"}>
+              <Link to={`/${channel}/write`}>
+                <Button
+                  color={"whiteGray"}
+                  bgColor={"primary"}
+                  _hover={{ bgColor: "seconadry" }}
+                  _focus={{ bgColor: "tertiary" }}
+                >
+                  글쓰기
+                </Button>
+              </Link>
+            </HStack>
+          </Grid>
+        )}
       </Box>
     </VStack>
   );

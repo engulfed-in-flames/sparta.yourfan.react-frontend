@@ -85,7 +85,12 @@ export interface IReport {
 }
 
 // Values
-interface IReportValues {
+export interface IPostListValues {
+  channel: string;
+  page: number;
+}
+
+export interface IReportValues {
   pk?: number;
   image_title?: string;
   image_url?: string;
@@ -105,24 +110,24 @@ export interface ILoginFormValues {
   password: string;
 }
 
-interface ISingupFormValues {
+export interface ISingupFormValues {
   email: string;
   password1: string;
   password2: string;
   nickname?: string;
 }
 
-interface IUploadImageValues {
+export interface IUploadImageValues {
   file: File;
   uploadURL: string;
 }
 
-interface IUpdateMeFormFiedls {
+export interface IUpdateMeFormFiedls {
   nickname?: string;
   avatar?: FileList;
 }
 
-interface IUpdateMeFormValues {
+export interface IUpdateMeFormValues {
   nickname?: string;
   avatar?: string;
 }

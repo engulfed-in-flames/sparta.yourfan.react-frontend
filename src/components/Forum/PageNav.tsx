@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   ButtonGroup,
@@ -6,6 +5,8 @@ import {
   IconButton,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   HiChevronDoubleLeft,
   HiChevronDoubleRight,
@@ -14,20 +15,25 @@ import {
 } from "react-icons/hi";
 
 interface IProps {
+  channel: string;
   page: number;
+  count: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
-export default function PageNav({ page, setPage }: IProps) {
+export default function PageNav({ channel, page, count, setPage }: IProps) {
+  // const navigate = useNavigate();
   const toast = useToast();
   const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    setPage(Number(event.currentTarget["id"]));
     toast({
       title: "현재 구현 중입니다 😭",
       status: "info",
-      position: "top",
       duration: 3000,
+      position: "top",
     });
+    // const targetPage = Number(event.currentTarget["id"]);
+    // setPage(targetPage);
+    // navigate(`/${channel}/consortium?page=${targetPage}`);
   };
   return (
     <>
@@ -45,7 +51,7 @@ export default function PageNav({ page, setPage }: IProps) {
           />
         </ButtonGroup>
         <ButtonGroup>
-          {Array.from({ length: 5 }, (v, i) => i + 1).map((v, i) => (
+          {Array.from({ length: count }, (v, i) => i + 1).map((v, i) => (
             <Button
               isActive={v === page ? true : false}
               onClick={handlePageBtn}

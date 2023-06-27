@@ -50,7 +50,7 @@ export default function Home() {
     event.preventDefault();
     const { id } = event.currentTarget;
     if (id) {
-      navigate(`${id}/consortium/`);
+      navigate(`${id}/consortium?page=1`);
     }
   };
 
