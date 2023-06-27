@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { apiGetUploadURL, apiUpdateMe, apiUploadImage } from "../../api";
 import { IUpdateMeFormFiedls } from "../../type";
+import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ interface IProps {
 }
 
 export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
+  const [isUpdating, setIsUpdating] = useState(false);
   const { register, handleSubmit, reset } = useForm<IUpdateMeFormFiedls>();
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -38,6 +40,7 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
       queryClient.refetchQueries(["me"]);
       reset();
       onClose();
+      setIsUpdating(false);
     },
     onError: () => {
       toast({
@@ -45,6 +48,7 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
         status: "error",
         position: "top",
       });
+      setIsUpdating(false);
     },
   });
 
@@ -52,6 +56,7 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
     nickname,
     avatar,
   }) => {
+    setIsUpdating(true);
     const obj = {
       nickname: nickname ? nickname.trim() : "",
       avatar: undefined,
@@ -98,10 +103,11 @@ export default function UpdateMeModal({ isOpen, onClose, nickname }: IProps) {
                   닫기
                 </Button>
                 <Button
+                  isLoading={isUpdating}
                   type={"submit"}
                   bgColor={"primary"}
                   color={"white"}
-                  _hover={{ bgColor: "blackAlpha.700", color: "gray.200" }}
+                  _hover={{ bgColor: "blackAlpha.700", color: "gray.100" }}
                 >
                   수정
                 </Button>

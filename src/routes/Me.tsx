@@ -89,16 +89,6 @@ export default function Me() {
                 >
                   내가 쓴 글 ({user.posts.length})
                 </Button>
-                <Button
-                  onClick={onClickNotImplementedBtn}
-                  variant={"link"}
-                  color={"gray.600"}
-                  fontSize={"xl"}
-                  fontWeight={"thin"}
-                  pb={4}
-                >
-                  내가 쓴 댓글 (0)
-                </Button>
               </VStack>
             </VStack>
           </GridItem>

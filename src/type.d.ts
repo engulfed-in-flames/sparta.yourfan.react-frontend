@@ -33,17 +33,17 @@ export interface IChannel {
 
 export interface IInsight {
   id: number;
-  activity_rate: number;
+  activity_rate: string;
   avg_comments: number;
   avg_likes: number;
   avg_views: number;
   channel: number;
-  comment_per_view: number;
-  latest25_comments: number;
-  latest25_likes: number;
-  latest25_views: number;
-  like_per_view: number;
-  participation_rate: number;
+  comment_per_view: string;
+  latest30_comments: number;
+  latest30_likes: number;
+  latest30_views: number;
+  like_per_view: string;
+  participation_rate: string;
   rank: string;
   subscriber: number;
   total_view: number;
