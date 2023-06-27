@@ -28,6 +28,28 @@ export interface IChannel {
   thumbnail: string;
 }
 
+export interface IInsight {
+  id: number;
+  activity_rate: number;
+  avg_comments: number;
+  avg_likes: number;
+  avg_views: number;
+  channel: number;
+  comment_per_view: number;
+  latest25_comments: number;
+  latest25_likes: number;
+  latest25_views: number;
+  like_per_view: number;
+  participation_rate: number;
+  rank: string;
+  subscriber: number;
+  total_view: number;
+  video_count: number;
+  created_at: string;
+  updated_at: string;
+  [key: string]: any;
+}
+
 export interface IBoard {
   pk: number;
   title: string;
@@ -70,7 +92,6 @@ interface IReportValues {
 }
 
 export interface IPostValues {
-  // board === channel
   board: string;
   title: string;
   content: string;
