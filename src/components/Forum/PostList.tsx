@@ -1,11 +1,19 @@
 import React from "react";
 import { IPost } from "../../type";
-import { Divider, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import {
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  Table,
+  Text,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 interface IProps {
   channel?: string;
   postList: IPost[];
+  page: number;
 }
 
 const options: Intl.DateTimeFormatOptions = {
@@ -18,7 +26,7 @@ const options: Intl.DateTimeFormatOptions = {
   hour12: false,
 };
 
-export default function PostList({ channel, postList }: IProps) {
+export default function PostList({ page, channel, postList }: IProps) {
   return (
     <>
       {channel ? (
@@ -33,6 +41,30 @@ export default function PostList({ channel, postList }: IProps) {
         gridTemplateRows={"repeat(15, 1fr)"}
         p={8}
       >
+        <GridItem>
+          <Grid
+            gridAutoFlow={"column"}
+            templateColumns={"0.5fr 3fr 1fr 1fr"}
+            gap={4}
+            fontSize={"xl"}
+            fontWeight={"bold"}
+            py={2}
+          >
+            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+              번호
+            </Text>
+            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+              제목
+            </Text>
+            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+              작성자
+            </Text>
+            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+              게시 날짜
+            </Text>
+          </Grid>
+          <Divider />
+        </GridItem>
         {postList.map((post, i) => {
           const dateTime = new Date(post.created_at);
           return (
@@ -48,9 +80,13 @@ export default function PostList({ channel, postList }: IProps) {
                   <Text textAlign={"center"} whiteSpace={"nowrap"}>
                     {post.id}
                   </Text>
-                  <Text whiteSpace={"nowrap"}>{post.title}</Text>
-                  <Text whiteSpace={"nowrap"}>{post.user?.nickname}</Text>
-                  <Text whiteSpace={"nowrap"}>
+                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                    {post.title}
+                  </Text>
+                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
+                    {post.user?.nickname}
+                  </Text>
+                  <Text textAlign={"center"} whiteSpace={"nowrap"}>
                     {dateTime
                       .toLocaleString("en-US", options)
                       .replace(",", " ")}

@@ -17,12 +17,21 @@ import PostList from "../components/Forum/PostList";
 import PostListSkeleton from "../components/Skeleton/PostListSkeleton";
 import PageNav from "../components/Forum/PageNav";
 
+interface IPostList {
+  page: number;
+  count: number;
+  next: string;
+  preivous: string;
+  results: IPost[];
+}
+
 export default function Consortium() {
   const { channel } = useParams();
-  const { isLoading: isPostListLoading, data: postList } = useQuery<IPost[]>(
+  const { isLoading: isPostListLoading, data: postList } = useQuery<IPostList>(
     ["postList", channel],
     () => apiGetPostList(channel!)
   );
+  console.log(postList);
   const [page, setPage] = React.useState(1);
   const toast = useToast();
   const navigate = useNavigate();
@@ -51,8 +60,8 @@ export default function Consortium() {
       <Box w={"full"}>
         {isPostListLoading ? (
           <PostListSkeleton />
-        ) : postList && postList.length > 0 ? (
-          <PostList postList={postList} />
+        ) : postList && postList.results.length > 0 ? (
+          <PostList page={postList.page} postList={postList.results} />
         ) : (
           <Box minH={"450px"} p={8}>
             <Heading textAlign={"center"}>
