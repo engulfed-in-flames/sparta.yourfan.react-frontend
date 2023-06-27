@@ -46,7 +46,7 @@ export default function Colloquium() {
       const dataFromServer = JSON.parse(message.data.toString());
       if (dataFromServer) {
         if (dataFromServer.type === "user_count") {
-          setUserCount(dataFromServer.count);
+          setUserCount(dataFromServer.count + 2);
         } else {
           setMessages((prevMessages) => [
             ...prevMessages,

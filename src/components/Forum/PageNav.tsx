@@ -1,5 +1,11 @@
 import React from "react";
-import { Button, ButtonGroup, HStack, IconButton } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  HStack,
+  IconButton,
+  useToast,
+} from "@chakra-ui/react";
 import {
   HiChevronDoubleLeft,
   HiChevronDoubleRight,
@@ -12,9 +18,16 @@ interface IProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 export default function PageNav({ page, setPage }: IProps) {
+  const toast = useToast();
   const handlePageBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setPage(Number(event.currentTarget["id"]));
+    toast({
+      title: "현재 구현 중입니다 😭",
+      status: "info",
+      position: "top",
+      duration: 3000,
+    });
   };
   return (
     <>

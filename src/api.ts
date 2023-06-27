@@ -15,6 +15,19 @@ const axiosInstance = axios.create({
 });
 
 // Forum API
+export const apiGetInsight = async (channel: string) => {
+  try {
+    const response = await axiosInstance.get(`youtube/detail/${channel}/`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
 export const apiGetPostList = async (channel: string) => {
   try {
     const response = await axiosInstance.get(
@@ -75,20 +88,6 @@ export const apiGetBoardList = async () => {
   } catch (err) {
     console.error("Error:", err);
     return [];
-  }
-};
-
-export const apiGetChannelDetail = async (channel: string) => {
-  try {
-    const response = await axiosInstance.get(`youtube/detail/${channel}`, {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-      },
-      withCredentials: true,
-    });
-    return response.data;
-  } catch (err) {
-    console.error("Error:", err);
   }
 };
 
