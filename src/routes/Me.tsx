@@ -13,14 +13,16 @@ import {
   Text,
   VStack,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import React from "react";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
 import { useMe, useUserOnly } from "../hooks/userHooks";
 
 export default function Me() {
   useUserOnly();
+  const { isUserLoading, user } = useMe();
   const {
     isOpen: isWithdrawlOpen,
     onOpen: onWithdrawlOpen,
@@ -31,7 +33,18 @@ export default function Me() {
     onOpen: onUpdateMeOpen,
     onClose: onUpdateMeClose,
   } = useDisclosure();
-  const { isUserLoading, user } = useMe();
+  const toast = useToast();
+  const onClickNotImplementedBtn = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    toast({
+      title: "현재 구현 중입니다 😭",
+      status: "info",
+      duration: 3000,
+      position: "top",
+    });
+  };
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
       {!isUserLoading && user ? (
@@ -66,28 +79,26 @@ export default function Me() {
                 <Text fontSize={"xl"} color={"gray.600"} pb={4}>
                   {user.nickname}
                 </Text>
-                <Link to="#">
-                  <Button
-                    variant={"link"}
-                    color={"gray.600"}
-                    fontSize={"xl"}
-                    fontWeight={"thin"}
-                    pb={4}
-                  >
-                    내가 쓴 글 ({user.posts.length})
-                  </Button>
-                </Link>
-                <Link to="#">
-                  <Button
-                    variant={"link"}
-                    color={"gray.600"}
-                    fontSize={"xl"}
-                    fontWeight={"thin"}
-                    pb={4}
-                  >
-                    내가 쓴 댓글 (0)
-                  </Button>
-                </Link>
+                <Button
+                  onClick={onClickNotImplementedBtn}
+                  variant={"link"}
+                  color={"gray.600"}
+                  fontSize={"xl"}
+                  fontWeight={"thin"}
+                  pb={4}
+                >
+                  내가 쓴 글 ({user.posts.length})
+                </Button>
+                <Button
+                  onClick={onClickNotImplementedBtn}
+                  variant={"link"}
+                  color={"gray.600"}
+                  fontSize={"xl"}
+                  fontWeight={"thin"}
+                  pb={4}
+                >
+                  내가 쓴 댓글 (0)
+                </Button>
               </VStack>
             </VStack>
           </GridItem>
@@ -113,20 +124,26 @@ export default function Me() {
 
               <Divider />
               <VStack
-                alignItems={"center"}
                 w={"full"}
                 h={"280px"}
-                bgColor={"secondary"}
+                justifyContent={"center"}
+                bgColor={"gray.300"}
                 mb={8}
-              ></VStack>
+                borderRadius={"lg"}
+              >
+                <Heading>현재 구현 중입니다 😭</Heading>
+              </VStack>
               <Divider />
               <VStack
                 w={"full"}
                 flex={1}
-                alignItems={"center"}
-                bgColor={"tertiary"}
+                justifyContent={"center"}
+                bgColor={"gray.300"}
                 mb={8}
-              ></VStack>
+                borderRadius={"lg"}
+              >
+                <Heading>현재 구현 중입니다 😭</Heading>
+              </VStack>
             </Flex>
           </GridItem>
         </Grid>

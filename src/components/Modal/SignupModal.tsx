@@ -15,7 +15,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
@@ -34,8 +34,13 @@ interface IProps {
 export default function SignupModal({ isOpen, onClose }: IProps) {
   const { register, handleSubmit, reset } = useForm<ISingupFormValues>();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
   const toast = useToast();
+
   const mutation = useMutation(apiPostSignup, {
+    onMutate: () => {
+      setIsRegistering(true);
+    },
     onSuccess: () => {
       toast({
         title: "회원가입에 성공했습니다.",
@@ -45,6 +50,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
         duration: 5000,
       });
       reset();
+      setIsRegistering(false);
       onClose();
     },
     onError: (err: AxiosError) => {
@@ -197,7 +203,14 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
                 * {errorMessage}
               </Text>
             ) : null}
-            <Button type={"submit"} w={"full"} fontSize={18} py={6} my={8}>
+            <Button
+              isLoading={isRegistering}
+              type={"submit"}
+              w={"full"}
+              fontSize={18}
+              py={6}
+              my={8}
+            >
               등록
             </Button>
           </Box>

@@ -10,8 +10,11 @@ export interface IMe {
   nickname: string;
   posts: number[];
   reports: number[];
-  is_manager: boolean;
   user_type: string;
+  is_active: boolean;
+  is_writer: boolean;
+  is_manager: boolean;
+  is_admin: boolean;
 }
 
 export interface IUser {
@@ -24,7 +27,7 @@ export interface IUser {
 export interface IChannel {
   channel_name: string;
   channel_id: string;
-  subscriber: string;
+  subscriber: number;
   thumbnail: string;
 }
 

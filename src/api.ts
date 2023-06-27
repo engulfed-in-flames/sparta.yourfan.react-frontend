@@ -45,6 +45,19 @@ export const apiGetPostList = async (channel: string) => {
   }
 };
 
+export const apiGetPost = async (postPk: string) => {
+  try {
+    const response = await axiosInstance.get(`community/post/${postPk}/`, {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
 export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   const response = await axiosInstance.post(
     `community/post/`,
@@ -63,17 +76,27 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   return response.status;
 };
 
-export const apiGetPost = async (postPk: string) => {
-  try {
-    const response = await axiosInstance.get(`community/post/${postPk}/`, {
+export const apiPutPost = async (postPk: string) => {
+  const response = await axiosInstance.put(
+    `community/post/${postPk}/`,
+    {},
+    {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
       },
-    });
-    return response.data;
-  } catch (err) {
-    console.error("Error:", err);
-  }
+    }
+  );
+  return response.status;
+};
+export const apiDeletePost = async (postPk: string) => {
+  const response = await axiosInstance.delete(`community/post/${postPk}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
 };
 
 export const apiGetBoardList = async () => {

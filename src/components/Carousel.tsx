@@ -25,23 +25,26 @@ const settings = {
 
 const cards = [
   {
-    title: "Title Placeholder 1",
-    text: "Text Placeholder 1",
+    title: "유튜브 채널을 분석하여 수치화 및 시각화된 데이터를 제공합니다",
+    text: "아래의 포럼 생성하기 버튼을 클릭하고 유튜브 채널을 검색하여 신청하면, 해당 채널을 분석하고 포럼을 생성합니다.",
+    helper: "(본 이미지는 임시 이미지입니다)",
     image:
-      "https://images.unsplash.com/photo-1532102235608-dc8fc689c9ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
   },
 
   {
-    title: "Title Placeholder 2",
-    text: "Text Placeholder 2",
+    title: "커뮤니티 기능을 제공합니다",
+    text: "제공되는 데이터 소스를 활용하여 유튜브 채널에 대한 논의를 자유롭게 발전시키세요!",
+    helper: "(본 이미지는 임시 이미지입니다)",
     image:
-      "https://images.unsplash.com/photo-1533709752211-118fcaf03312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      "https://images.unsplash.com/photo-1570747408017-38b4c5959378?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
   },
   {
-    title: "Title Placeholder 3",
-    text: "Text Placeholder 3",
+    title: "실시간으로 채팅 할 수도 있습니다!",
+    text: "실시간 채팅을 통하여 팬 여러분들이 한데 모여 소속감을 느끼세요!",
+    helper: "(본 이미지는 임시 이미지입니다)",
     image:
-      "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
+      "https://images.unsplash.com/photo-1515511856280-7b23f68d2996?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1174&q=80",
   },
 ];
 
@@ -120,11 +123,14 @@ export default function Carousel() {
                 top="50%"
                 transform="translate(0, -50%)"
               >
-                <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
+                <Heading fontSize={{ base: "2xl", md: "3xl", lg: "4xl" }}>
                   {card.title}
                 </Heading>
                 <Text fontSize={{ base: "md", lg: "lg" }} color="GrayText">
                   {card.text}
+                </Text>
+                <Text fontSize={{ base: "md", lg: "lg" }} color="youtubeRed">
+                  {card.helper}
                 </Text>
               </Stack>
             </Container>
