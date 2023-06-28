@@ -111,7 +111,7 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
       >
         <Input
           type={"search"}
-          placeholder={"Search..."}
+          placeholder={"현재 구현 중입니다 😭"}
           focusBorderColor={"youtubeRed"}
           w={"70%"}
           minW={"280px"}

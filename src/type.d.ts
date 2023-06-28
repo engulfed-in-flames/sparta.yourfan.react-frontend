@@ -10,7 +10,11 @@ export interface IMe {
   nickname: string;
   posts: number[];
   reports: number[];
+  user_type: string;
+  is_active: boolean;
+  is_writer: boolean;
   is_manager: boolean;
+  is_admin: boolean;
 }
 
 export interface IUser {
@@ -23,8 +27,30 @@ export interface IUser {
 export interface IChannel {
   channel_name: string;
   channel_id: string;
-  subscriber: string;
+  subscriber: number;
   thumbnail: string;
+}
+
+export interface IInsight {
+  id: number;
+  activity_rate: string;
+  avg_comments: number;
+  avg_likes: number;
+  avg_views: number;
+  channel: number;
+  comment_per_view: string;
+  latest30_comments: number;
+  latest30_likes: number;
+  latest30_views: number;
+  like_per_view: string;
+  participation_rate: string;
+  rank: string;
+  subscriber: number;
+  total_view: number;
+  video_count: number;
+  created_at: string;
+  updated_at: string;
+  [key: string]: any;
 }
 
 export interface IBoard {
@@ -59,7 +85,12 @@ export interface IReport {
 }
 
 // Values
-interface IReportValues {
+export interface IPostListValues {
+  channel: string;
+  page: number;
+}
+
+export interface IReportValues {
   pk?: number;
   image_title?: string;
   image_url?: string;
@@ -69,7 +100,6 @@ interface IReportValues {
 }
 
 export interface IPostValues {
-  // board === channel
   board: string;
   title: string;
   content: string;
@@ -80,24 +110,24 @@ export interface ILoginFormValues {
   password: string;
 }
 
-interface ISingupFormValues {
+export interface ISingupFormValues {
   email: string;
   password1: string;
   password2: string;
-  nickname: string;
+  nickname?: string;
 }
 
-interface IUploadImageValues {
+export interface IUploadImageValues {
   file: File;
   uploadURL: string;
 }
 
-interface IUpdateMeFormFiedls {
+export interface IUpdateMeFormFiedls {
   nickname?: string;
   avatar?: FileList;
 }
 
-interface IUpdateMeFormValues {
+export interface IUpdateMeFormValues {
   nickname?: string;
   avatar?: string;
 }

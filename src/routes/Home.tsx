@@ -50,7 +50,7 @@ export default function Home() {
     event.preventDefault();
     const { id } = event.currentTarget;
     if (id) {
-      navigate(`${id}/consortium/`);
+      navigate(`${id}/consortium?page=1`);
     }
   };
 
@@ -70,6 +70,9 @@ export default function Home() {
 
   return (
     <VStack w={"90%"} my={24} mx={"auto"}>
+      <Heading w={"full"} display={"flex"} textAlign={"left"} pb={4}>
+        <Text color={"youtubeRed"}>You</Text>RFan이란?
+      </Heading>
       <Box w={"full"} pb={8}>
         <Box
           overflow={"hidden"}
@@ -85,7 +88,10 @@ export default function Home() {
         <YoutubeSearchBtn onClick={handleClickSearchBtn} />
       </VStack>
 
-      <VStack w={"full"} pb={8}>
+      <VStack w={"full"} alignItems={"center"} pb={8}>
+        <Heading w={"full"} textAlign={"left"} pb={4}>
+          포럼 목록
+        </Heading>
         <Accordion allowToggle w={"full"}>
           {channelRank.map((v, i) => (
             <AccordionItem key={i} py={2}>
@@ -103,7 +109,7 @@ export default function Home() {
                       color={v.color}
                       mr={4}
                     />
-                    <Text fontSize={"lg"}>{v.rankKR} 채널 목록</Text>
+                    <Text fontSize={"lg"}>{v.rankKR} 채널 포럼 목록</Text>
                   </Flex>
                   <AccordionIcon />
                 </AccordionButton>
