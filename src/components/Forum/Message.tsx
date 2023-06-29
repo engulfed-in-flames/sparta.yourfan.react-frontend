@@ -9,11 +9,14 @@ interface IProps {
 
 export default function Message({ message }: IProps) {
   return (
-    <HStack>
-      <Text fontSize={"xl"}>{message.user_nickname}:</Text>
-      <Text color={"primary"} fontSize={"xl"}>
-        {message.message}
-      </Text>
+    <HStack
+      w={"full"}
+      alignItems={"flex-start"}
+      fontSize={"xl"}
+      color={"primary"}
+    >
+      <Text>{message.user_nickname}:</Text>
+      <Text wordBreak={"break-all"}>{message.message}</Text>
     </HStack>
   );
 }
