@@ -80,13 +80,13 @@ export default function Colloquium() {
   //
 
   return (
-    <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"} p={8}>
+    <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
       {channel ? <ForumTabs channel={channel} /> : null}
-      <VStack userSelect={"none"} w={"full"} flex={1} p={8}>
+      <VStack w={"full"} p={8}>
         <Flex
           position={"relative"}
           w={"full"}
-          flex={1}
+          h={"600px"}
           shadow={"inner"}
           borderRadius={"lg"}
         >
@@ -106,6 +106,8 @@ export default function Colloquium() {
             px={4}
             pt={16}
             pb={4}
+            overflowX={"hidden"}
+            overflowY={"scroll"}
           >
             {messages.map((message, index) => (
               <Message key={index} message={message} />
@@ -117,6 +119,7 @@ export default function Colloquium() {
           onSubmit={onSubmitMessage}
           isRequired
           w={"full"}
+          h={16}
           display={"flex"}
           alignItems={"center"}
         >
