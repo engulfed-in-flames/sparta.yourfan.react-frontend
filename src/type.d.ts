@@ -111,10 +111,12 @@ export interface ILoginFormValues {
 }
 
 export interface ISingupFormValues {
-  email: string;
+  email_id: string;
   password1: string;
   password2: string;
-  nickname?: string;
+  nickname: string;
+  phone_number: string;
+  auth_number?: string;
 }
 
 export interface IUploadImageValues {
