@@ -30,7 +30,7 @@ interface ILoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
-  const { register, handleSubmit, reset, watch } = useForm<ILoginFormValues>();
+  const { register, handleSubmit, reset } = useForm<ILoginFormValues>();
   const [errorMessage, setErrorMessage] = useState("");
   const queryClient = useQueryClient();
   const toast = useToast();

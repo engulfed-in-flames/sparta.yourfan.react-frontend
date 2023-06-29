@@ -1,4 +1,5 @@
 import {
+  Button,
   HStack,
   Heading,
   Icon,
@@ -32,26 +33,79 @@ export default function Footer() {
         </HStack>
         <VStack w={"full"} alignItems={"flex-start"}>
           <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-            <Text>김경수</Text> <Icon as={BsArrowRight} />
+            <Button
+              onClick={() => {
+                window.open(
+                  "https://github.com/engulfedInFlames?tab=repositories"
+                );
+              }}
+              color={"white"}
+              bgColor={"primary"}
+              variant={"link"}
+              pb={1}
+            >
+              김경수 <Icon as={BsArrowRight} ml={2} />
+            </Button>
           </HStack>
           <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-            <Text>윤준열</Text> <Icon as={BsArrowRight} />
+            <Button
+              onClick={() => {
+                window.open("https://github.com/raoneli1013?tab=repositories");
+              }}
+              color={"white"}
+              bgColor={"primary"}
+              variant={"link"}
+              pb={1}
+            >
+              윤준열 <Icon as={BsArrowRight} ml={2} />
+            </Button>
           </HStack>
           <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-            <Text>김성광</Text> <Icon as={BsArrowRight} />
-          </HStack>
-          <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-            <Text>최재영</Text> <Icon as={BsArrowRight} />
+            <Button
+              onClick={() => {
+                window.open("https://github.com/scarlet0star?tab=repositories");
+              }}
+              color={"white"}
+              bgColor={"primary"}
+              variant={"link"}
+              pb={1}
+            >
+              김성광 <Icon as={BsArrowRight} ml={2} />
+            </Button>
           </HStack>
         </VStack>
       </VStack>
       <VStack alignItems={"flex-start"} pt={16} pl={12}>
         <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-          <Text>프론트</Text> <Icon as={BsArrowRight} />
+          <Button
+            onClick={() => {
+              window.open(
+                "https://github.com/engulfedInFlames/yourfan-react-frontend"
+              );
+            }}
+            color={"white"}
+            bgColor={"primary"}
+            variant={"link"}
+            pb={1}
+          >
+            프론트 <Icon as={BsArrowRight} ml={2} />
+          </Button>
         </HStack>
         <HStack alignItems={"center"} color={"white"} cursor={"pointer"}>
-          <Text>백&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>{" "}
-          <Icon as={BsArrowRight} />
+          <Button
+            onClick={() => {
+              window.open(
+                "https://github.com/engulfedInFlames/yourfan-backend"
+              );
+            }}
+            color={"white"}
+            bgColor={"primary"}
+            variant={"link"}
+            pb={1}
+          >
+            백&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Icon as={BsArrowRight} ml={2} />
+          </Button>
         </HStack>
       </VStack>
     </SimpleGrid>

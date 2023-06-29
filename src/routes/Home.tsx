@@ -125,6 +125,7 @@ export default function Home() {
                           id={board.custom_url}
                           onClick={handleClickBoard}
                           mr={2}
+                          mb={4}
                         >
                           {board.title}
                         </Button>

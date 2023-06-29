@@ -323,19 +323,52 @@ export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {
   return response.status;
 };
 
+export const apiSendAuthSMS = async (phone_number: string) => {
+  const response = await axiosInstance.post(
+    "users/sms-auth/",
+    {
+      phone_number,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiPostAuthNumber = async (auth_number: string) => {
+  const response = await axiosInstance.post(
+    "users/sms-auth-number/",
+    {
+      auth_number,
+    },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+      },
+    }
+  );
+  return response.status;
+};
+
 export const apiPostSignup = async ({
-  email,
+  email_id,
   password1,
   password2,
   nickname,
+  phone_number,
 }: ISingupFormValues) => {
+  console.log(email_id, password1, password2, nickname, phone_number);
   const response = await axiosInstance.post(
     "users/signup/",
     {
-      email,
+      email_id,
       password1,
       password2,
       nickname,
+      phone_number,
     },
     {
       headers: {
