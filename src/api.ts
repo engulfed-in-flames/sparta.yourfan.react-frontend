@@ -360,7 +360,6 @@ export const apiPostSignup = async ({
   nickname,
   phone_number,
 }: ISingupFormValues) => {
-  console.log(email_id, password1, password2, nickname, phone_number);
   const response = await axiosInstance.post(
     "users/signup/",
     {
