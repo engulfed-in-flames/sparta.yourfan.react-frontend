@@ -33,6 +33,10 @@ export interface IChannel {
 
 export interface IInsight {
   id: number | string;
+  title: string;
+  channel_activity: string;
+  channel_wordcloud: string;
+  topic_id: string;
   activity_rate: string;
   avg_comments: string;
   avg_likes: string;

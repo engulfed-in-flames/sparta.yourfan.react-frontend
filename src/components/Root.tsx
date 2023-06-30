@@ -5,11 +5,10 @@ import { useMe } from "../hooks/userHooks";
 
 function Root() {
   const { isUserLoading, user } = useMe();
-
   return (
     <>
       <Header isUserLoading={isUserLoading} me={user}></Header>
-      <Outlet />
+      <Outlet context={{ isUserLoading, user }} />
       <Footer></Footer>
     </>
   );
