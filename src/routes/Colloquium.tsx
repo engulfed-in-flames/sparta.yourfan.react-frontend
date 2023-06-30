@@ -26,7 +26,6 @@ interface IContextUser {
 export default function Colloquium() {
   useUserOnly();
   const { isUserLoading, user } = useOutletContext<IContextUser>();
-  console.log(isUserLoading, user);
   const { channel } = useParams();
   const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
