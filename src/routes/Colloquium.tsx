@@ -1,27 +1,35 @@
 import {
   Flex,
   FormControl,
+  Heading,
   IconButton,
   Input,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { MdSend } from "react-icons/md";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Cookies from "js-cookie";
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
-import { IMessage } from "../type";
-import { useMe, useUserOnly } from "../hooks/userHooks";
+import { IMe, IMessage } from "../type";
+import { useUserOnly } from "../hooks/userHooks";
+
+interface IContextUser {
+  isUserLoading: boolean;
+  user: IMe | undefined | null;
+}
 
 export default function Colloquium() {
   useUserOnly();
+  const { isUserLoading, user } = useOutletContext<IContextUser>();
+  console.log(isUserLoading, user);
   const { channel } = useParams();
   const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
-  const { user } = useMe();
   const accessToken = Cookies.get("access");
 
   // WebSocket
@@ -35,18 +43,20 @@ export default function Colloquium() {
   );
 
   React.useEffect(() => {
-    client.onopen = () =>
+    client.onopen = () => {
       client.send(
         JSON.stringify({
           message: `${user?.nickname}님이 입장했습니다.`,
           user_nickname: user?.nickname,
         })
       );
+    };
+
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
       if (dataFromServer) {
         if (dataFromServer.type === "user_count") {
-          setUserCount(dataFromServer.count + 2);
+          setUserCount(dataFromServer.count);
         } else {
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -61,11 +71,13 @@ export default function Colloquium() {
     return () => {
       client.close();
     };
-  }, [client, user?.nickname]);
+  }, []);
 
   const onSubmitMessage = (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const input = event.currentTarget.querySelector("input[name='message']");
+    const input = event.currentTarget.querySelector(
+      "input[name='message']"
+    ) as HTMLInputElement;
     if (input instanceof HTMLInputElement) {
       client.send(
         JSON.stringify({
@@ -80,67 +92,76 @@ export default function Colloquium() {
   //
 
   return (
-    <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
-      {channel ? <ForumTabs channel={channel} /> : null}
-      <VStack w={"full"} p={8}>
-        <Flex
-          position={"relative"}
-          w={"full"}
-          h={"600px"}
-          shadow={"inner"}
-          borderRadius={"lg"}
-        >
-          <Text
-            position={"absolute"}
-            top={4}
-            left={4}
-            fontSize={"xl"}
-            fontWeight={"semibold"}
-          >
-            현재 참여 인원 ({userCount})
-          </Text>
-          <VStack
-            flex={1}
-            justifyContent={"flex-start"}
-            alignItems={"flex-start"}
-            px={4}
-            pt={16}
-            pb={4}
-            overflowX={"hidden"}
-            overflowY={"scroll"}
-          >
-            {messages.map((message, index) => (
-              <Message key={index} message={message} />
-            ))}
+    <>
+      {!isUserLoading && user ? (
+        <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
+          {channel ? <ForumTabs channel={channel} /> : null}
+          <VStack w={"full"} p={8}>
+            <Flex
+              position={"relative"}
+              w={"full"}
+              h={"600px"}
+              shadow={"inner"}
+              borderRadius={"lg"}
+            >
+              <Text
+                position={"absolute"}
+                top={4}
+                left={4}
+                fontSize={"xl"}
+                fontWeight={"semibold"}
+              >
+                현재 참여 인원 ({userCount})
+              </Text>
+              <VStack
+                flex={1}
+                justifyContent={"flex-start"}
+                alignItems={"flex-start"}
+                px={4}
+                pt={16}
+                pb={4}
+                overflowX={"hidden"}
+                overflowY={"scroll"}
+              >
+                {messages.map((message, index) => (
+                  <Message key={index} message={message} />
+                ))}
+              </VStack>
+            </Flex>
+            <FormControl
+              as="form"
+              onSubmit={onSubmitMessage}
+              isRequired
+              w={"full"}
+              h={16}
+              display={"flex"}
+              alignItems={"center"}
+            >
+              <Input
+                name={"message"}
+                focusBorderColor={"primary"}
+                errorBorderColor={"youtubeRed"}
+                placeholder={"메세지를 입력하세요"}
+                variant={"flushed"}
+              />
+              <IconButton
+                type={"submit"}
+                icon={<MdSend />}
+                aria-label={"Send Message Button"}
+                w={28}
+                _hover={{ bgColor: "tertiary", color: "white" }}
+                _focus={{ bgColor: "secondary", color: "white" }}
+                variant={"outline"}
+              />
+            </FormControl>
           </VStack>
-        </Flex>
-        <FormControl
-          as="form"
-          onSubmit={onSubmitMessage}
-          isRequired
-          w={"full"}
-          h={16}
-          display={"flex"}
-          alignItems={"center"}
-        >
-          <Input
-            name={"message"}
-            focusBorderColor={"primary"}
-            errorBorderColor={"youtubeRed"}
-            placeholder={"메세지를 입력하세요"}
-            variant={"flushed"}
-          />
-          <IconButton
-            type={"submit"}
-            icon={<MdSend />}
-            aria-label={"Send Message Button"}
-            w={28}
-            _hover={{ bgColor: "tertiary", color: "white" }}
-            _focus={{ bgColor: "secondary", color: "white" }}
-            variant={"outline"}
-          />
-        </FormControl>
-      </VStack>
-    </VStack>
+        </VStack>
+      ) : (
+        <VStack minH={"768px"} py={36}>
+          <Heading mb={8}>채팅방 연결중...</Heading>
+          <Spinner size="lg" />
+        </VStack>
+      )}
+    </>
   );
 }
