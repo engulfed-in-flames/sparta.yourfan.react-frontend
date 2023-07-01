@@ -14,15 +14,16 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdAlternateEmail, MdLock } from "react-icons/md";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+
 import { apiPostLogin } from "../../api";
 import SocialLogin from "../SocialLogin";
 import { ILoginFormValues } from "../../type";
-import { AxiosError } from "axios";
-import { useState } from "react";
 
 interface ILoginModalProps {
   isOpen: boolean;

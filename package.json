@@ -29,6 +29,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
+    "recoil": "^0.7.7",
     "sort-by": "^1.2.0",
     "suneditor": "^2.44.12",
     "suneditor-react": "^3.5.0",

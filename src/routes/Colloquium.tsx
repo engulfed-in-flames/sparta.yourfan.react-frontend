@@ -9,23 +9,27 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MdSend } from "react-icons/md";
+import { useRecoilValue } from "recoil";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import Cookies from "js-cookie";
+
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
 import { IMe, IMessage } from "../type";
 import { useUserOnly } from "../hooks/userHooks";
+import { isUserLoadingAtom, userAtom } from "../atom";
 
 interface IContextUser {
   isUserLoading: boolean;
-  user: IMe | undefined | null;
+  user: IMe | undefined;
 }
 
 export default function Colloquium() {
   useUserOnly();
-  const { isUserLoading, user } = useOutletContext<IContextUser>();
+  const isUserLoading = useRecoilValue(isUserLoadingAtom);
+  const user = useRecoilValue<IMe | undefined>(userAtom);
   const { channel } = useParams();
   const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
@@ -92,7 +96,7 @@ export default function Colloquium() {
 
   return (
     <>
-      {!isUserLoading && user ? (
+      {!isUserLoading && user && user.nickname !== undefined ? (
         <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
           {channel ? <ForumTabs channel={channel} /> : null}
           <VStack w={"full"} p={8}>

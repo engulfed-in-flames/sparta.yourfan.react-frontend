@@ -1,14 +1,14 @@
 import React from "react";
 import { Tabs, TabList, Tab, useToast } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
-import { useMe } from "../../hooks/userHooks";
+import { useUser } from "../../hooks/userHooks";
 
 interface IForumTabs {
   channel: string;
 }
 
 export default function ForumTabs({ channel }: IForumTabs) {
-  const { user } = useMe();
+  const { isUserLoading, user } = useUser();
   const { pathname } = useLocation();
   const [tabIndex, setTabIndex] = React.useState(1);
   const toast = useToast();
@@ -43,7 +43,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
             컨소시움
           </Tab>
         </Link>
-        {user ? (
+        {!isUserLoading && user ? (
           <Link to={`/${channel}/colloquium`}>
             <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
               콜로키움

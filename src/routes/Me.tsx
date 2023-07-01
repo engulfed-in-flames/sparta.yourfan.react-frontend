@@ -18,11 +18,11 @@ import {
 import React from "react";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
-import { useMe, useUserOnly } from "../hooks/userHooks";
+import { useUser, useUserOnly } from "../hooks/userHooks";
 
 export default function Me() {
   useUserOnly();
-  const { isUserLoading, user } = useMe();
+  const { isUserLoading, user } = useUser();
   const {
     isOpen: isWithdrawlOpen,
     onOpen: onWithdrawlOpen,

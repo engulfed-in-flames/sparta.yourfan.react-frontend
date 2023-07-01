@@ -4,7 +4,6 @@ import {
   Heading,
   Icon,
   SimpleGrid,
-  Text,
   VStack,
 } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
