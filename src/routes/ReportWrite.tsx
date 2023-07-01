@@ -25,6 +25,7 @@ import { useUserOnly } from "../hooks/userHooks";
 
 export default function ReportWrite() {
   useUserOnly();
+  const [isRegistering, setIsRegistering] = React.useState(false);
   const [uploadedFile, setUploadedFile] = React.useState<File | undefined>();
   const [uploadedFileName, setUploadedFileName] = React.useState("");
   const {
@@ -44,6 +45,7 @@ export default function ReportWrite() {
         duration: 3000,
       });
       setUploadedFileName("");
+      setIsRegistering(false);
       reset();
       navigate(-1);
     },
@@ -54,6 +56,7 @@ export default function ReportWrite() {
         position: "bottom-right",
         duration: 3000,
       });
+      setIsRegistering(false);
     },
   });
 
@@ -65,23 +68,26 @@ export default function ReportWrite() {
     }
   };
   const onSubmit: SubmitHandler<IReportValues> = async (data) => {
-    const obj = {
-      image_title: "",
-      image_url: "",
-      cloudflare_image_id: "",
-      title: data.title,
-      content: data.content,
-    };
-    if (uploadedFile) {
-      const { uploadURL } = await apiGetUploadURL();
-      const {
-        result: { id, variants },
-      } = await apiUploadImage({ file: uploadedFile, uploadURL });
-      obj.image_title = uploadedFileName;
-      obj.image_url = variants[0];
-      obj.cloudflare_image_id = id;
+    if (!isRegistering) {
+      setIsRegistering(true);
+      const obj = {
+        image_title: "",
+        image_url: "",
+        cloudflare_image_id: "",
+        title: data.title,
+        content: data.content,
+      };
+      if (uploadedFile) {
+        const { uploadURL } = await apiGetUploadURL();
+        const {
+          result: { id, variants },
+        } = await apiUploadImage({ file: uploadedFile, uploadURL });
+        obj.image_title = uploadedFileName;
+        obj.image_url = variants[0];
+        obj.cloudflare_image_id = id;
+      }
+      mutation.mutate(obj);
     }
-    mutation.mutate(obj);
   };
   return (
     <VStack userSelect={"none"} my={24}>
@@ -179,6 +185,7 @@ export default function ReportWrite() {
             </Text>
           </FormControl>
           <Button
+            isLoading={isRegistering}
             type={"submit"}
             w={"full"}
             bgColor={"primary"}
