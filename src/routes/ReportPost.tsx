@@ -41,6 +41,7 @@ export default function ReportPost() {
   );
   const { isUserLoading, user } = useUser();
   const [isUpdateMode, setIsUpdateMode] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | undefined>();
   const [uploadedFileName, setUploadedFileName] = useState("");
   const [titleErrorMessage, setTitleErrorMessage] = useState("");
@@ -58,6 +59,7 @@ export default function ReportPost() {
         duration: 3000,
       });
       setUploadedFileName("");
+      setIsUpdateMode(false);
       navigate(-1);
     },
     onError: () => {
@@ -67,6 +69,7 @@ export default function ReportPost() {
         position: "top",
         duration: 3000,
       });
+      setIsUpdateMode(false);
     },
   });
   const deleteMutation = useMutation(apiDeleteReport, {
@@ -122,24 +125,27 @@ export default function ReportPost() {
       setTitleErrorMessage("");
       setContentErrorMessage("");
     }
-    const obj = {
-      pk: report?.pk,
-      image_title: "",
-      image_url: "",
-      cloudflare_image_id: "",
-      title: data.title,
-      content: data.content,
-    };
-    if (uploadedFile) {
-      const { uploadURL } = await apiGetUploadURL();
-      const {
-        result: { id, variants },
-      } = await apiUploadImage({ file: uploadedFile, uploadURL });
-      obj.image_title = uploadedFileName;
-      obj.image_url = variants[0];
-      obj.cloudflare_image_id = id;
+    if (!isUpdating) {
+      setIsUpdating(true);
+      const obj = {
+        pk: report?.pk,
+        image_title: "",
+        image_url: "",
+        cloudflare_image_id: "",
+        title: data.title,
+        content: data.content,
+      };
+      if (uploadedFile) {
+        const { uploadURL } = await apiGetUploadURL();
+        const {
+          result: { id, variants },
+        } = await apiUploadImage({ file: uploadedFile, uploadURL });
+        obj.image_title = uploadedFileName;
+        obj.image_url = variants[0];
+        obj.cloudflare_image_id = id;
+      }
+      updateMutation.mutate(obj);
     }
-    updateMutation.mutate(obj);
   };
 
   useEffect(() => {
@@ -205,6 +211,7 @@ export default function ReportPost() {
                 <VStack w={"full"} pb={4} userSelect={"none"}>
                   <Image
                     src={report.image_url}
+                    fallbackSrc={"https://placehold.co/480x360?text=Loading..."}
                     borderRadius={"lg"}
                     width={"100%"}
                   />
@@ -263,6 +270,7 @@ export default function ReportPost() {
                 isUpdateMode ? (
                   <HStack w={"full"} justifyContent={"flex-end"}>
                     <Button
+                      isLoading={isUpdating}
                       onClick={onClickUpdateModeBtn}
                       borderColor={"primary"}
                       colorScheme="blackAlpha"
@@ -271,6 +279,7 @@ export default function ReportPost() {
                       취소
                     </Button>
                     <Button
+                      isLoading={isUpdating}
                       type={"submit"}
                       bgColor={"primary"}
                       colorScheme="blackAlpha"
