@@ -1,14 +1,7 @@
-import React from "react";
-import { IPost } from "../../type";
-import {
-  Divider,
-  Grid,
-  GridItem,
-  Heading,
-  Table,
-  Text,
-} from "@chakra-ui/react";
+import { Divider, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+
+import { IPost } from "../../type";
 
 interface IProps {
   channel?: string;

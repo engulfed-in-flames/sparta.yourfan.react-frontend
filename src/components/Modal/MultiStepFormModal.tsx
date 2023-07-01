@@ -15,11 +15,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+
 import SearchForumForm from "../Form/SearchForumForm";
 import CreateForumForm from "../Form/CreateForumForm";
 import { apiGetSimilarChannels, apiPostChannel } from "../../api";
 import { IChannel } from "../../type";
-import { useMutation } from "@tanstack/react-query";
 
 interface IProps {
   isOpen: boolean;

@@ -17,11 +17,14 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { BsCloudUpload } from "react-icons/bs";
+
 import { apiGetUploadURL, apiPostReport, apiUploadImage } from "../api";
 import { IReportValues } from "../type";
 import { useNavigate } from "react-router-dom";
+import { useUserOnly } from "../hooks/userHooks";
 
 export default function ReportWrite() {
+  useUserOnly();
   const [uploadedFile, setUploadedFile] = React.useState<File | undefined>();
   const [uploadedFileName, setUploadedFileName] = React.useState("");
   const {

@@ -23,15 +23,18 @@ import Cookies from "js-cookie";
 import LoginModal from "./Modal/LoginModal";
 import SignupModal from "./Modal/SignupModal";
 import { IMe } from "../type";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../atom";
 
 interface IHeaderProps {
   isUserLoading: boolean;
-  me: IMe | null;
+  me: IMe | undefined;
 }
 
 export default function Header({ isUserLoading, me }: IHeaderProps) {
-  const toast = useToast();
+  const setUser = useSetRecoilState(userAtom);
   const queryClient = useQueryClient();
+  const toast = useToast();
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
@@ -47,6 +50,7 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
     Cookies.remove("access");
     Cookies.remove("refresh");
     queryClient.refetchQueries(["me"]);
+    setUser(undefined);
     toast({
       title: "로그아웃",
       status: "success",

@@ -15,6 +15,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+
 import ForumTabs from "../components/Forum/ForumTabs";
 import { apiGetPostList } from "../api";
 import { IPost } from "../type";

@@ -22,11 +22,12 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { MdLock, MdPhoneIphone } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { RiAccountCircleFill } from "react-icons/ri";
+import { BiCheck } from "react-icons/bi";
+import { AxiosError } from "axios";
+
 import SocialLogin from "../SocialLogin";
 import { ISingupFormValues } from "../../type";
 import { apiPostSignup, apiSendAuthSMS } from "../../api";
-import { AxiosError } from "axios";
-import { BiCheck } from "react-icons/bi";
 
 interface IProps {
   isOpen: boolean;

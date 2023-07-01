@@ -29,8 +29,8 @@ import {
   apiUploadImage,
 } from "../api";
 import { useIsDigit } from "../hooks/pageHooks";
-import { useMe } from "../hooks/userHooks";
 import { IReport, IReportValues } from "../type";
+import { useUser } from "../hooks/userHooks";
 
 export default function ReportPost() {
   const { reportPk } = useParams();
@@ -39,7 +39,7 @@ export default function ReportPost() {
     ["report", reportPk],
     () => apiGetReport(String(reportPk)!)
   );
-  const { user } = useMe();
+  const { isUserLoading, user } = useUser();
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | undefined>();
   const [uploadedFileName, setUploadedFileName] = useState("");
@@ -257,7 +257,9 @@ export default function ReportPost() {
                 </FormHelperText>
               </FormControl>
 
-              {user && Number(user.pk) === Number(report?.user) ? (
+              {!isUserLoading &&
+              user &&
+              Number(user.pk) === Number(report?.user) ? (
                 isUpdateMode ? (
                   <HStack w={"full"} justifyContent={"flex-end"}>
                     <Button

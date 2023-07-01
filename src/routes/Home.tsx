@@ -18,12 +18,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { BsYoutube } from "react-icons/bs";
+
 import Carousel from "../components/Carousel";
 import { apiGetBoardList } from "../api";
 import { IBoard } from "../type";
 import YoutubeSearchBtn from "../components/YoutubeSearchBtn";
 import MultiStepFormModal from "../components/Modal/MultiStepFormModal";
-import { useMe } from "../hooks/userHooks";
+import { useUser } from "../hooks/userHooks";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
@@ -33,7 +34,7 @@ const channelRank = [
 ];
 
 export default function Home() {
-  const { user } = useMe();
+  const { isUserLoading, user } = useUser();
   const {
     isOpen: isMultiStepFormOpen,
     onOpen: onMultiStepFormOpen,
@@ -56,7 +57,7 @@ export default function Home() {
 
   const handleClickSearchBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (user) {
+    if (!isUserLoading && user) {
       onMultiStepFormOpen();
     } else {
       toast({
