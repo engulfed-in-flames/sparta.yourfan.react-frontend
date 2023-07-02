@@ -126,7 +126,13 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
           <MenuButton
             as={Button}
             leftIcon={<CgMenu />}
-            rightIcon={<Avatar src={""} size={"sm"} bgColor={"primary"} />}
+            rightIcon={
+              <Avatar
+                src={me?.avatar ? me.avatar : ""}
+                size={"sm"}
+                bgColor={"primary"}
+              />
+            }
             size={"md"}
             minW={24}
             h={12}
