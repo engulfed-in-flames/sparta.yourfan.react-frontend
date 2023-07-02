@@ -71,7 +71,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const onClickNext = async () => {
     if (channelHandle.length < 2) {
       toast({
-        title: "최소 한 글자를 입력해야 합니다.",
+        title: "최소 두 글자를 입력해야 합니다.",
         status: "warning",
         position: "top",
         duration: 3000,

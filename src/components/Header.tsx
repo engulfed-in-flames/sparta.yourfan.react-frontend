@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -34,6 +34,7 @@ interface IHeaderProps {
 export default function Header({ isUserLoading, me }: IHeaderProps) {
   const setUser = useSetRecoilState(userAtom);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const toast = useToast();
   const {
     isOpen: isLoginOpen,
@@ -56,6 +57,7 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
       status: "success",
       position: "bottom-right",
     });
+    navigate("/");
   };
   return (
     <Flex
