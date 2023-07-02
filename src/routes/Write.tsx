@@ -11,7 +11,11 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
 import plugins from "suneditor/src/plugins";
@@ -28,7 +32,7 @@ export default function Write() {
   const [title, setTitle] = React.useState("");
   // const [image, setImage] = React.useState<File | null>(null);
   // const [src, setSrc] = React.useState("");
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const toast = useToast();
   const postMutation = useMutation(apiPostPost, {
@@ -76,6 +80,11 @@ export default function Write() {
   const onClickSubmitBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     postMutation.mutate({ board: channel!, title, content });
+  };
+
+  const onClickCancelBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    navigate(-1);
   };
 
   /**
@@ -166,7 +175,7 @@ export default function Write() {
         />
       </Box>
       <Flex w={"full"} justifyContent={"flex-end"} gap={2}>
-        <Button variant={"outline"} onClick={() => navigate(-1)}>
+        <Button variant={"outline"} onClick={onClickCancelBtn}>
           취소
         </Button>
         <Button onClick={onClickSubmitBtn}>등록</Button>

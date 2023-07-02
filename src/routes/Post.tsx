@@ -1,19 +1,37 @@
-import { Button, HStack, Heading, VStack, useToast } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useIsDigit } from "../hooks/pageHooks";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
+import { AxiosError } from "axios";
+
+import { useIsDigit } from "../hooks/pageHooks";
 import { apiDeletePost, apiGetPost, apiPutPost } from "../api";
 import { IPost } from "../type";
-import { useMe } from "../hooks/userHooks";
-import { AxiosError } from "axios";
+import { useUser } from "../hooks/userHooks";
+
+const options: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: false,
+};
 
 export default function Post() {
   const { postPk } = useParams();
   useIsDigit(postPk!);
-  const { user } = useMe();
+  const { isUserLoading, user } = useUser();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -64,6 +82,12 @@ export default function Post() {
   const onClickUpdateBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     // if (postPk) updateMutation.mutate({pk:postPk,});
+    toast({
+      title: "현재 구현 중입니다 😭",
+      status: "info",
+      position: "top",
+      duration: 3000,
+    });
   };
 
   const onClickDeleteBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -83,10 +107,19 @@ export default function Post() {
       {!isPostLoading && post ? (
         <>
           <Heading w={"full"} textAlign={"left"}>
-            {post.title}
+            제목: {post.title}
           </Heading>
+          <HStack w={"full"} justifyContent={"space-between"}>
+            <Text fontSize={20}>작성자: {user?.nickname}</Text>
+            <Text fontSize={20}>
+              {new Date(post.created_at)
+                .toLocaleString("en-US", options)
+                .replace(",", " ")}
+            </Text>
+          </HStack>
           <SunEditor
             setContents={post.content}
+            height="480px"
             disable={true}
             disableToolbar={true}
             hideToolbar={true}
@@ -99,7 +132,7 @@ export default function Post() {
           ></SunEditor>
         </>
       ) : null}
-      {user?.pk && user.posts.includes(Number(postPk)) ? (
+      {!isUserLoading && user?.pk === post?.user?.pk ? (
         <>
           <HStack w={"full"} justifyContent={"flex-end"}>
             <Button

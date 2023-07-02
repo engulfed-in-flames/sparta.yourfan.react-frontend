@@ -12,18 +12,17 @@ import {
   Text,
   VStack,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { BsYoutube } from "react-icons/bs";
-import Carousel from "../components/Carousel";
+
 import { apiGetBoardList } from "../api";
 import { IBoard } from "../type";
+import Carousel from "../components/Carousel";
 import YoutubeSearchBtn from "../components/YoutubeSearchBtn";
 import MultiStepFormModal from "../components/Modal/MultiStepFormModal";
-import { useMe } from "../hooks/userHooks";
 
 const channelRank = [
   { rank: "diamond", rankKR: "다이아", color: "#a3c4d9" },
@@ -33,38 +32,23 @@ const channelRank = [
 ];
 
 export default function Home() {
-  const { user } = useMe();
+  const { isLoading: isBoardsLoading, data: boardList } = useQuery<IBoard[]>(
+    ["boards"],
+    apiGetBoardList
+  );
+
   const {
     isOpen: isMultiStepFormOpen,
     onOpen: onMultiStepFormOpen,
     onClose: onMultiStepFormClose,
   } = useDisclosure();
   const navigate = useNavigate();
-  const toast = useToast();
-  const { isLoading: isBoardsLoading, data: boardList } = useQuery<IBoard[]>(
-    ["boards"],
-    apiGetBoardList
-  );
 
   const handleClickBoard = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { id } = event.currentTarget;
     if (id) {
       navigate(`${id}/consortium?page=1`);
-    }
-  };
-
-  const handleClickSearchBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (user) {
-      onMultiStepFormOpen();
-    } else {
-      toast({
-        title: "로그인이 필요합니다.",
-        status: "info",
-        position: "top",
-        duration: 3000,
-      });
     }
   };
 
@@ -85,7 +69,7 @@ export default function Home() {
       </Box>
 
       <VStack w={"full"} pb={8}>
-        <YoutubeSearchBtn onClick={handleClickSearchBtn} />
+        <YoutubeSearchBtn onOpen={onMultiStepFormOpen} />
       </VStack>
 
       <VStack w={"full"} alignItems={"center"} pb={8}>
@@ -125,6 +109,7 @@ export default function Home() {
                           id={board.custom_url}
                           onClick={handleClickBoard}
                           mr={2}
+                          mb={4}
                         >
                           {board.title}
                         </Button>

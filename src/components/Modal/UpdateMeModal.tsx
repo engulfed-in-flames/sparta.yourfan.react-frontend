@@ -12,11 +12,12 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
+
 import { apiGetUploadURL, apiUpdateMe, apiUploadImage } from "../../api";
 import { IUpdateMeFormFiedls } from "../../type";
-import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;

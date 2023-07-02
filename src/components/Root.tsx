@@ -1,16 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useMe } from "../hooks/userHooks";
+import { useUserAtom } from "../hooks/userHooks";
 
 function Root() {
-  const { isUserLoading, user } = useMe();
-
+  const { isUserLoading, user } = useUserAtom();
   return (
     <>
-      <Header isUserLoading={isUserLoading} me={user}></Header>
+      <Header isUserLoading={isUserLoading} me={user} />
       <Outlet />
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }
