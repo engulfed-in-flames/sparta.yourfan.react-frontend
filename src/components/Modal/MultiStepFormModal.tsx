@@ -21,6 +21,8 @@ import SearchForumForm from "../Form/SearchForumForm";
 import CreateForumForm from "../Form/CreateForumForm";
 import { apiGetSimilarChannels, apiPostChannel } from "../../api";
 import { IChannel } from "../../type";
+import { useSetRecoilState } from "recoil";
+import { createForumBtnAtom } from "../../atom";
 
 interface IProps {
   isOpen: boolean;
@@ -35,6 +37,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [channels, setChannels] = React.useState<IChannel[]>([]);
   const [channel, setChannel] = React.useState("");
+  const setAtomValue = useSetRecoilState(createForumBtnAtom);
   const reset = () => {
     onClose();
     setStep(1);
@@ -53,8 +56,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     },
     onError: () => {
       toast({
-        title: "Failed",
-        description: "채널 검색에 실패했습니다.",
+        title: "채널 검색에 실패했습니다",
         status: "error",
         position: "top",
         duration: 3000,
@@ -84,32 +86,33 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     setProgress(100);
   };
 
-  const mutation = useMutation(apiPostChannel, {
+  const createMutation = useMutation(apiPostChannel, {
     onSuccess: () => {
       toast({
-        title: "포럼 생성에 성공했습니다.",
-        description:
-          "실제 포럼이 생성되기까지 최대 5분의 시간이 소요됩니다. 잠시만 기다려주세요.",
+        title: "포럼이 생성됐습니다",
         status: "success",
         position: "top",
         duration: 5000,
       });
+      setAtomValue(false);
     },
     onError: () => {
       toast({
-        title: "포럼 생성에 실패했습니다.",
+        title: "포럼이 생성되지 않았습니다",
         description:
           "이미 존재하는 포럼이거나 존재하지 않는 유튜브 채널입니다.",
         status: "error",
         position: "top",
         duration: 3000,
       });
+      setAtomValue(false);
     },
   });
 
   const onClickSubmit = async () => {
     if (step === 2) {
-      mutation.mutate(channel);
+      setAtomValue(true);
+      createMutation.mutate(channel);
       reset();
     }
   };
