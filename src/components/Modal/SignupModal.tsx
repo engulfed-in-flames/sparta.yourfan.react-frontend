@@ -230,7 +230,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
                 <Button onClick={onClickSendSMSBtn}>인증</Button>
               </InputGroup>
               <FormHelperText px={2}>
-                🔸인증 문자는 번호당 5번으로 제한됩니다. 신중하게 입력해주세요.
+                🔸인증 문자는 번호당 5번으로 제한됩니다. 신중하게 입력하세요
               </FormHelperText>
             </FormControl>
             <FormControl>
