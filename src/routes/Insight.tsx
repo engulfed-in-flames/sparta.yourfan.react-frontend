@@ -1,6 +1,5 @@
 import {
   Box,
-  Flex,
   Grid,
   GridItem,
   Heading,

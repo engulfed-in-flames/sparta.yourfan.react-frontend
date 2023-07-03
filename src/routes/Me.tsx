@@ -15,7 +15,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
 import { useUser, useUserOnly } from "../hooks/userHooks";
