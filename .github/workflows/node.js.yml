@@ -19,25 +19,43 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - name: Checkout Source Code
+      - name: Checkout source code
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - run: npm run build --if-present
-      - name: Install Modules
+      - name: Install modules
         run: npm install
-      - name: Deploy (Sync with S3)
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --ac1 public-read --follow-symlinks --delete
+
+      - name: Build static files
+        run: npm run build
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "ap-northeast-3"
-          SOURCE_DIR: "build"
+          CI: false
+          REACT_APP_KAKAO_API_KEY: ${{secrets.REACT_APP_KAKAO_API_KEY}}
+          REACT_APP_KAKAO_REDIRECT_URI: ${{secrets.REACT_APP_KAKAO_REDIRECT_URI}}
+
+          REACT_APP_GH_CLIENT_ID: ${{secrets.REACT_APP_GH_CLIENT_ID}}
+          REACT_APP_GH_REDIRECT_URI: ${{secrets.REACT_APP_GH_REDIRECT_URI}}
+
+          REACT_APP_GOOGLE_API_KEY: ${{secrets.REACT_APP_GOOGLE_API_KEY}}
+          REACT_APP_GOOGLE_CLIENT_ID: ${{secrets.REACT_APP_GOOGLE_CLIENT_ID}}
+
+          REACT_APP_API_BASE_URL: ${{secrets.REACT_APP_API_BASE_URL}}
+          REACT_APP_WS_BASE_URL: ${{secrets.REACT_APP_WS_BASE_URL}}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Deploy static files t S3 bucket
+        run: aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET }}/ --exclude 'build/*' --delete
+
+      # - name: Deploy (Sync with S3)
+      #   uses: jakejarvis/s3-sync-action@master
