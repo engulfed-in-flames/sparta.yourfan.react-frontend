@@ -41,40 +41,21 @@ jobs:
       - name: Install modules
         run: npm install
 
-      - name: Display secrets `
-        run: |
-          echo "REACT_APP_KAKAO_API_KEY: ${{secrets.REACT_APP_KAKAO_API_KEY}}"
-          echo "REACT_APP_KAKAO_REDIRECT_URI: ${{secrets.REACT_APP_KAKAO_REDIRECT_URI}}"
-
-          echo "REACT_APP_GH_CLIENT_ID: ${{secrets.REACT_APP_GH_CLIENT_ID}}"
-          echo "REACT_APP_GH_REDIRECT_URI: ${{secrets.REACT_APP_GH_REDIRECT_URI}}"
-
-          echo "REACT_APP_GOOGLE_API_KEY: ${{secrets.REACT_APP_GOOGLE_API_KEY}}"
-          echo "REACT_APP_GOOGLE_CLIENT_ID: ${{secrets.REACT_APP_GOOGLE_CLIENT_ID}}"
-
-          echo "REACT_APP_API_BASE_URL: ${{secrets.REACT_APP_API_BASE_URL}}"
-          echo "REACT_APP_WS_BASE_URL: ${{secrets.REACT_APP_WS_BASE_URL}}"
-
       - name: Build static files
         run: npm run build
         env:
           CI: false
-          REACT_APP_KAKAO_API_KEY: ${{secrets.REACT_APP_KAKAO_API_KEY}}
-          REACT_APP_KAKAO_REDIRECT_URI: ${{secrets.REACT_APP_KAKAO_REDIRECT_URI}}
+          REACT_APP_KAKAO_API_KEY: ${{ secrets.REACT_APP_KAKAO_API_KEY }}
+          REACT_APP_KAKAO_REDIRECT_URI: ${{ secrets.REACT_APP_KAKAO_REDIRECT_URI }}
 
-          REACT_APP_GH_CLIENT_ID: ${{secrets.REACT_APP_GH_CLIENT_ID}}
-          REACT_APP_GH_REDIRECT_URI: ${{secrets.REACT_APP_GH_REDIRECT_URI}}
+          REACT_APP_GH_CLIENT_ID: ${{ secrets.REACT_APP_GH_CLIENT_ID }}
+          REACT_APP_GH_REDIRECT_URI: ${{ secrets.REACT_APP_GH_REDIRECT_URI }}
 
-          REACT_APP_GOOGLE_API_KEY: ${{secrets.REACT_APP_GOOGLE_API_KEY}}
-          REACT_APP_GOOGLE_CLIENT_ID: ${{secrets.REACT_APP_GOOGLE_CLIENT_ID}}
+          REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}
+          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
 
-          REACT_APP_API_BASE_URL: ${{secrets.REACT_APP_API_BASE_URL}}
-          REACT_APP_WS_BASE_URL: ${{secrets.REACT_APP_WS_BASE_URL}}
-
-      - name: Display secrets 2
-        run: |
-          echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-          echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
+          REACT_APP_WS_BASE_URL: ${{ secrets.REACT_APP_WS_BASE_URL }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
