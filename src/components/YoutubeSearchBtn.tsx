@@ -27,6 +27,7 @@ export default function YoutubeSearchBtn({ onOpen }: IYoutubeSearchBtnProps) {
     }
   };
 
+  /* 
   const onClickDisabled = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     toast({
@@ -38,10 +39,11 @@ export default function YoutubeSearchBtn({ onOpen }: IYoutubeSearchBtnProps) {
       duration: 5000,
     });
   };
+  */
 
   return (
     <Button
-      onClick={onClickDisabled}
+      onClick={onClick}
       isLoading={atomValue}
       loadingText={"생성 중..."}
       w={60}

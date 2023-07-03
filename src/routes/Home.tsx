@@ -73,21 +73,37 @@ export default function Home() {
         position={"relative"}
         w={"full"}
         justifyContent={"center"}
-        py={16}
+        pt={12}
+        pb={16}
       >
         <YoutubeSearchBtn onOpen={onMultiStepFormOpen} />
-        <Text position={"absolute"} left={0} w={"30%"} fontSize={"sm"}>
-          🔸 <b>포럼 생성하기</b> 버튼은 어떻게 이용하나요? <br />
-          1. <b>포럼 생성하기</b> 버튼을 통해 특정 유튜브 채널을 검색하고, 포럼
-          생성을 신청할 수 있습니다.
-          <br />
-          2. 포럼이 생성되면 <b>인사이트</b>에서 해당 채널에 대한 수치화 및
-          시각화된 데이터를 확인할 수 있습니다.
-          <br />
-          3. 포럼이 생성되면 커뮤니티(컨소시움)와 채팅 기능(콜로키움)도 이용할
-          수 있습니다. <br />
-          4. <b>포럼</b> 은 이 모든 공간을 지칭합니다.
-        </Text>
+        <VStack
+          position={"absolute"}
+          left={0}
+          w={"30%"}
+          alignItems={"flex-start"}
+          gap={0}
+          fontSize={"sm"}
+        >
+          <Text>
+            🤔 <b>포럼 생성하기</b> 버튼은 어떻게 이용하나요?
+          </Text>
+          <Text pl={2}>
+            1. <b>포럼 생성하기</b> 버튼을 통해 특정 유튜브 채널을 검색하고,
+            포럼 생성을 신청할 수 있습니다.
+          </Text>
+          <Text pl={2}>
+            2. 포럼이 생성되면 <b>인사이트</b>에서 해당 채널에 대한 수치화 및
+            시각화된 데이터를 확인할 수 있습니다.
+          </Text>
+          <Text pl={2}>
+            3. 포럼이 생성되면 커뮤니티(<b>컨소시움</b>)와 채팅(<b>콜로키움</b>)
+            기능도 이용할 수 있습니다.
+          </Text>
+          <Text pl={2}>
+            4. <b>포럼</b>은 이 모든 공간을 지칭합니다.
+          </Text>
+        </VStack>
       </HStack>
 
       <VStack w={"full"} alignItems={"center"} pb={8}>
