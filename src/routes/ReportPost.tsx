@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   Flex,
@@ -7,11 +6,9 @@ import {
   FormHelperText,
   FormLabel,
   HStack,
-  Heading,
   Icon,
   Image,
   Input,
-  Text,
   Textarea,
   VStack,
   useToast,

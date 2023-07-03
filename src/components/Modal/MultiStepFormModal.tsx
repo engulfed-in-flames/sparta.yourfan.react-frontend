@@ -15,7 +15,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import SearchForumForm from "../Form/SearchForumForm";
 import CreateForumForm from "../Form/CreateForumForm";
@@ -38,6 +39,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const [channels, setChannels] = React.useState<IChannel[]>([]);
   const [channel, setChannel] = React.useState("");
   const setAtomValue = useSetRecoilState(createForumBtnAtom);
+  const queryClient = useQueryClient();
   const reset = () => {
     onClose();
     setStep(1);
@@ -48,13 +50,24 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   };
   const searchMutation = useMutation(apiGetSimilarChannels, {
     onSuccess: (data: IChannel[]) => {
-      const filteredChannels = data.filter(
-        (channel) => channel.subscriber >= 10000
-      );
+      if (data !== undefined) {
+        const filteredChannels = data.filter(
+          (channel) => channel.subscriber >= 10000
+        );
+        setChannels(filteredChannels);
+      } else {
+        toast({
+          title: "채널 검색에 실패했습니다",
+          description:
+            "검색어가 유효하지 않거나 일일 검색 횟수를 초과했습니다.",
+          status: "error",
+          position: "top",
+          duration: 5000,
+        });
+      }
       setIsLoading(false);
-      setChannels(filteredChannels);
     },
-    onError: () => {
+    onError: (data: AxiosError) => {
       toast({
         title: "채널 검색에 실패했습니다",
         status: "error",
@@ -64,36 +77,27 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
       setIsLoading(false);
     },
   });
-  const onClickPrev = () => {
-    setStep(1);
-    setProgress(50);
-  };
-  const onClickNext = async () => {
-    if (channelHandle.length < 2) {
-      toast({
-        title: "최소 한 글자를 입력해야 합니다.",
-        status: "warning",
-        position: "top",
-        duration: 3000,
-      });
-      return;
-    }
-    if (step === 1) {
-      setIsLoading(true);
-      searchMutation.mutate(channelHandle);
-    }
-    setStep(2);
-    setProgress(100);
-  };
 
   const createMutation = useMutation(apiPostChannel, {
-    onSuccess: () => {
-      toast({
-        title: "포럼이 생성됐습니다",
-        status: "success",
-        position: "top",
-        duration: 5000,
-      });
+    onSuccess: (data: any) => {
+      if (data !== undefined) {
+        toast({
+          title: "포럼이 생성됐습니다",
+          status: "success",
+          position: "top",
+          duration: 5000,
+        });
+        queryClient.refetchQueries(["boards"]);
+      } else {
+        toast({
+          title: "포럼이 생성되지 않았습니다",
+          description:
+            "이미 존재하는 포럼이거나 존재하지 않는 유튜브 채널입니다.",
+          status: "warning",
+          position: "top",
+          duration: 3000,
+        });
+      }
       setAtomValue(false);
     },
     onError: () => {
@@ -108,6 +112,29 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
       setAtomValue(false);
     },
   });
+
+  const onClickPrev = () => {
+    setStep(1);
+    setProgress(50);
+  };
+
+  const onClickNext = async () => {
+    if (channelHandle.length < 2) {
+      toast({
+        title: "최소 두 글자를 입력해야 합니다.",
+        status: "warning",
+        position: "top",
+        duration: 3000,
+      });
+      return;
+    }
+    if (step === 1) {
+      setIsLoading(true);
+      searchMutation.mutate(channelHandle);
+    }
+    setStep(2);
+    setProgress(100);
+  };
 
   const onClickSubmit = async () => {
     if (step === 2) {

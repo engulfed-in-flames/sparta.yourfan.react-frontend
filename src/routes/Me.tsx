@@ -34,6 +34,7 @@ export default function Me() {
     onClose: onUpdateMeClose,
   } = useDisclosure();
   const toast = useToast();
+
   const onClickNotImplementedBtn = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -45,6 +46,7 @@ export default function Me() {
       position: "top",
     });
   };
+
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
       {!isUserLoading && user ? (
