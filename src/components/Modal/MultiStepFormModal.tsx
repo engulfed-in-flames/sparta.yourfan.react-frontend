@@ -71,7 +71,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const onClickNext = async () => {
     if (channelHandle.length < 2) {
       toast({
-        title: "최소 한 글자를 입력해야 합니다.",
+        title: "최소 두 글자를 입력해야 합니다.",
         status: "warning",
         position: "top",
         duration: 3000,
@@ -80,7 +80,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
     }
     if (step === 1) {
       setIsLoading(true);
-      searchMutation.mutate(channelHandle);
+      // searchMutation.mutate(channelHandle);
     }
     setStep(2);
     setProgress(100);
@@ -112,7 +112,7 @@ export default function MultiStepFormModal({ isOpen, onClose }: IProps) {
   const onClickSubmit = async () => {
     if (step === 2) {
       setAtomValue(true);
-      createMutation.mutate(channel);
+      // createMutation.mutate(channel);
       reset();
     }
   };
