@@ -110,7 +110,7 @@ export default function Post() {
             제목: {post.title}
           </Heading>
           <HStack w={"full"} justifyContent={"space-between"}>
-            <Text fontSize={20}>작성자: {user?.nickname}</Text>
+            <Text fontSize={20}>작성자: {post.user?.nickname}</Text>
             <Text fontSize={20}>
               {new Date(post.created_at)
                 .toLocaleString("en-US", options)

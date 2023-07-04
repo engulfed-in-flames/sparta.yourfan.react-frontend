@@ -149,7 +149,7 @@ export default function Write() {
             buttonList: [
               ["undo", "redo"],
               ["fontSize", "formatBlock"],
-              ["paragraphStyle", "blockquote"],
+              ["blockquote"],
               [
                 "bold",
                 "underline",
