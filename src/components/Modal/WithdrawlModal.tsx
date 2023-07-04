@@ -13,6 +13,9 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { apiInvalidateMe } from "../../api";
+import Cookies from "js-cookie";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../../atom";
 
 interface IProps {
   isOpen: boolean;
@@ -22,6 +25,8 @@ interface IProps {
 export default function WithdrawlModal({ isOpen, onClose }: IProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const setUser = useSetRecoilState(userAtom);
+
   const toast = useToast();
   const mutation = useMutation(apiInvalidateMe, {
     onSuccess: () => {
@@ -31,7 +36,10 @@ export default function WithdrawlModal({ isOpen, onClose }: IProps) {
         position: "bottom-right",
         duration: 3000,
       });
+      Cookies.remove("access");
+      Cookies.remove("refresh");
       queryClient.refetchQueries(["me"]);
+      setUser(undefined);
       navigate("/");
     },
     onError: () => {

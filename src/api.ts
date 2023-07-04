@@ -25,7 +25,7 @@ export const apiGetInsight = async (channel: string) => {
     });
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
+    return;
   }
 };
 
@@ -41,7 +41,6 @@ export const apiGetPostList = async ({ channel, page }: IPostListValues) => {
     );
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
     return [];
   }
 };
@@ -55,7 +54,7 @@ export const apiGetPost = async (postPk: string) => {
     });
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
+    return;
   }
 };
 
@@ -110,7 +109,6 @@ export const apiGetBoardList = async () => {
     });
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
     return [];
   }
 };
@@ -129,22 +127,18 @@ export const apiGetSimilarChannels = async (channel: string) => {
     );
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
+    return;
   }
 };
 
 export const apiPostChannel = async (channel_id: string) => {
-  try {
-    const response = await axiosInstance.post(`youtube/${channel_id}/`, null, {
-      headers: {
-        "X-CSRFToken": Cookies.get("csrftoken") || "",
-        Authorization: `Bearer ${Cookies.get("access")}`,
-      },
-    });
-    return response.status;
-  } catch (err) {
-    console.error("Error:", err);
-  }
+  const response = await axiosInstance.post(`youtube/${channel_id}/`, null, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.status;
 };
 
 // Image Upload API
@@ -158,7 +152,7 @@ export const apiGetUploadURL = async () => {
     });
     return response.data;
   } catch (err) {
-    console.error("Error:", err);
+    return;
   }
 };
 
@@ -260,7 +254,6 @@ export const apiDeleteReport = async (pk: string) => {
 
 // User API
 export const apiGetMe = async () => {
-  console.log(process.env.REACT_APP_API_BASE_URL);
   const response = await axiosInstance.get("users/me/", {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",

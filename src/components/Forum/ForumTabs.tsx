@@ -15,7 +15,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
   const onClickColloquiumTab = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     toast({
-      title: "콜로키움에 입장하려면 로그인이 필요합니다.",
+      title: "로그인이 필요합니다.",
       status: "info",
       position: "top",
       duration: 3000,
@@ -40,13 +40,13 @@ export default function ForumTabs({ channel }: IForumTabs) {
         </Link>
         <Link to={`/${channel}/consortium`}>
           <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
-            컨소시움
+            게시판
           </Tab>
         </Link>
         {!isUserLoading && user ? (
           <Link to={`/${channel}/colloquium`}>
             <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
-              콜로키움
+              채팅방
             </Tab>
           </Link>
         ) : (
@@ -56,7 +56,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
             color={"primary"}
             borderTopRadius={"lg"}
           >
-            콜로키움
+            채팅방
           </Tab>
         )}
       </TabList>

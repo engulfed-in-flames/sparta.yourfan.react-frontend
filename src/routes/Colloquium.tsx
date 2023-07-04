@@ -21,11 +21,6 @@ import { IMe, IMessage } from "../type";
 import { useUserOnly } from "../hooks/userHooks";
 import { isUserLoadingAtom, userAtom } from "../atom";
 
-interface IContextUser {
-  isUserLoading: boolean;
-  user: IMe | undefined;
-}
-
 export default function Colloquium() {
   useUserOnly();
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
