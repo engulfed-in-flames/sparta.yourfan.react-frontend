@@ -97,8 +97,7 @@ export default function Home() {
             시각화된 데이터를 확인할 수 있습니다.
           </Text>
           <Text pl={2}>
-            3. 포럼이 생성되면 커뮤니티(<b>컨소시움</b>)와 채팅(<b>콜로키움</b>)
-            기능도 이용할 수 있습니다.
+            3. 포럼이 생성되면 게시판과 채팅방에 입장할 수 있습니다.
           </Text>
           <Text pl={2}>
             4. <b>포럼</b>은 이 모든 공간을 지칭합니다.
@@ -106,10 +105,15 @@ export default function Home() {
         </VStack>
       </HStack>
 
-      <VStack w={"full"} alignItems={"center"} pb={8}>
-        <Heading w={"full"} textAlign={"left"} pb={4}>
-          포럼 목록
-        </Heading>
+      <VStack w={"full"} alignItems={"flex-start"} pb={8}>
+        <HStack>
+          <Heading textAlign={"left"} pb={4}>
+            포럼 목록
+          </Heading>
+          <Text fontSize={"sm"}>
+            🔸포럼은 실제 유튜브 채널 등급에 따라 구분됩니다.
+          </Text>
+        </HStack>
         <Accordion allowToggle w={"full"}>
           {channelRank.map((v, i) => (
             <AccordionItem key={i} py={2}>

@@ -40,13 +40,13 @@ export default function ForumTabs({ channel }: IForumTabs) {
         </Link>
         <Link to={`/${channel}/consortium`}>
           <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
-            컨소시움
+            게시판
           </Tab>
         </Link>
         {!isUserLoading && user ? (
           <Link to={`/${channel}/colloquium`}>
             <Tab fontSize={"xl"} color={"primary"} borderTopRadius={"lg"}>
-              콜로키움
+              채팅방
             </Tab>
           </Link>
         ) : (
@@ -56,7 +56,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
             color={"primary"}
             borderTopRadius={"lg"}
           >
-            콜로키움
+            채팅방
           </Tab>
         )}
       </TabList>
