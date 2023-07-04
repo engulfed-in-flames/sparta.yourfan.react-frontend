@@ -15,7 +15,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
   const onClickColloquiumTab = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     toast({
-      title: "콜로키움에 입장하려면 로그인이 필요합니다.",
+      title: "로그인이 필요합니다.",
       status: "info",
       position: "top",
       duration: 3000,
