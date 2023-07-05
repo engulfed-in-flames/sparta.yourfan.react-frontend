@@ -41,21 +41,26 @@ export default function Colloquium() {
   );
 
   React.useEffect(() => {
-    client.onopen = () => {
-      client.send(
-        JSON.stringify({
-          message: `${user?.nickname}님이 입장했습니다.`,
-          user_nickname: user?.nickname,
-        })
-      );
-    };
-
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
+      console.log(dataFromServer);
+      if (dataFromServer instanceof Array) {
+        setMessages((prevMessage) => {
+          const newMessages = [...prevMessage].reverse();
+          dataFromServer.forEach((el) =>
+            newMessages.push({
+              message: el.message,
+              user_nickname: "익명",
+            })
+          );
+          return newMessages;
+        });
+        return;
+      }
       if (dataFromServer) {
-        if (dataFromServer.type === "user_count") {
+        if (dataFromServer.type && dataFromServer.type === "user_count") {
           setUserCount(dataFromServer.count);
-        } else {
+        } else if (dataFromServer.message) {
           setMessages((prevMessages) => [
             ...prevMessages,
             {
