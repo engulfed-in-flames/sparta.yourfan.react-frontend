@@ -4,6 +4,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -32,6 +33,7 @@ interface ILoginModalProps {
 export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
   const { register, handleSubmit, reset } = useForm<ILoginFormValues>();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const queryClient = useQueryClient();
   const toast = useToast();
   const mutation = useMutation(apiPostLogin, {
@@ -115,12 +117,21 @@ export default function LoginModal({ isOpen, onClose }: ILoginModalProps) {
               />
               <Input
                 {...register("password", { required: true })}
-                type={"password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="비밀번호"
                 required
                 variant={"flushed"}
                 size={"lg"}
               />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? "숨기기" : "보기"}
+                </Button>
+              </InputRightElement>
             </InputGroup>
           </FormControl>
           {errorMessage ? (
