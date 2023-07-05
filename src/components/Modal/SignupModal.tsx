@@ -6,6 +6,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -40,6 +41,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
   const [isRegistering, setIsRegistering] = React.useState(false);
   const [authErrorMessage, setAuthErrorMessage] = React.useState("");
   const [verified, setVerified] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const toast = useToast();
 
   const mutation = useMutation(apiPostSignup, {
@@ -271,7 +273,7 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
                 />
                 <Input
                   {...register("password1", { required: true })}
-                  type={"password"}
+                  type={showPassword ? "text" : "password"}
                   id={"password1"}
                   placeholder="비밀번호"
                   required
@@ -279,6 +281,15 @@ export default function SignupModal({ isOpen, onClose }: IProps) {
                   size={"lg"}
                   errorBorderColor="crimson"
                 />
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? "숨기기" : "보기"}
+                  </Button>
+                </InputRightElement>
               </InputGroup>
             </FormControl>
             <FormControl>
