@@ -13,12 +13,12 @@ import {
   Text,
   VStack,
   useDisclosure,
-  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import WithdrawlModal from "../components/Modal/WithdrawlModal";
 import UpdateMeModal from "../components/Modal/UpdateMeModal";
 import { useUser, useUserOnly } from "../hooks/userHooks";
+import MyPostListModal from "../components/Modal/MyPostListModal";
 
 export default function Me() {
   useUserOnly();
@@ -33,19 +33,11 @@ export default function Me() {
     onOpen: onUpdateMeOpen,
     onClose: onUpdateMeClose,
   } = useDisclosure();
-  const toast = useToast();
-
-  const onClickNotImplementedBtn = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-    toast({
-      title: "현재 구현 중입니다 😭",
-      status: "info",
-      duration: 3000,
-      position: "top",
-    });
-  };
+  const {
+    isOpen: isMyPostListOpen,
+    onOpen: onMyPostListOpen,
+    onClose: onMyPostListClose,
+  } = useDisclosure();
 
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
@@ -82,7 +74,7 @@ export default function Me() {
                   {user.nickname}
                 </Text>
                 <Button
-                  onClick={onClickNotImplementedBtn}
+                  onClick={onMyPostListOpen}
                   variant={"link"}
                   color={"gray.600"}
                   fontSize={"xl"}
@@ -147,6 +139,7 @@ export default function Me() {
         onClose={onUpdateMeClose}
         nickname={user?.nickname || ""}
       />
+      <MyPostListModal isOpen={isMyPostListOpen} onClose={onMyPostListClose} />
     </VStack>
   );
 }

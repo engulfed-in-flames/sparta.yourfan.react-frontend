@@ -253,6 +253,28 @@ export const apiDeleteReport = async (pk: string) => {
 };
 
 // User API
+export const apiPostStaff = async () => {
+  const response = await axiosInstance.post("commnuity/staff/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.status;
+};
+
+export const apiGetPreStaffList = async () => {
+  const response = await axiosInstance.get("commnuity/staff/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.status;
+};
+
 export const apiGetMe = async () => {
   const response = await axiosInstance.get("users/me/", {
     headers: {
@@ -291,6 +313,16 @@ export const apiInvalidateMe = async () => {
   Cookies.remove("access");
   Cookies.remove("refresh");
   return response.status;
+};
+
+export const apiGetMyPostList = async () => {
+  const response = await axiosInstance.get("community/user/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
 };
 
 export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {
