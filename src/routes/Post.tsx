@@ -6,7 +6,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { MouseEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
@@ -59,25 +59,7 @@ export default function Post() {
       });
     },
   });
-  const updateMutation = useMutation(apiPutPost, {
-    onSuccess: () => {
-      toast({
-        title: "게시글이 갱신됐습니다.",
-        status: "success",
-        position: "top",
-        duration: 3000,
-      });
-      navigate(-1);
-    },
-    onError: (err: AxiosError) => {
-      toast({
-        title: "게시글 갱신에 실패했습니다.",
-        status: "error",
-        position: "top",
-        duration: 3000,
-      });
-    },
-  });
+
   const deleteMutation = useMutation(apiDeletePost, {
     onSuccess: () => {
       toast({
@@ -98,27 +80,26 @@ export default function Post() {
     },
   });
 
-  const onClickBanBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickBanBtn = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (post?.board && post?.user?.pk) {
       banMutation.mutate({ custom_url: post.board, user_id: post.user?.pk });
     }
   };
 
-  const onClickUpdateBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickDeleteBtn = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // if (postPk) updateMutation.mutate({pk:postPk,});
+    if (postPk) deleteMutation.mutate(postPk);
+  };
+
+  const onClickNotImplementedBtn = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     toast({
       title: "현재 구현 중입니다 😭",
       status: "info",
       position: "top",
       duration: 3000,
     });
-  };
-
-  const onClickDeleteBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (postPk) deleteMutation.mutate(postPk);
   };
 
   return (
@@ -176,7 +157,7 @@ export default function Post() {
               삭제
             </Button>
             <Button
-              onClick={onClickUpdateBtn}
+              onClick={onClickNotImplementedBtn}
               borderColor={"primary"}
               colorScheme="blackAlpha"
               variant={"outline"}

@@ -14,6 +14,7 @@ import GithubConfirm from "./routes/GithubConfirm";
 import Report from "./routes/Report";
 import ReportWrite from "./routes/ReportWrite";
 import ReportPost from "./routes/ReportPost";
+import PostUpdate from "./routes/PostUpdate";
 
 const myRouter = createBrowserRouter(
   [
@@ -68,6 +69,10 @@ const myRouter = createBrowserRouter(
                 {
                   path: ":postPk",
                   element: <Post />,
+                },
+                {
+                  path: ":postPk/update",
+                  element: <PostUpdate />,
                 },
               ],
             },
