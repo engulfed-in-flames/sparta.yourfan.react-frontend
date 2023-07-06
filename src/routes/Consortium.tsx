@@ -7,7 +7,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import {
   Link,
   useNavigate,
@@ -15,6 +15,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atom";
 
 import ForumTabs from "../components/Forum/ForumTabs";
 import { apiGetPostList, apiPostApplyForStaff } from "../api";
@@ -22,8 +24,6 @@ import { IPost } from "../type";
 import PostList from "../components/Forum/PostList";
 import PostListSkeleton from "../components/Skeleton/PostListSkeleton";
 import PageNav from "../components/Forum/PageNav";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atom";
 
 interface IPostList {
   page: number;
@@ -38,7 +38,7 @@ export default function Consortium() {
   const [searchParams] = useSearchParams();
   const user = useRecoilValue(userAtom);
   const pageParam = Number(searchParams.get("page"));
-  const [page, setPage] = React.useState(pageParam);
+  const [page, setPage] = useState(pageParam);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -65,21 +65,21 @@ export default function Consortium() {
     },
   });
 
-  const onClickToBeStaffBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickToBeStaffBtn = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (user && channel) {
-      mutation.mutate(channel);
-    } else {
+    if (!user || !channel) {
       toast({
         title: "로그인이 필요합니다",
         status: "info",
         position: "top",
         duration: 3000,
       });
+    } else {
+      mutation.mutate(channel);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isNaN(pageParam)) {
       setPage(pageParam);
     } else {
