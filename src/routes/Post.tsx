@@ -14,7 +14,7 @@ import "suneditor/dist/css/suneditor.min.css";
 import { AxiosError } from "axios";
 
 import { useIsDigit } from "../hooks/pageHooks";
-import { apiDeletePost, apiGetPost, apiPutPost } from "../api";
+import { apiBanUser, apiDeletePost, apiGetPost, apiPutPost } from "../api";
 import { IPost } from "../type";
 import { useUser } from "../hooks/userHooks";
 
@@ -40,6 +40,25 @@ export default function Post() {
     () => apiGetPost(String(postPk))
   );
 
+  const banMutation = useMutation(apiBanUser, {
+    onSuccess: () => {
+      toast({
+        title: "사용자 차단이 완료됐습니다",
+        status: "success",
+        position: "top",
+        duration: 3000,
+      });
+      navigate(-1);
+    },
+    onError: (err: AxiosError) => {
+      toast({
+        title: "사용자 차단에 실패했습니다",
+        status: "error",
+        position: "top",
+        duration: 3000,
+      });
+    },
+  });
   const updateMutation = useMutation(apiPutPost, {
     onSuccess: () => {
       toast({
@@ -79,6 +98,13 @@ export default function Post() {
     },
   });
 
+  const onClickBanBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (post?.board && post?.user?.pk) {
+      banMutation.mutate({ custom_url: post.board, user_id: post.user?.pk });
+    }
+  };
+
   const onClickUpdateBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     // if (postPk) updateMutation.mutate({pk:postPk,});
@@ -110,7 +136,14 @@ export default function Post() {
             제목: {post.title}
           </Heading>
           <HStack w={"full"} justifyContent={"space-between"}>
-            <Text fontSize={20}>작성자: {post.user?.nickname}</Text>
+            <HStack justifyContent={"space-between"}>
+              <Text fontSize={20}>작성자: {post.user?.nickname}</Text>
+              {user && post.staffs.includes(user.pk) ? (
+                <Button onClick={onClickBanBtn} colorScheme={"red"}>
+                  밴하기
+                </Button>
+              ) : null}
+            </HStack>
             <Text fontSize={20}>
               {new Date(post.created_at)
                 .toLocaleString("en-US", options)

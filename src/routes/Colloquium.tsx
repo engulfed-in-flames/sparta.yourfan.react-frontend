@@ -43,7 +43,6 @@ export default function Colloquium() {
   React.useEffect(() => {
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
-      console.log(dataFromServer);
       if (dataFromServer instanceof Array) {
         setMessages((prevMessage) => {
           const newMessages = [...prevMessage].reverse();

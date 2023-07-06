@@ -17,7 +17,7 @@ export default function MyPostList({ postList }: IProps) {
     <SimpleGrid w={"full"} columns={1} gap={2} gridAutoFlow={"row"}>
       <GridItem>
         <SimpleGrid
-          columns={4}
+          columns={3}
           templateColumns={"0.5fr 3fr 1fr"}
           textAlign={"center"}
           fontWeight={"bold"}
@@ -32,7 +32,7 @@ export default function MyPostList({ postList }: IProps) {
         return (
           <GridItem key={index}>
             <Link to={`${post.id}`}>
-              <SimpleGrid columns={4} templateColumns={"0.5fr 3fr 1fr"}>
+              <SimpleGrid columns={3} templateColumns={"0.5fr 3fr 1fr"}>
                 <Text textAlign={"center"} whiteSpace={"nowrap"}>
                   {post.id}
                 </Text>

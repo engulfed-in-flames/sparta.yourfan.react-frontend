@@ -14,14 +14,16 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import ForumTabs from "../components/Forum/ForumTabs";
-import { apiGetPostList } from "../api";
+import { apiGetPostList, apiPostApplyForStaff } from "../api";
 import { IPost } from "../type";
 import PostList from "../components/Forum/PostList";
 import PostListSkeleton from "../components/Skeleton/PostListSkeleton";
 import PageNav from "../components/Forum/PageNav";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atom";
 
 interface IPostList {
   page: number;
@@ -34,26 +36,47 @@ interface IPostList {
 export default function Consortium() {
   const { channel } = useParams();
   const [searchParams] = useSearchParams();
+  const user = useRecoilValue(userAtom);
   const pageParam = Number(searchParams.get("page"));
   const [page, setPage] = React.useState(pageParam);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const { isLoading: isPostListLoading, data: postList } = useQuery<IPostList>(
     ["postList", channel, page],
     () => apiGetPostList({ channel: channel!, page: page! })
   );
-  const toast = useToast();
+  const mutation = useMutation(apiPostApplyForStaff, {
+    onSuccess: () => {
+      toast({
+        title: "관리자 신청에 성공했습니다.",
+        status: "success",
+        position: "top",
+        duration: 3000,
+      });
+    },
+    onError: () => {
+      toast({
+        title: "관리자 신청에 실패했습니다.",
+        status: "error",
+        position: "top",
+        duration: 3000,
+      });
+    },
+  });
 
-  const onClickNotImplementedBtn = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const onClickToBeStaffBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    toast({
-      title: "현재 구현 중입니다 😭",
-      status: "info",
-      position: "top",
-      duration: 3000,
-    });
+    if (user && channel) {
+      mutation.mutate(channel);
+    } else {
+      toast({
+        title: "로그인이 필요합니다",
+        status: "info",
+        position: "top",
+        duration: 3000,
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -82,7 +105,7 @@ export default function Consortium() {
         {postList && (
           <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
             <HStack>
-              <Button onClick={onClickNotImplementedBtn} variant={"outline"}>
+              <Button onClick={onClickToBeStaffBtn} variant={"outline"}>
                 컨소시움 관리자 신청
               </Button>
             </HStack>

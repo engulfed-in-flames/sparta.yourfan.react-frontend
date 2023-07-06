@@ -21,7 +21,17 @@ export interface IUser {
   pk: number;
   email: string;
   nickname: string;
-  is_active: string;
+  is_active: boolean;
+  is_writer: boolean;
+}
+
+export interface IPreStaff {
+  id: number;
+  user: IUser;
+  board: string;
+  created_at: string;
+  updated_at: string;
+  status: string;
 }
 
 export interface IChannel {
@@ -71,6 +81,8 @@ export interface IBoard {
 export interface IPost {
   id: number;
   user?: IUser;
+  staffs: number[];
+  board: string;
   title: string;
   content: string;
   bookmarked_by_count: number;
@@ -136,6 +148,16 @@ export interface IUpdateMeFormFiedls {
 export interface IUpdateMeFormValues {
   nickname?: string;
   avatar?: string;
+}
+
+export interface IPatchStaffValues {
+  id: number;
+  status: string;
+}
+
+export interface IBanUserValues {
+  custom_url: string;
+  user_id: number;
 }
 
 // hooks
