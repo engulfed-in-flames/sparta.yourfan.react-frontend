@@ -6,7 +6,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { MouseEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
@@ -14,7 +14,7 @@ import "suneditor/dist/css/suneditor.min.css";
 import { AxiosError } from "axios";
 
 import { useIsDigit } from "../hooks/pageHooks";
-import { apiDeletePost, apiGetPost, apiPutPost } from "../api";
+import { apiBanUser, apiDeletePost, apiGetPost, apiPutPost } from "../api";
 import { IPost } from "../type";
 import { useUser } from "../hooks/userHooks";
 
@@ -40,10 +40,10 @@ export default function Post() {
     () => apiGetPost(String(postPk))
   );
 
-  const updateMutation = useMutation(apiPutPost, {
+  const banMutation = useMutation(apiBanUser, {
     onSuccess: () => {
       toast({
-        title: "게시글이 갱신됐습니다.",
+        title: "사용자 차단이 완료됐습니다",
         status: "success",
         position: "top",
         duration: 3000,
@@ -52,13 +52,14 @@ export default function Post() {
     },
     onError: (err: AxiosError) => {
       toast({
-        title: "게시글 갱신에 실패했습니다.",
+        title: "사용자 차단에 실패했습니다",
         status: "error",
         position: "top",
         duration: 3000,
       });
     },
   });
+
   const deleteMutation = useMutation(apiDeletePost, {
     onSuccess: () => {
       toast({
@@ -79,20 +80,26 @@ export default function Post() {
     },
   });
 
-  const onClickUpdateBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickBanBtn = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // if (postPk) updateMutation.mutate({pk:postPk,});
+    if (post?.board && post?.user?.pk) {
+      banMutation.mutate({ custom_url: post.board, user_id: post.user?.pk });
+    }
+  };
+
+  const onClickDeleteBtn = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    if (postPk) deleteMutation.mutate(postPk);
+  };
+
+  const onClickNotImplementedBtn = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     toast({
       title: "현재 구현 중입니다 😭",
       status: "info",
       position: "top",
       duration: 3000,
     });
-  };
-
-  const onClickDeleteBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (postPk) deleteMutation.mutate(postPk);
   };
 
   return (
@@ -110,7 +117,14 @@ export default function Post() {
             제목: {post.title}
           </Heading>
           <HStack w={"full"} justifyContent={"space-between"}>
-            <Text fontSize={20}>작성자: {post.user?.nickname}</Text>
+            <HStack justifyContent={"space-between"}>
+              <Text fontSize={20}>작성자: {post.user?.nickname}</Text>
+              {user && post.staffs.includes(user.pk) ? (
+                <Button onClick={onClickBanBtn} colorScheme={"red"}>
+                  밴하기
+                </Button>
+              ) : null}
+            </HStack>
             <Text fontSize={20}>
               {new Date(post.created_at)
                 .toLocaleString("en-US", options)
@@ -143,7 +157,7 @@ export default function Post() {
               삭제
             </Button>
             <Button
-              onClick={onClickUpdateBtn}
+              onClick={onClickNotImplementedBtn}
               borderColor={"primary"}
               colorScheme="blackAlpha"
               variant={"outline"}
