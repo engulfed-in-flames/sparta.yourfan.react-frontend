@@ -9,9 +9,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+
 import { apiGetMyPostList } from "../../api";
 import { IPost } from "../../type";
-import MyPostList from "../MyPostList";
+import MyPostList from "../Me/MyPostList";
 
 interface IProps {
   isOpen: boolean;
