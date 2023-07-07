@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { IPreStaff } from "../../type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPatchAllowStaff, apiPatchNotAllowStaff } from "../../api";
 
 interface IProps {
@@ -26,6 +26,7 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 export default function BoardPreStaffList({ isLoading, data }: IProps) {
+  const queryClinet = useQueryClient();
   const toast = useToast();
   const allowMutation = useMutation(apiPatchAllowStaff, {
     onSuccess: () => {
@@ -54,6 +55,7 @@ export default function BoardPreStaffList({ isLoading, data }: IProps) {
         position: "top",
         duration: 3000,
       });
+      queryClinet.refetchQueries(["preStaffList"]);
     },
     onError: () => {
       toast({

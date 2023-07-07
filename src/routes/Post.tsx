@@ -91,17 +91,6 @@ export default function Post() {
     event.preventDefault();
     if (postPk) deleteMutation.mutate(postPk);
   };
-
-  const onClickNotImplementedBtn = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toast({
-      title: "현재 구현 중입니다 😭",
-      status: "info",
-      position: "top",
-      duration: 3000,
-    });
-  };
-
   return (
     <VStack
       w={"80%"}
@@ -157,7 +146,7 @@ export default function Post() {
               삭제
             </Button>
             <Button
-              onClick={onClickNotImplementedBtn}
+              onClick={() => navigate("update")}
               borderColor={"primary"}
               colorScheme="blackAlpha"
               variant={"outline"}
