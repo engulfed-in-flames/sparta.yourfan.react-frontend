@@ -8,7 +8,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SunEditor from "suneditor-react";
@@ -33,6 +33,15 @@ export default function PostUpdate() {
     ["post", postPk],
     () => apiGetPost(String(postPk))
   );
+
+  useEffect(() => {
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+
+      console.log(title, content);
+    }
+  }, [post]);
 
   const updateMutation = useMutation(apiPutPost, {
     onSuccess: () => {
