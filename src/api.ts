@@ -6,6 +6,7 @@ import {
   IPatchStaffValues,
   IPostListValues,
   IPostValues,
+  IPutPostValues,
   IReportValues,
   ISingupFormValues,
   IUpdateMeFormValues,
@@ -78,10 +79,15 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   return response.status;
 };
 
-export const apiPutPost = async (postPk: string) => {
+export const apiPutPost = async ({
+  postPk,
+  title,
+  content,
+  board,
+}: IPutPostValues) => {
   const response = await axiosInstance.put(
     `community/post/${postPk}/`,
-    {},
+    { title, content, board },
     {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",

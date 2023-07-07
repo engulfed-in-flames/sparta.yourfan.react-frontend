@@ -121,6 +121,13 @@ export interface IPostValues {
   content: string;
 }
 
+export interface IPutPostValues {
+  postPk: string;
+  title: string;
+  content: string;
+  board: string;
+}
+
 export interface ILoginFormValues {
   email: string;
   password: string;

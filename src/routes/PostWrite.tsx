@@ -22,7 +22,7 @@ import { useUserOnly } from "../hooks/userHooks";
 import { upload } from "@testing-library/user-event/dist/upload";
 import { AxiosError } from "axios";
 
-export default function Write() {
+export default function PostWrite() {
   useUserOnly();
   const { channel } = useParams();
   const [content, setContent] = React.useState("");
