@@ -24,6 +24,7 @@ import { IPost } from "../type";
 import PostList from "../components/Forum/PostList";
 import PostListSkeleton from "../components/Skeleton/PostListSkeleton";
 import PageNav from "../components/Forum/PageNav";
+import { AxiosError } from "axios";
 
 interface IPostList {
   page: number;
@@ -49,19 +50,28 @@ export default function Consortium() {
   const mutation = useMutation(apiPostApplyForStaff, {
     onSuccess: () => {
       toast({
-        title: "관리자 신청에 성공했습니다.",
+        title: "관리자 신청에 성공했습니다",
         status: "success",
         position: "top",
         duration: 3000,
       });
     },
-    onError: () => {
-      toast({
-        title: "관리자 신청에 실패했습니다.",
-        status: "error",
-        position: "top",
-        duration: 3000,
-      });
+    onError: (err: AxiosError) => {
+      if (err.response?.status) {
+        toast({
+          title: "이미 신청된 상태입니다",
+          status: "info",
+          position: "top",
+          duration: 3000,
+        });
+      } else {
+        toast({
+          title: "관리자 신청에 실패했습니다",
+          status: "error",
+          position: "top",
+          duration: 3000,
+        });
+      }
     },
   });
 

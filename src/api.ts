@@ -149,6 +149,23 @@ export const apiPostChannel = async (channel_id: string) => {
   return response.status;
 };
 
+export const apiGetBannedOrNot = async (custom_url: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `chat/rooms/${custom_url}/check/`,
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken") || "",
+          Authorization: `Bearer ${Cookies.get("access")}`,
+        },
+      }
+    );
+    return response.status;
+  } catch {
+    return 401;
+  }
+};
+
 // Image Upload API
 export const apiGetUploadURL = async () => {
   try {

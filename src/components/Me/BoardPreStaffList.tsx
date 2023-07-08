@@ -36,6 +36,7 @@ export default function BoardPreStaffList({ isLoading, data }: IProps) {
         position: "top",
         duration: 3000,
       });
+      queryClinet.refetchQueries(["preStaffList"]);
     },
     onError: () => {
       toast({

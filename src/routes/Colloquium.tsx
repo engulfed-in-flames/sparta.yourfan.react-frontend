@@ -18,14 +18,14 @@ import Cookies from "js-cookie";
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
 import { IMe, IMessage } from "../type";
-import { useUserOnly } from "../hooks/userHooks";
 import { isUserLoadingAtom, userAtom } from "../atom";
+import { useNotBannedUserOnly } from "../hooks/userHooks";
 
 export default function Colloquium() {
-  useUserOnly();
+  const { channel } = useParams();
+  useNotBannedUserOnly(channel!);
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
   const user = useRecoilValue<IMe | undefined>(userAtom);
-  const { channel } = useParams();
   const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const accessToken = Cookies.get("access");
