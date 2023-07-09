@@ -57,7 +57,7 @@ export default function Consortium() {
       });
     },
     onError: (err: AxiosError) => {
-      if (err.response?.status) {
+      if (err.response?.status === 403) {
         toast({
           title: "이미 신청된 상태입니다",
           status: "info",
