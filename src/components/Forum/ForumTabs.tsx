@@ -103,7 +103,9 @@ export default function ForumTabs({ channel }: IForumTabs) {
       </VStack>
       <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
         {/* <Box w={"15%"} /> */}
-        <Heading textAlign={"center"}>{board.title} 채널의 포럼</Heading>
+        <Heading w={"full"} textAlign={"center"} fontSize={"3xl"}>
+          {board.title} 채널의 포럼
+        </Heading>
         {/* <Box w="15%">
           {!isUserLoading &&
           user &&
