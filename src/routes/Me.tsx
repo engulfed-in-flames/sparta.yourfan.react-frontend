@@ -85,10 +85,7 @@ export default function Me() {
               <MyForumList />
 
               {user.is_admin && !isPreStaffListLoading && preStaffList ? (
-                <BoardPreStaffList
-                  isLoading={isPreStaffListLoading}
-                  data={preStaffList}
-                />
+                <BoardPreStaffList data={preStaffList} />
               ) : null}
             </Flex>
           </GridItem>
