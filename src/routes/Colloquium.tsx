@@ -19,11 +19,11 @@ import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
 import { IMe, IMessage } from "../type";
 import { isUserLoadingAtom, userAtom } from "../atom";
-import { useNotBannedUserOnly } from "../hooks/userHooks";
+import { useUserOnly } from "../hooks/userHooks";
 
 export default function Colloquium() {
   const { channel } = useParams();
-  useNotBannedUserOnly(channel!);
+  useUserOnly();
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
   const user = useRecoilValue<IMe | undefined>(userAtom);
   const [userCount, setUserCount] = React.useState(0);
