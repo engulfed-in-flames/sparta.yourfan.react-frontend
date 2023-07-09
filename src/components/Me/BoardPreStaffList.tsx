@@ -15,7 +15,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPatchAllowStaff, apiPatchNotAllowStaff } from "../../api";
 
 interface IProps {
-  isLoading: boolean;
   data: IPreStaff[];
 }
 
@@ -25,7 +24,7 @@ const options: Intl.DateTimeFormatOptions = {
   day: "2-digit",
 };
 
-export default function BoardPreStaffList({ isLoading, data }: IProps) {
+export default function BoardPreStaffList({ data }: IProps) {
   const queryClinet = useQueryClient();
   const toast = useToast();
   const allowMutation = useMutation(apiPatchAllowStaff, {
