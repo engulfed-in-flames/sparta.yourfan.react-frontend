@@ -96,7 +96,7 @@ export default function Colloquium() {
   return (
     <>
       {!isUserLoading && user && user.nickname !== undefined ? (
-        <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
+        <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"} p={8}>
           {channel ? <ForumTabs channel={channel} /> : null}
           <VStack w={"full"} p={8}>
             <Flex
@@ -105,6 +105,7 @@ export default function Colloquium() {
               h={"600px"}
               shadow={"inner"}
               borderRadius={"lg"}
+              mb={8}
             >
               <Text
                 position={"absolute"}

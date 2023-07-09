@@ -109,67 +109,52 @@ export default function Header({ isUserLoading, me }: IHeaderProps) {
           </Link>
         </ListItem>
       </UnorderedList>
-      <Flex
-        w={"30%"}
-        alignItems={"center"}
-        justifyContent={"space-between"}
-        pr={4}
-      >
-        <Input
-          type={"search"}
-          placeholder={"현재 구현 중입니다 😭"}
-          focusBorderColor={"youtubeRed"}
-          w={"70%"}
-          minW={"280px"}
-          bgColor={"white"}
-          borderRadius={"full"}
-        />
-        <Menu>
-          <MenuButton
-            as={Button}
-            leftIcon={<CgMenu />}
-            rightIcon={
-              <Avatar
-                src={me?.avatar ? me.avatar : ""}
-                size={"sm"}
-                bgColor={"primary"}
-              />
-            }
-            size={"md"}
-            minW={24}
-            h={12}
-            bg={"white"}
-            borderRadius={"3xl"}
-            boxShadow={"md"}
-            ml={4}
-          ></MenuButton>
-          <MenuList>
-            {!isUserLoading && me ? (
-              <>
-                <Link to="/me">
-                  <MenuItem>
-                    <Text fontSize={18}>마이페이지</Text>
-                  </MenuItem>
-                </Link>
-                <MenuItem onClick={onClickLogout}>
-                  <Text fontSize={18} color={"gray.400"}>
-                    로그아웃
-                  </Text>
+
+      <Menu>
+        <MenuButton
+          as={Button}
+          leftIcon={<CgMenu />}
+          rightIcon={
+            <Avatar
+              src={me?.avatar ? me.avatar : ""}
+              size={"sm"}
+              bgColor={"primary"}
+            />
+          }
+          size={"md"}
+          minW={24}
+          h={12}
+          bg={"white"}
+          borderRadius={"3xl"}
+          boxShadow={"md"}
+          ml={4}
+        ></MenuButton>
+        <MenuList>
+          {!isUserLoading && me ? (
+            <>
+              <Link to="/me">
+                <MenuItem>
+                  <Text fontSize={18}>마이페이지</Text>
                 </MenuItem>
-              </>
-            ) : (
-              <>
-                <MenuItem onClick={onLoginOpen}>
-                  <Text fontSize={18}>로그인</Text>
-                </MenuItem>
-                <MenuItem onClick={onSignupOpen}>
-                  <Text fontSize={18}>회원가입</Text>
-                </MenuItem>
-              </>
-            )}
-          </MenuList>
-        </Menu>
-      </Flex>
+              </Link>
+              <MenuItem onClick={onClickLogout}>
+                <Text fontSize={18} color={"gray.400"}>
+                  로그아웃
+                </Text>
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <MenuItem onClick={onLoginOpen}>
+                <Text fontSize={18}>로그인</Text>
+              </MenuItem>
+              <MenuItem onClick={onSignupOpen}>
+                <Text fontSize={18}>회원가입</Text>
+              </MenuItem>
+            </>
+          )}
+        </MenuList>
+      </Menu>
       <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
       <SignupModal isOpen={isSignupOpen} onClose={onSignupClose} />
     </Flex>

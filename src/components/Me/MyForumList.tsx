@@ -12,7 +12,7 @@ export default function MyForumList() {
   return (
     <>
       <Heading fontSize={"2xl"} pb={4}>
-        내 포럼 목록
+        내가 구독한 포럼 목록
       </Heading>
       <VStack
         w={"full"}
@@ -22,7 +22,6 @@ export default function MyForumList() {
         borderRadius={"lg"}
         boxShadow={"inner"}
       >
-        <Heading>현재 구현 중입니다 😭</Heading>
         {/* {data
                 .filter((board) => board.rank === v.rank)
                 .map((board, i) => (
