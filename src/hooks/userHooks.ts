@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Cookies from "js-cookie";
 import { IMe } from "../type";
-import { apiGetMe } from "../api";
+import { apiGetBannedOrNot, apiGetMe } from "../api";
 import { isUserLoadingAtom, userAtom } from "../atom";
+import { useToast } from "@chakra-ui/react";
 
 export const useUser = () => {
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
@@ -44,4 +45,25 @@ export const useUserOnly = () => {
   if (!Cookies.get("access")) {
     navigate("/");
   }
+};
+
+export const useNotBannedUserOnly = async (custom_url: string) => {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const { isLoading, data: statusCode } = useQuery(
+    ["BannedOrNot", custom_url],
+    () => apiGetBannedOrNot(custom_url)
+  );
+
+  useEffect(() => {
+    if (custom_url && !isLoading && Number(statusCode) !== 200) {
+      navigate("/");
+      toast({
+        title: "차단된 사용자이므로 접근이 제한됩니다",
+        status: "warning",
+        position: "top",
+        duration: 3000,
+      });
+    }
+  }, [custom_url, statusCode, isLoading]);
 };

@@ -10,7 +10,7 @@
   <br>
   <br>
 
-## ⚙️ 스택
+## 🔩 스택
 
 ### Build 💕
 
@@ -46,32 +46,16 @@ $ npm install
 
 #### 유저 관련
 
-- 로그인 및 회원가입 기능- 이메일 인증 및 소셜 로그인(카카오톡, 깃허브, 구글)
+- 로그인 및 회원가입 기능- 휴대폰 인증 및 소셜 로그인(카카오톡, 깃허브, 구글)
 - 회원 정보 변경 및 회원탈퇴 기능
-- 포럼 관리자 기능 (유저 차단, 게시글 삭제 등)
+- 포럼 관리자 기능 (게시글 작성 제한, 채팅방 접근 제한 등)
 
 ### 포럼 관련
 
-- 구글 API로 크롤링한 유튜브 채널 데이터를 분석하여 수치화 또는 시각화된 결과를 제공 (인사이트)
-- 커뮤니티 기능 제공 (컨소시움)
-- 웹소켓 기반 채팅 기능 제공 (콜로키움)
+- 구글 API로 크롤링한 유튜브 채널 데이터를 분석하여 수치화 및 시각화된 결과를 제공
+- 게시판 제공
+- 채팅방 제공
 
 #### 신고하기
 
 - 오류나 불편 사항 신고 기능
-
----
-
-## 🚩 API 명세
-
-[API 명세](https://docs.google.com/spreadsheets/d/135v9VvDFzHNy2wzKk5ZMbizSB2fBHj7W5nrc4eNkrMs/edit#gid=0)
-
-## 🚩 와이어 프레임
-
-[와이어 프레임](https://www.figma.com/file/R0bb46v2NdDEoHdE3wGZqG/Shortcut?type=design&node-id=1%3A10&t=n8tSgi9OvRzIBrbf-1)
-
-## 🚩 타임라인
-
-[타임라인](https://docs.google.com/spreadsheets/d/1qywpOfHa5c4m72p-sscBAMGw2m0sWjcGMaSw6MOqikg/edit#gid=1115838130)
-
----

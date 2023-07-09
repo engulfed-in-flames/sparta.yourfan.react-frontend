@@ -20,8 +20,9 @@ import "suneditor/dist/css/suneditor.min.css";
 import { UploadBeforeHandler } from "suneditor-react/dist/types/upload";
 import { useUserOnly } from "../hooks/userHooks";
 import { upload } from "@testing-library/user-event/dist/upload";
+import { AxiosError } from "axios";
 
-export default function Write() {
+export default function PostWrite() {
   useUserOnly();
   const { channel } = useParams();
   const [content, setContent] = React.useState("");
@@ -41,12 +42,20 @@ export default function Write() {
       queryClient.refetchQueries(["me"]);
       navigate(`/${channel}/consortium`);
     },
-    onError: () => {
-      toast({
-        title: "글 등록에 실패했습니다.",
-        status: "error",
-        position: "bottom-right",
-      });
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 403) {
+        toast({
+          title: "차단된 사용자이므로 글쓰기 권한이 없습니다",
+          status: "warning",
+          position: "bottom-right",
+        });
+      } else {
+        toast({
+          title: "글 등록에 실패했습니다.",
+          status: "error",
+          position: "bottom-right",
+        });
+      }
     },
   });
   // const uploadImageMutation = useMutation(apiUploadImage, {

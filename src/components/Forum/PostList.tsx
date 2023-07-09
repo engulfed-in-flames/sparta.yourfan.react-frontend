@@ -46,10 +46,18 @@ export default function PostList({ page, channel, postList }: IProps) {
             <Text textAlign={"center"} whiteSpace={"nowrap"}>
               번호
             </Text>
-            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+            <Text
+              textAlign={"center"}
+              whiteSpace={"nowrap"}
+              overflow={"hidden"}
+            >
               제목
             </Text>
-            <Text textAlign={"center"} whiteSpace={"nowrap"}>
+            <Text
+              textAlign={"center"}
+              whiteSpace={"nowrap"}
+              textOverflow={"ellipsis"}
+            >
               작성자
             </Text>
             <Text textAlign={"center"} whiteSpace={"nowrap"}>

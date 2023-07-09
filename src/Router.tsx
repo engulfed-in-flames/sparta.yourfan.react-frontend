@@ -6,7 +6,6 @@ import Me from "./routes/Me";
 import Insight from "./routes/Insight";
 import Colloquium from "./routes/Colloquium";
 import Consortium from "./routes/Consortium";
-import Write from "./routes/Write";
 import Post from "./routes/Post";
 import RedirectToConsortium from "./components/Redirect/RedirectToConsortium";
 import KakaoConfirm from "./routes/KakaoConfirm";
@@ -14,6 +13,8 @@ import GithubConfirm from "./routes/GithubConfirm";
 import Report from "./routes/Report";
 import ReportWrite from "./routes/ReportWrite";
 import ReportPost from "./routes/ReportPost";
+import PostUpdate from "./routes/PostUpdate";
+import PostWrite from "./routes/PostWrite";
 
 const myRouter = createBrowserRouter(
   [
@@ -69,6 +70,10 @@ const myRouter = createBrowserRouter(
                   path: ":postPk",
                   element: <Post />,
                 },
+                {
+                  path: ":postPk/update",
+                  element: <PostUpdate />,
+                },
               ],
             },
             {
@@ -77,7 +82,7 @@ const myRouter = createBrowserRouter(
             },
             {
               path: "write",
-              element: <Write />,
+              element: <PostWrite />,
             },
             {
               path: "*",

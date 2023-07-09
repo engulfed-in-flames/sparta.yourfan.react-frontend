@@ -1,9 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
+  IBanUserValues,
   ILoginFormValues,
+  IPatchStaffValues,
   IPostListValues,
   IPostValues,
+  IPutPostValues,
   IReportValues,
   ISingupFormValues,
   IUpdateMeFormValues,
@@ -76,10 +79,15 @@ export const apiPostPost = async ({ board, title, content }: IPostValues) => {
   return response.status;
 };
 
-export const apiPutPost = async (postPk: string) => {
+export const apiPutPost = async ({
+  postPk,
+  title,
+  content,
+  board,
+}: IPutPostValues) => {
   const response = await axiosInstance.put(
     `community/post/${postPk}/`,
-    {},
+    { title, content, board },
     {
       headers: {
         "X-CSRFToken": Cookies.get("csrftoken") || "",
@@ -94,6 +102,29 @@ export const apiDeletePost = async (postPk: string) => {
     headers: {
       "X-CSRFToken": Cookies.get("csrftoken") || "",
       Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
+};
+
+export const apiPostSubscribeBoard = async (custom_url: string) => {
+  const response = await axiosInstance.post(
+    `community/board/${custom_url}/subscribe/`,
+    null,
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiGetBoard = async (custom_url: string) => {
+  const response = await axiosInstance.get(`community/board/${custom_url}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
     },
   });
   return response.data;
@@ -139,6 +170,23 @@ export const apiPostChannel = async (channel_id: string) => {
     },
   });
   return response.status;
+};
+
+export const apiGetBannedOrNot = async (custom_url: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `chat/rooms/${custom_url}/check/`,
+      {
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken") || "",
+          Authorization: `Bearer ${Cookies.get("access")}`,
+        },
+      }
+    );
+    return response.status;
+  } catch {
+    return 401;
+  }
 };
 
 // Image Upload API
@@ -253,6 +301,80 @@ export const apiDeleteReport = async (pk: string) => {
 };
 
 // User API
+
+export const apiBanUser = async ({ custom_url, user_id }: IBanUserValues) => {
+  const response = await axiosInstance.post(
+    `community/board/${custom_url}/ban/`,
+    { user_id },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiPostApplyForStaff = async (custom_url: string) => {
+  const response = await axiosInstance.post(
+    "community/staff/",
+    { board: custom_url },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+
+  return response.status;
+};
+
+export const apiGetPreStaffList = async () => {
+  const response = await axiosInstance.get("community/staff/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const apiPatchAllowStaff = async ({ id, status }: IPatchStaffValues) => {
+  const response = await axiosInstance.patch(
+    `community/staff/${id}/`,
+    { status },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const apiPatchNotAllowStaff = async ({
+  id,
+  status,
+}: IPatchStaffValues) => {
+  const response = await axiosInstance.patch(
+    `community/staff/${id}/`,
+    { status },
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
 export const apiGetMe = async () => {
   const response = await axiosInstance.get("users/me/", {
     headers: {
@@ -291,6 +413,16 @@ export const apiInvalidateMe = async () => {
   Cookies.remove("access");
   Cookies.remove("refresh");
   return response.status;
+};
+
+export const apiGetMyPostList = async () => {
+  const response = await axiosInstance.get("community/user/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
 };
 
 export const apiPostLogin = async ({ email, password }: ILoginFormValues) => {

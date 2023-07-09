@@ -18,14 +18,14 @@ import Cookies from "js-cookie";
 import ForumTabs from "../components/Forum/ForumTabs";
 import Message from "../components/Forum/Message";
 import { IMe, IMessage } from "../type";
-import { useUserOnly } from "../hooks/userHooks";
 import { isUserLoadingAtom, userAtom } from "../atom";
+import { useNotBannedUserOnly } from "../hooks/userHooks";
 
 export default function Colloquium() {
-  useUserOnly();
+  const { channel } = useParams();
+  useNotBannedUserOnly(channel!);
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
   const user = useRecoilValue<IMe | undefined>(userAtom);
-  const { channel } = useParams();
   const [userCount, setUserCount] = React.useState(0);
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const accessToken = Cookies.get("access");
@@ -43,7 +43,6 @@ export default function Colloquium() {
   React.useEffect(() => {
     client.onmessage = (message) => {
       const dataFromServer = JSON.parse(message.data.toString());
-      console.log(dataFromServer);
       if (dataFromServer instanceof Array) {
         setMessages((prevMessage) => {
           const newMessages = [...prevMessage].reverse();
@@ -97,7 +96,7 @@ export default function Colloquium() {
   return (
     <>
       {!isUserLoading && user && user.nickname !== undefined ? (
-        <VStack w={"80%"} h={"768px"} my={24} mx={"auto"} p={8}>
+        <VStack w={"80%"} minH={"768px"} my={24} mx={"auto"} p={8}>
           {channel ? <ForumTabs channel={channel} /> : null}
           <VStack w={"full"} p={8}>
             <Flex
@@ -106,6 +105,7 @@ export default function Colloquium() {
               h={"600px"}
               shadow={"inner"}
               borderRadius={"lg"}
+              mb={8}
             >
               <Text
                 position={"absolute"}
