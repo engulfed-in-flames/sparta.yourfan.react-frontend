@@ -10,6 +10,7 @@ export interface IMe {
   nickname: string;
   posts: number[];
   reports: number[];
+  subscribed_boards: number[];
   user_type: string;
   is_active: boolean;
   is_writer: boolean;

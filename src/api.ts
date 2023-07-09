@@ -107,6 +107,29 @@ export const apiDeletePost = async (postPk: string) => {
   return response.data;
 };
 
+export const apiPostSubscribeBoard = async (custom_url: string) => {
+  const response = await axiosInstance.post(
+    `community/board/${custom_url}/subscribe/`,
+    null,
+    {
+      headers: {
+        "X-CSRFToken": Cookies.get("csrftoken") || "",
+        Authorization: `Bearer ${Cookies.get("access")}`,
+      },
+    }
+  );
+  return response.status;
+};
+
+export const apiGetBoard = async (custom_url: string) => {
+  const response = await axiosInstance.get(`community/board/${custom_url}/`, {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+    },
+  });
+  return response.data;
+};
+
 export const apiGetBoardList = async () => {
   try {
     const response = await axiosInstance.get("community/board/", {
