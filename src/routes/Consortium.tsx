@@ -57,9 +57,9 @@ export default function Consortium() {
       });
     },
     onError: (err: AxiosError) => {
-      if (err.response?.status) {
+      if (err.response?.status === 401) {
         toast({
-          title: "이미 신청된 상태입니다",
+          title: "관리자 신청이 이미 접수됐습니다",
           status: "info",
           position: "top",
           duration: 3000,
@@ -116,7 +116,7 @@ export default function Consortium() {
           <Grid gridTemplateColumns={"0.5fr 1fr 0.5fr"} gap={8} mt={8} px={8}>
             <HStack>
               <Button onClick={onClickToBeStaffBtn} variant={"outline"}>
-                컨소시움 관리자 신청
+                게시판 관리자 신청
               </Button>
             </HStack>
             <PageNav

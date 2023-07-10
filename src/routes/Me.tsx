@@ -42,9 +42,7 @@ export default function Me() {
 
   const { isLoading: isPreStaffListLoading, data: preStaffList } = useQuery<
     IPreStaff[]
-  >(["preStaffList"], apiGetPreStaffList, {
-    enabled: user?.is_admin,
-  });
+  >(["preStaffList"], apiGetPreStaffList);
 
   return (
     <VStack w={"90%"} minW={"1280px"} py={12} my={24} mx={"auto"}>
@@ -86,13 +84,8 @@ export default function Me() {
 
               <MyForumList />
 
-              {user.is_admin ? (
-                !isPreStaffListLoading && preStaffList ? (
-                  <BoardPreStaffList
-                    isLoading={isPreStaffListLoading}
-                    data={preStaffList}
-                  />
-                ) : null
+              {user.is_admin && !isPreStaffListLoading && preStaffList ? (
+                <BoardPreStaffList data={preStaffList} />
               ) : null}
             </Flex>
           </GridItem>

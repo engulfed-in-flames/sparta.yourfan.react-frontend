@@ -36,7 +36,7 @@ export default function ForumList({ isLoading, data }: IProps) {
     event.preventDefault();
     const { id } = event.currentTarget;
     if (id) {
-      navigate(`${id}/consortium?page=1`);
+      navigate(`/${id}/consortium?page=1`);
     }
   };
 

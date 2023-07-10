@@ -103,10 +103,12 @@ export default function ForumTabs({ channel }: IForumTabs) {
       </VStack>
       <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
         <Box w={"15%"} />
-        <Heading>{board.title} 채널의 포럼</Heading>
+        <Heading w={"full"} textAlign={"center"} fontSize={"3xl"}>
+          {board.title} 채널의 포럼
+        </Heading>
         <Box w="15%">
-          {!isUserLoading &&
-          user &&
+          {user &&
+          (user.subscribed_boards?.length ?? 0) &&
           user.subscribed_boards.includes(board.pk) ? (
             <IconButton
               onClick={onClickSubscribeBtn}
