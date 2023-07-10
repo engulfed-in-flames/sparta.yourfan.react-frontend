@@ -171,7 +171,7 @@ export default function PostWrite() {
               ["removeFormat"],
               "/",
               ["outdent", "indent"],
-              ["align", "horizontalRule", "lineHeight"],
+              ["horizontalRule", "lineHeight"],
               ["table"], // "image"
               ["fullScreen", "showBlocks"],
               ["preview"],

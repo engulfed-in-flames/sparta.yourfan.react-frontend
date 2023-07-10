@@ -56,14 +56,16 @@ export const useNotBannedUserOnly = async (custom_url: string) => {
   );
 
   useEffect(() => {
-    if (custom_url && !isLoading && Number(statusCode) !== 200) {
-      navigate("/");
-      toast({
-        title: "차단된 사용자이므로 접근이 제한됩니다",
-        status: "warning",
-        position: "top",
-        duration: 3000,
-      });
+    if (custom_url) {
+      if (!isLoading && Number(statusCode) !== 200) {
+        navigate("/");
+        toast({
+          title: "차단된 사용자이므로 접근이 제한됩니다",
+          status: "warning",
+          position: "top",
+          duration: 3000,
+        });
+      }
     }
   }, [custom_url, statusCode, isLoading]);
 };
