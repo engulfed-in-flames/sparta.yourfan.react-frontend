@@ -108,7 +108,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
         </Heading>
         <Box w="15%">
           {user &&
-          user.subscribed_boards.length &&
+          (user.subscribed_boards?.length ?? 0) &&
           user.subscribed_boards.includes(board.pk) ? (
             <IconButton
               onClick={onClickSubscribeBtn}
