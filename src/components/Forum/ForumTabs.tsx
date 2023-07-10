@@ -107,8 +107,8 @@ export default function ForumTabs({ channel }: IForumTabs) {
           {board.title} 채널의 포럼
         </Heading>
         <Box w="15%">
-          {!isUserLoading &&
-          user &&
+          {user &&
+          user.subscribed_boards.length &&
           user.subscribed_boards.includes(board.pk) ? (
             <IconButton
               onClick={onClickSubscribeBtn}
