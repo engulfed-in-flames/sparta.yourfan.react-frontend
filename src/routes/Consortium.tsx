@@ -57,9 +57,9 @@ export default function Consortium() {
       });
     },
     onError: (err: AxiosError) => {
-      if (err.response?.status === 403) {
+      if (err.response?.status === 401) {
         toast({
-          title: "이미 신청된 상태입니다",
+          title: "관리자 신청이 이미 접수됐습니다",
           status: "info",
           position: "top",
           duration: 3000,
