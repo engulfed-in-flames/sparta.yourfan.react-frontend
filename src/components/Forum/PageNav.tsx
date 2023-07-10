@@ -51,7 +51,7 @@ export default function PageNav({ channel, page, count, setPage }: IProps) {
           />
         </ButtonGroup>
         <ButtonGroup>
-          {Array.from({ length: count }, (v, i) => i + 1).map((v, i) => (
+          {Array.from({ length: 5 }, (v, i) => i + 1).map((v, i) => (
             <Button
               isActive={v === page ? true : false}
               onClick={handlePageBtn}
