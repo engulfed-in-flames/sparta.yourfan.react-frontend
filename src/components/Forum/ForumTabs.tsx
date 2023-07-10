@@ -102,11 +102,11 @@ export default function ForumTabs({ channel }: IForumTabs) {
         </Tabs>
       </VStack>
       <Flex w={"full"} justifyContent={"space-between"} alignItems={"center"}>
-        {/* <Box w={"15%"} /> */}
+        <Box w={"15%"} />
         <Heading w={"full"} textAlign={"center"} fontSize={"3xl"}>
           {board.title} 채널의 포럼
         </Heading>
-        {/* <Box w="15%">
+        <Box w="15%">
           {!isUserLoading &&
           user &&
           user.subscribed_boards.includes(board.pk) ? (
@@ -128,7 +128,7 @@ export default function ForumTabs({ channel }: IForumTabs) {
               bgColor={"transparent"}
             />
           )}
-        </Box> */}
+        </Box>
       </Flex>
     </>
   ) : null;
