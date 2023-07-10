@@ -316,6 +316,16 @@ export const apiBanUser = async ({ custom_url, user_id }: IBanUserValues) => {
   return response.status;
 };
 
+export const apiGetSubscribedForumList = async () => {
+  const response = await axiosInstance.get("community/subscribe/", {
+    headers: {
+      "X-CSRFToken": Cookies.get("csrftoken") || "",
+      Authorization: `Bearer ${Cookies.get("access")}`,
+    },
+  });
+  return response.data;
+};
+
 export const apiPostApplyForStaff = async (custom_url: string) => {
   const response = await axiosInstance.post(
     "community/staff/",
